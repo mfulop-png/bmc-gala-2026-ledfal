@@ -1,0 +1,396 @@
+{
+ "companies": {
+  "alphavet": {
+   "logo": "logos/alphavet.png",
+   "logoDark": true,
+   "photos": [
+    "photos/alphavet-1.jpg"
+   ]
+  },
+  "biotechusa": {
+   "logo": "logos/biotechusa.png",
+   "logoDark": false,
+   "photos": [
+    "photos/biotechusa-1.jpg"
+   ]
+  },
+  "ceh": {
+   "logo": "logos/ceh.png",
+   "logoDark": false,
+   "photos": [
+    "photos/ceh-1.jpg",
+    "photos/ceh-2.jpg",
+    "photos/ceh-3.jpg"
+   ]
+  },
+  "cerbona": {
+   "logo": "logos/cerbona.png",
+   "logoDark": false,
+   "photos": []
+  },
+  "dorko": {
+   "logo": "logos/dorko.png",
+   "logoDark": false,
+   "photos": [
+    "photos/dorko-1.jpg"
+   ]
+  },
+  "dm-ker": {
+   "logo": "logos/dm-ker.png",
+   "logoDark": false,
+   "photos": [
+    "photos/dm-ker-1.jpg"
+   ]
+  },
+  "dorsum": {
+   "logo": "logos/dorsum.png",
+   "logoDark": false,
+   "photos": [
+    "photos/dorsum-1.jpg",
+    "photos/dorsum-2.jpg",
+    "photos/dorsum-3.jpg"
+   ]
+  },
+  "goodwill": {
+   "logo": "logos/goodwill.png",
+   "logoDark": false,
+   "photos": [
+    "photos/goodwill-1.jpg",
+    "photos/goodwill-2.jpg"
+   ]
+  },
+  "h1-systems": {
+   "logo": "logos/h1-systems.png",
+   "logoDark": false,
+   "photos": [
+    "photos/h1-systems-1.jpg",
+    "photos/h1-systems-2.jpg",
+    "photos/h1-systems-3.jpg"
+   ]
+  },
+  "hell": {
+   "logo": "logos/hell.png",
+   "logoDark": false,
+   "photos": [
+    "photos/hell-1.jpg",
+    "photos/hell-2.jpg",
+    "photos/hell-3.jpg"
+   ]
+  },
+  "hidrofilt": {
+   "logo": "logos/hidrofilt.svg",
+   "logoDark": false,
+   "photos": []
+  },
+  "hunland": {
+   "logo": "logos/hunland.png",
+   "logoDark": false,
+   "photos": [
+    "photos/hunland-1.jpg"
+   ]
+  },
+  "k-v": {
+   "logo": "logos/k-v.png",
+   "logoDark": false,
+   "photos": [
+    "photos/k-v-1.jpg"
+   ]
+  },
+  "kermann": {
+   "logo": "logos/kermann.svg",
+   "logoDark": false,
+   "photos": [
+    "photos/kermann-1.jpg"
+   ]
+  },
+  "marka": {
+   "logo": "logos/marka.png",
+   "logoDark": false,
+   "photos": [
+    "photos/marka-1.jpg",
+    "photos/marka-2.jpg",
+    "photos/marka-3.jpg"
+   ]
+  },
+  "merkapt": {
+   "logo": "logos/merkapt.svg",
+   "logoDark": false,
+   "photos": [
+    "photos/merkapt-1.jpg"
+   ]
+  },
+  "mogyi": {
+   "logo": "logos/mogyi.png",
+   "logoDark": false,
+   "photos": [
+    "photos/mogyi-1.jpg",
+    "photos/mogyi-2.jpg"
+   ]
+  },
+  "petranyi": {
+   "logo": "logos/petranyi.png",
+   "logoDark": false,
+   "photos": [
+    "photos/petranyi-1.jpg",
+    "photos/petranyi-2.jpg",
+    "photos/petranyi-3.jpg"
+   ]
+  },
+  "planning-trading": {
+   "logo": "logos/planning-trading.png",
+   "logoDark": false,
+   "photos": [
+    "photos/planning-trading-1.jpg"
+   ]
+  },
+  "prime-rate": {
+   "logo": "logos/prime-rate.png",
+   "logoDark": false,
+   "photos": [
+    "photos/prime-rate-1.jpg",
+    "photos/prime-rate-2.jpg"
+   ]
+  },
+  "prophyl": {
+   "logo": "logos/prophyl.png",
+   "logoDark": false,
+   "photos": []
+  },
+  "qualysoft": {
+   "logo": "logos/qualysoft.png",
+   "logoDark": false,
+   "photos": [
+    "photos/qualysoft-1.jpg",
+    "photos/qualysoft-2.jpg"
+   ]
+  },
+  "rotapack": {
+   "logo": "logos/rotapack.png",
+   "logoDark": false,
+   "photos": [
+    "photos/rotapack-1.jpg"
+   ]
+  },
+  "sanatmetal": {
+   "logo": "logos/sanatmetal.png",
+   "logoDark": false,
+   "photos": []
+  },
+  "schiller": {
+   "logo": "logos/schiller.png",
+   "logoDark": false,
+   "photos": [
+    "photos/schiller-1.jpg",
+    "photos/schiller-2.jpg",
+    "photos/schiller-3.jpg"
+   ]
+  },
+  "semsei": {
+   "logo": "logos/semsei.png",
+   "logoDark": false,
+   "photos": [
+    "photos/semsei-1.jpg"
+   ]
+  },
+  "simon-plastics": {
+   "logo": "logos/simon-plastics.png",
+   "logoDark": false,
+   "photos": [
+    "photos/simon-plastics-1.jpg",
+    "photos/simon-plastics-2.jpg",
+    "photos/simon-plastics-3.jpg"
+   ]
+  },
+  "tolnagro": {
+   "logo": "logos/tolnagro.png",
+   "logoDark": false,
+   "photos": [
+    "photos/tolnagro-1.jpg"
+   ]
+  },
+  "tom-ferr": {
+   "logo": null,
+   "logoDark": false,
+   "photos": [
+    "photos/tom-ferr-1.jpg",
+    "photos/tom-ferr-2.jpg",
+    "photos/tom-ferr-3.jpg"
+   ]
+  },
+  "tutti": {
+   "logo": "logos/tutti.png",
+   "logoDark": false,
+   "photos": [
+    "photos/tutti-1.jpg",
+    "photos/tutti-2.jpg",
+    "photos/tutti-3.jpg"
+   ]
+  },
+  "ubm": {
+   "logo": "logos/ubm.png",
+   "logoDark": false,
+   "photos": [
+    "photos/ubm-1.jpg",
+    "photos/ubm-2.jpg",
+    "photos/ubm-3.jpg"
+   ]
+  },
+  "ujhaz": {
+   "logo": "logos/ujhaz.png",
+   "logoDark": false,
+   "photos": [
+    "photos/ujhaz-1.jpg",
+    "photos/ujhaz-2.jpg"
+   ]
+  },
+  "vajda-papir": {
+   "logo": "logos/vajda-papir.png",
+   "logoDark": true,
+   "photos": [
+    "photos/vajda-papir-1.jpg",
+    "photos/vajda-papir-2.jpg"
+   ]
+  },
+  "euronics": {
+   "logo": "logos/euronics.png",
+   "logoDark": false,
+   "photos": [
+    "photos/euronics-1.jpg",
+    "photos/euronics-2.jpg",
+    "photos/euronics-3.jpg"
+   ]
+  },
+  "wagner-solar": {
+   "logo": "logos/wagner-solar.png",
+   "logoDark": false,
+   "photos": [
+    "photos/wagner-solar-1.jpg",
+    "photos/wagner-solar-2.jpg",
+    "photos/wagner-solar-3.jpg"
+   ]
+  }
+ },
+ "group": [
+  "group/1.jpg",
+  "group/2.jpg",
+  "group/3.jpg"
+ ],
+ "global": [
+  {
+   "file": "global/austria.jpg",
+   "source": "austria"
+  },
+  {
+   "file": "global/belgium.jpg",
+   "source": "belgium"
+  },
+  {
+   "file": "global/belgium2.jpg",
+   "source": "belgium2"
+  },
+  {
+   "file": "global/canada.jpg",
+   "source": "canada"
+  },
+  {
+   "file": "global/canada2.jpg",
+   "source": "canada2"
+  },
+  {
+   "file": "global/canada3.jpg",
+   "source": "canada3"
+  },
+  {
+   "file": "global/canada4.jpg",
+   "source": "canada4"
+  },
+  {
+   "file": "global/chile.jpg",
+   "source": "chile"
+  },
+  {
+   "file": "global/china.jpg",
+   "source": "china"
+  },
+  {
+   "file": "global/china2.jpg",
+   "source": "china2"
+  },
+  {
+   "file": "global/czech-republic.jpg",
+   "source": "czech republic"
+  },
+  {
+   "file": "global/czech-republic2.jpg",
+   "source": "czech republic2"
+  },
+  {
+   "file": "global/france.jpg",
+   "source": "france"
+  },
+  {
+   "file": "global/germany.jpg",
+   "source": "germany"
+  },
+  {
+   "file": "global/india.jpg",
+   "source": "india"
+  },
+  {
+   "file": "global/ireland.jpg",
+   "source": "ireland"
+  },
+  {
+   "file": "global/ireland2.jpg",
+   "source": "ireland2"
+  },
+  {
+   "file": "global/ireland3.jpg",
+   "source": "ireland3"
+  },
+  {
+   "file": "global/italy.jpg",
+   "source": "italy"
+  },
+  {
+   "file": "global/italy2.jpg",
+   "source": "italy2"
+  },
+  {
+   "file": "global/kuala-lumpur.jpg",
+   "source": "kuala lumpur"
+  },
+  {
+   "file": "global/poland.jpg",
+   "source": "poland"
+  },
+  {
+   "file": "global/poland.jpg",
+   "source": "poland"
+  },
+  {
+   "file": "global/slovakia.jpg",
+   "source": "slovakia"
+  },
+  {
+   "file": "global/southeast-asia.jpg",
+   "source": "southeast asia"
+  },
+  {
+   "file": "global/switzerland.jpg",
+   "source": "switzerland"
+  },
+  {
+   "file": "global/thailand.jpg",
+   "source": "thailand"
+  },
+  {
+   "file": "global/turkey.jpg",
+   "source": "türkey"
+  },
+  {
+   "file": "global/uk.jpg",
+   "source": "uk"
+  }
+ ]
+}

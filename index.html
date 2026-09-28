@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Best Managed Companies Gála 2026 — LED fal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>
+<script src="./image-slot.js"></script>
+<style>
+:root{
+  --green:#86BC25; --green-dim:#5f861a; --green-glow:rgba(134,188,37,.35);
+  --teal:#0097A9; --bg:#070806; --panel:#101310; --panel-2:#171b16;
+  --line:rgba(255,255,255,.10); --line-g:rgba(134,188,37,.30);
+  --ink:#ffffff; --muted:#9aa096; --dim:#6b7167;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#000;overflow:hidden;font-family:'Open Sans',system-ui,sans-serif;color:var(--ink);
+  -webkit-user-select:none;user-select:none;touch-action:manipulation;cursor:none}
+a{color:var(--green);text-decoration:none}
+a:hover{color:#a6dc45}
+#fit{position:fixed;inset:0;display:block;background:#000}
+#stage{position:absolute;top:0;left:0;width:3840px;height:2160px;transform-origin:top left;background:
+  radial-gradient(1800px 1200px at 12% -10%, rgba(134,188,37,.10), transparent 60%),
+  radial-gradient(1600px 1100px at 100% 110%, rgba(0,151,169,.10), transparent 60%),
+  var(--bg);
+  overflow:hidden}
+
+/* ---------- chrome ---------- */
+#topbar{position:absolute;top:0;left:0;right:0;height:150px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 72px;border-bottom:1px solid var(--line);z-index:30}
+.brand{display:flex;align-items:center;gap:34px}
+.brand .dot{width:22px;height:22px;background:var(--green);border-radius:2px}
+.brand .bm{font-size:40px;font-weight:700;letter-spacing:.01em;line-height:1.05}
+.brand .bm span{display:block;font-size:22px;font-weight:400;letter-spacing:.30em;color:var(--muted);text-transform:uppercase;margin-top:6px}
+.brand .sep{width:1px;height:70px;background:var(--line)}
+.brand .dl{font-size:32px;font-weight:600;color:#e7eae4}
+.brand .dl em{font-style:normal;color:var(--green)}
+.topright{display:flex;align-items:center;gap:44px}
+.topright .ev{font-size:26px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+#clock{font-size:42px;font-weight:300;font-variant-numeric:tabular-nums;color:#fff}
+
+#nav{position:absolute;bottom:0;left:0;right:0;height:190px;display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;border-top:1px solid var(--line);background:rgba(8,10,7,.86);backdrop-filter:blur(8px);z-index:30}
+.tab{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 54px;position:relative;
+  border-right:1px solid var(--line);transition:background .25s}
+.tab:last-child{border-right:none}
+.tab .n{font-size:22px;letter-spacing:.24em;color:var(--dim)}
+.tab .t{font-size:40px;font-weight:600;color:#c9cec3}
+.tab::after{content:'';position:absolute;left:0;right:0;top:-1px;height:5px;background:var(--green);transform:scaleX(0);
+  transform-origin:left;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.tab.active{background:rgba(134,188,37,.09)}
+.tab.active::after{transform:scaleX(1)}
+.tab.active .t{color:#fff}
+.tab.active .n{color:var(--green)}
+
+#screens{position:absolute;top:150px;left:0;right:0;bottom:190px}
+.screen{position:absolute;inset:0;padding:56px 72px;opacity:0;pointer-events:none;transition:opacity .45s ease;
+  transform:translateY(14px)}
+.screen.active{opacity:1;pointer-events:auto;transform:none}
+
+h1.big{font-size:88px;font-weight:300;line-height:1.02;letter-spacing:-.015em}
+h1.big b{font-weight:700;color:var(--green)}
+.kicker{font-size:24px;letter-spacing:.28em;text-transform:uppercase;color:var(--green);margin-bottom:20px}
+.sub{font-size:30px;color:var(--muted);font-weight:300;line-height:1.35;max-width:1500px}
+
+/* ---------- attract ---------- */
+#attract{position:absolute;inset:0;z-index:60;background:var(--bg);display:flex;align-items:center;
+  justify-content:center;flex-direction:column;transition:opacity .6s ease}
+#attract.hidden{opacity:0;pointer-events:none}
+#particles{position:absolute;inset:0}
+.attract-inner{position:relative;text-align:center;padding:0 200px;width:100%}
+.attract-inner .mark{font-size:30px;letter-spacing:.42em;text-transform:uppercase;color:var(--green);margin-bottom:60px}
+.attract-inner h1{font-size:172px;font-weight:300;line-height:1.02;letter-spacing:-.02em}
+.attract-inner h1 b{font-weight:800;color:var(--green);display:block}
+.attract-inner .yr{font-size:48px;color:var(--muted);font-weight:300;margin-top:54px;letter-spacing:.06em}
+.touchhint{position:absolute;bottom:170px;left:0;right:0;text-align:center;font-size:38px;letter-spacing:.24em;
+  text-transform:uppercase;color:#fff;opacity:.85;animation:pulse 2.6s ease-in-out infinite}
+.touchhint .ring{display:block;width:120px;height:120px;border:3px solid var(--green);border-radius:50%;margin:0 auto 34px;
+  animation:ring 2.6s ease-out infinite}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes ring{0%{transform:scale(.7);opacity:.2}50%{transform:scale(1);opacity:1}100%{transform:scale(1.35);opacity:0}}
+
+/* ---------- welcome takeover ---------- */
+#welcome{position:absolute;inset:0;z-index:80;background:#040503;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .5s ease;overflow:hidden}
+#welcome.show{opacity:1;pointer-events:auto}
+#welfx,#welsweep,#welglow{position:absolute;inset:0;pointer-events:none}
+#welglow{background:radial-gradient(1400px 1400px at 50% 50%, rgba(134,188,37,.22), rgba(134,188,37,.05) 45%, transparent 70%);
+  opacity:0;transform:scale(.3)}
+#welsweep{background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.14) 48%,rgba(134,188,37,.30) 50%,
+  rgba(255,255,255,.14) 52%,transparent 62%);transform:translateX(-120%)}
+.welrings{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+.welrings i{position:absolute;left:0;top:0;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;
+  border:2px solid rgba(134,188,37,.45);opacity:0}
+#welcome.play #welglow{animation:welGlow 1.1s cubic-bezier(.2,.8,.2,1) forwards}
+#welcome.play #welsweep{animation:welSweep 1.5s .35s cubic-bezier(.4,0,.2,1) forwards}
+#welcome.play .welrings i{animation:welRing 2.8s ease-out infinite}
+#welcome.play .welrings i:nth-child(2){animation-delay:.9s}
+#welcome.play .welrings i:nth-child(3){animation-delay:1.8s}
+@keyframes welGlow{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+@keyframes welSweep{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
+@keyframes welRing{0%{transform:scale(.25);opacity:0}18%{opacity:.7}100%{transform:scale(2.6);opacity:0}}
+.wel{position:relative;z-index:3;display:grid;grid-template-columns:900px 1fr;gap:140px;align-items:center;padding:0 200px;width:100%}
+.wel.nologo{grid-template-columns:1fr;text-align:center}
+.wel.nologo .welrule{margin-left:auto;margin-right:auto}
+.wel.nologo .meta{justify-content:center}
+.wel.nologo .logo{display:none}
+.wel .logo{width:900px;height:520px;border:1px solid var(--line-g);border-radius:8px;background:#fff;
+  display:grid;place-items:center;padding:60px;
+  box-shadow:0 0 0 0 rgba(134,188,37,0)}
+.welrule{width:0;height:5px;background:var(--green);margin-bottom:40px}
+.wel h2{font-size:52px;font-weight:300;color:var(--muted);letter-spacing:.02em}
+.wel .cn{font-size:132px;font-weight:700;line-height:1.05;margin:28px 0 46px;letter-spacing:-.02em;
+  background:linear-gradient(100deg,#fff 30%,#d6f09a 50%,#fff 70%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.wel .msg{font-size:56px;font-weight:300;color:#fff;line-height:1.25}
+.wel .msg b{color:var(--green);font-weight:700}
+.wel .meta{margin-top:56px;font-size:32px;color:var(--muted);display:flex;gap:56px;flex-wrap:wrap}
+.wel .meta span{padding-left:30px;border-left:2px solid var(--line-g)}
+#welcome.play .wel .logo{animation:welLogo 1.1s .15s cubic-bezier(.2,.9,.2,1) both}
+#welcome.play .welrule{animation:welRule .8s .5s cubic-bezier(.2,.8,.2,1) both}
+#welcome.play .wel h2{animation:welRise .8s .6s cubic-bezier(.2,.8,.2,1) both}
+#welcome.play .wel .msg{animation:welRise .8s .72s cubic-bezier(.2,.8,.2,1) both}
+#welcome.play .wel .cn{animation:welRise .9s .86s cubic-bezier(.2,.8,.2,1) both, welShine 3.4s 1.6s ease-in-out infinite}
+#welcome.play .wel .meta{animation:welRise .8s 1.05s cubic-bezier(.2,.8,.2,1) both}
+@keyframes welLogo{from{opacity:0;transform:scale(.86) translateY(40px)}
+  60%{box-shadow:0 0 90px 12px rgba(134,188,37,.55)}
+  to{opacity:1;transform:none;box-shadow:0 0 60px 0 rgba(134,188,37,.22)}}
+@keyframes welRule{from{width:0;opacity:0}to{width:220px;opacity:1}}
+@keyframes welRise{from{opacity:0;transform:translateY(46px)}to{opacity:1;transform:none}}
+@keyframes welShine{0%,100%{background-position:140% 0}50%{background-position:-40% 0}}
+
+/* ---------- panels / generic ---------- */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px}
+.badge{display:inline-flex;align-items:center;gap:12px;padding:10px 22px;border-radius:999px;font-size:22px;
+  border:1px solid var(--line-g);color:var(--green);letter-spacing:.1em;text-transform:uppercase}
+.pending{color:#d8a13a;border-color:rgba(216,161,58,.4)}
+.chipbar{display:flex;flex-wrap:wrap;gap:14px}
+.chip{padding:18px 30px;border-radius:999px;border:1px solid var(--line);font-size:26px;font-weight:600;color:#c9cec3;
+  background:rgba(255,255,255,.03);transition:background .2s,color .2s,border-color .2s;white-space:nowrap}
+.chip.on{background:var(--green);border-color:var(--green);color:#0b0f06}
+.ptitle{font-size:44px;font-weight:700;line-height:1.1;display:flex;justify-content:space-between;align-items:baseline;gap:20px}
+.ptitle small{font-size:24px;font-weight:400;color:var(--muted);white-space:nowrap}
+.ptitle small b{color:var(--green);font-weight:700}
+.flabel{font-size:20px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:0 0 16px}
+
+/* ---------- 1. map ---------- */
+.maplayout{display:grid;grid-template-columns:1fr 1180px;gap:56px;height:100%;transition:transform .9s cubic-bezier(.6,0,.2,1),opacity .6s ease;transform-origin:30% 55%}
+.mapwrap{position:relative;display:flex;flex-direction:column;gap:28px;min-height:0}
+.maphead{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+.mapctl{display:flex;gap:20px;align-items:center}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;padding:6px;background:rgba(255,255,255,.03)}
+.seg div{padding:22px 40px;border-radius:999px;font-size:28px;font-weight:600;color:#c9cec3;transition:background .25s,color .25s}
+.seg div.on{background:var(--green);color:#0b0f06}
+.globebtn{display:flex;align-items:center;gap:22px;padding:10px 40px 10px 10px;border-radius:999px;border:1px solid var(--line-g);
+  background:rgba(134,188,37,.08);font-size:28px;font-weight:600}
+.globebtn .g{width:96px;height:96px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.globebtn .g svg{width:60px;height:60px;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#hu-map{flex:1;min-height:0;width:100%;overflow:hidden}
+#hu-map path{vector-effect:non-scaling-stroke}
+.hu-country{fill:#14180f;stroke:rgba(255,255,255,.07);stroke-width:1}
+.hu-main{fill:url(#huGrad);stroke:var(--green);stroke-width:2.5}
+.hu-river{fill:none;stroke:rgba(0,151,169,.45);stroke-width:3;stroke-linecap:round}
+.bp-outline{fill:rgba(134,188,37,.10);stroke:var(--green);stroke-width:2}
+.bp-district{fill:rgba(134,188,37,.05);stroke:rgba(134,188,37,.55);stroke-width:1.5;transition:opacity .6s}
+.bp-duna{fill:none;stroke:rgba(0,151,169,.35);stroke-width:34;stroke-linecap:round;stroke-linejoin:round;transition:opacity .6s}
+.bp-dlabel{font-size:26px;font-weight:700;fill:rgba(255,255,255,.35);text-anchor:middle;dominant-baseline:middle;transition:opacity .6s;pointer-events:none}
+.bp-only{opacity:0}
+.mode-bp .bp-only{opacity:1}
+.mode-bp .hu-only{opacity:0}
+.hu-only{transition:opacity .6s}
+.hu-dot{cursor:pointer;transition:opacity .3s}
+.hu-dot circle.core{fill:var(--green);stroke:#070806;stroke-width:2}
+.hu-dot circle.halo{fill:var(--green);opacity:.16}
+.hu-dot.sel circle.core{fill:#fff}
+.hu-dot.sel circle.halo{opacity:.35}
+.hu-dot.dimmed{opacity:.12;pointer-events:none}
+.hu-city{font-size:19px;fill:var(--muted);letter-spacing:.06em;pointer-events:none}
+.bp-name{font-size:24px;fill:#fff;font-weight:600;pointer-events:none}
+.maphint{position:absolute;left:0;bottom:0;font-size:24px;color:var(--dim);letter-spacing:.08em}
+.side{display:flex;flex-direction:column;gap:28px;min-height:0}
+.filters{padding:34px 36px;display:flex;flex-direction:column;gap:26px}
+.detail{flex:1;padding:40px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+.detail.empty{align-items:center;justify-content:center;text-align:center;color:var(--dim);font-size:32px;font-weight:300}
+.dh{display:flex;gap:32px;align-items:center}
+.dlogo{width:260px;height:150px;flex:none;border:1px solid var(--line);border-radius:4px;background:#fff;
+  display:grid;place-items:center;padding:18px;overflow:hidden}
+.dlogo img,.wel .logo img{width:100%;height:100%;min-height:0;object-fit:contain;display:block}
+.dlogo span{color:#1a1d18;font-size:24px;font-weight:700;text-align:center;line-height:1.2}
+.dlogo.dark,.wel .logo.dark{background:#1d221c}
+.dname{font-size:50px;font-weight:700;line-height:1.1}
+.dsub{font-size:26px;color:var(--muted);margin-top:10px}
+.dstats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line);margin-top:26px}
+.dstat{background:var(--panel-2);padding:24px 26px}
+.dstat .v{font-size:44px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.dstat .l{font-size:20px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.dtext{font-size:26px;line-height:1.45;color:#d3d8cd;margin-top:24px;font-weight:300}
+.dyears{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.yrbox{width:104px;height:64px;display:grid;place-items:center;font-size:24px;border:1px solid var(--line);color:var(--dim)}
+.yrbox.on{background:var(--green);color:#0b0f06;border-color:var(--green);font-weight:700}
+.dphotos{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:auto;padding-top:20px;flex:none;min-height:0}
+.dph{height:130px;border-radius:4px;overflow:hidden;background:var(--panel-2)}
+.dph img{width:100%;height:100%;object-fit:cover;display:block}
+.detail .dtext{flex:0 1 auto;overflow:hidden}
+
+/* ---------- world (Global Journey) ---------- */
+.worldview{position:absolute;inset:0;display:flex;flex-direction:column;gap:30px;padding:40px 0;opacity:0;pointer-events:none;
+  transform:scale(1.35);transition:transform .9s cubic-bezier(.6,0,.2,1),opacity .6s ease .15s}
+.worldmode .worldview{opacity:1;pointer-events:auto;transform:none}
+.worldmode .maplayout{transform:scale(.35);opacity:0;pointer-events:none}
+.wmid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 980px;gap:56px;padding:0 72px}
+.wleft{display:flex;flex-direction:column;gap:20px;min-height:0}
+#world-map{flex:1;min-height:0;width:100%}
+.w-land{fill:#14180f;stroke:rgba(255,255,255,.06);stroke-width:.7}
+.w-bmc{fill:rgba(134,188,37,.30);stroke:var(--green);stroke-width:1}
+.w-hu{fill:var(--teal);stroke:#9fe6f0;stroke-width:1.4}
+.w-graticule{fill:none;stroke:rgba(255,255,255,.05);stroke-width:.6}
+.w-ping{fill:none;stroke:#9fe6f0;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
+@keyframes ping{from{transform:scale(.3);opacity:1}to{transform:scale(2.4);opacity:0}}
+.strip{height:250px;overflow:hidden;flex:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.strack{display:flex;gap:20px;width:max-content;height:100%;animation:marq 70s linear infinite;animation-play-state:paused}
+.strip.rev .strack{animation-direction:reverse;animation-duration:84s}
+.worldmode .strack{animation-play-state:running}
+@keyframes marq{to{transform:translateX(-50%)}}
+.ph{position:relative;width:420px;height:100%;flex:none;border-radius:4px;overflow:hidden;background:
+  repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 18px,transparent 18px 36px),#12160f;border:1px solid var(--line)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .pe{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase}
+.ph .pc{position:absolute;left:14px;bottom:14px;padding:6px 14px;border-radius:999px;background:rgba(0,0,0,.65);font-size:20px;font-weight:600;color:#fff}
+.backbtn{display:flex;align-items:center;gap:20px;padding:22px 40px;border-radius:999px;border:1px solid var(--line-g);background:rgba(134,188,37,.08);font-size:28px;font-weight:600;align-self:flex-start}
+.bigstat{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border:1px solid var(--line)}
+.bigstat>div{background:var(--panel);padding:38px 40px}
+.bigstat .v{font-size:86px;font-weight:700;color:var(--green);line-height:1;font-variant-numeric:tabular-nums}
+.bigstat .l{font-size:23px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:14px}
+.countrylist{flex:1;overflow:hidden;padding:30px 36px;display:flex;flex-direction:column;gap:18px;min-height:0}
+.clgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;overflow:hidden}
+.cl{font-size:24px;color:#b8bdb1;padding:12px 16px;border:1px solid transparent;border-radius:3px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.cl.on{background:rgba(134,188,37,.16);border-color:var(--line-g);color:#fff}
+
+/* ---------- 3. timeline ---------- */
+.tl{display:flex;flex-direction:column;height:100%;gap:40px}
+.tlrail{position:relative;display:grid;grid-template-columns:repeat(5,1fr);margin-top:-30px}
+.tlrail::before{content:'';position:absolute;left:6%;right:6%;top:96px;height:2px;background:var(--line)}
+.tlrail .fill{position:absolute;left:6%;top:96px;height:2px;background:var(--green);transition:width .6s ease}
+.tnode{position:relative;display:flex;flex-direction:column;align-items:center;gap:26px;padding-top:44px}
+.tnode .ring{width:104px;height:104px;border-radius:50%;border:3px solid var(--line);background:var(--bg);
+  display:grid;place-items:center;font-size:32px;font-weight:700;color:var(--dim);transition:all .3s;z-index:2}
+.tnode.on .ring{border-color:var(--green);background:var(--green);color:#0b0f06;box-shadow:0 0 0 14px var(--green-glow)}
+.tnode .y{font-size:46px;font-weight:300;color:#aeb4a6}
+.tnode.on .y{color:#fff;font-weight:600}
+.tlbody{display:grid;grid-template-columns:1fr 1720px;gap:56px;flex:1;min-height:0}
+.tlcopy{display:flex;flex-direction:column;justify-content:center;gap:22px}
+.tlcopy .pg{font-size:26px;letter-spacing:.24em;text-transform:uppercase;color:var(--green)}
+.tlcopy h2{font-size:84px;font-weight:300;letter-spacing:-.02em}
+.tlcopy p{font-size:32px;line-height:1.45;color:#c6ccbf;font-weight:300;max-width:1300px}
+.counter{display:flex;align-items:baseline;gap:26px;margin-top:10px}
+.counter .n{font-size:220px;font-weight:800;color:var(--green);line-height:.9;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.counter .u{font-size:38px;color:var(--muted);letter-spacing:.06em}
+.winners{padding:36px;display:flex;flex-direction:column;min-height:0}
+.winners .flabel{margin-bottom:22px}
+.wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;overflow:hidden;align-content:start}
+.wg{font-size:31px;font-weight:600;padding:14px 20px;background:var(--panel-2);border-left:3px solid var(--green);color:#d3d8cd;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wg.five{border-left-color:var(--teal)}
+.sumbar{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);border:1px solid var(--line-g)}
+.sumbar>div{background:linear-gradient(180deg,rgba(134,188,37,.10),rgba(134,188,37,0));padding:34px 40px}
+.sumbar .v{font-size:76px;font-weight:800;color:var(--green);line-height:1}
+.sumbar .u{font-size:30px;color:#fff;margin-top:10px;font-weight:600}
+.sumbar .l{font-size:22px;color:var(--muted);margin-top:4px}
+
+/* ---------- 4. dashboard ---------- */
+.dash{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto 1fr;gap:28px;height:100%}
+.kpi{padding:40px 42px;display:flex;flex-direction:column;gap:12px}
+.kpi .v{font-size:110px;font-weight:800;color:var(--green);line-height:.95;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.kpi .l{font-size:26px;color:var(--muted);letter-spacing:.06em}
+.dcard{padding:38px 42px;display:flex;flex-direction:column;min-height:0}
+.dcard h3{font-size:22px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:28px}
+.cols{flex:1;min-height:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:26px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.col .area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;background:rgba(255,255,255,.03)}
+.col .fl{height:0;background:linear-gradient(180deg,var(--green),#5f861a);transition:height 1.1s cubic-bezier(.2,.8,.2,1);position:relative}
+.col .c{font-size:56px;font-weight:800;color:var(--green);text-align:center;font-variant-numeric:tabular-nums;line-height:1}
+.col .lb{height:100px;font-size:24px;line-height:1.25;color:#c9cec3;text-align:center;text-wrap:balance}
+.allco{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 24px}
+.allco div{font-size:27px;font-weight:600;color:#e3e7dd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 0;
+  border-bottom:1px solid var(--line);opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
+.allco div.in{opacity:1;transform:none}
+.allco div.five{color:#fff}
+.allco div.five::after{content:' \2605';color:var(--teal)}
+.groupph{flex:1;min-height:0;margin-top:30px;position:relative}
+.groupph{border-radius:4px;overflow:hidden;background:var(--panel-2)}
+.groupph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
+.groupph img.on{opacity:1}
+.legend{font-size:22px;color:var(--muted);letter-spacing:.04em;text-transform:none}
+.legend b{color:var(--teal)}
+
+/* ---------- 5. tonight ---------- */
+.tonight{display:grid;grid-template-columns:1fr 1.15fr 1.2fr;gap:56px;height:100%}
+.tcol{display:flex;flex-direction:column;gap:32px;min-height:0}
+.tonight h1.big{font-size:118px}
+.tonight .flabel{font-size:26px;margin:0}
+.tonight .bigstat{flex:1}
+.tonight .bigstat>div{display:flex;flex-direction:column;justify-content:center;padding:40px 48px}
+.tonight .bigstat .v{font-size:140px}
+.tonight .bigstat .l{font-size:28px}
+.gtk{font-size:36px;line-height:1.5;color:#d3d8cd;font-weight:300}
+.agenda{flex:1;display:flex;flex-direction:column;gap:2px;background:var(--line);border:1px solid var(--line);overflow:hidden}
+.ag{flex:1;background:var(--panel);padding:26px 44px;display:grid;grid-template-columns:230px 1fr;gap:34px;align-items:center}
+.ag .tm{font-size:56px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.ag .tm.tbd{font-size:24px;font-weight:600;color:#d8a13a;letter-spacing:.1em;line-height:1.3}
+.ag .tt{font-size:44px;font-weight:600;color:#fff;line-height:1.2}
+.ag .pl{font-size:28px;color:var(--muted);margin-top:8px}
+.venuemap{flex:1;min-height:0;position:relative;border:1px solid var(--line)}
+.vlist{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border:1px solid var(--line)}
+.vl{background:var(--panel);padding:24px 30px;display:flex;flex-direction:column;gap:6px}
+.vl .n{font-size:34px;font-weight:700;display:flex;align-items:center;gap:16px}
+.vl .n::before{content:'';width:16px;height:16px;background:var(--green);border-radius:50%;flex:none}
+.vl .s{font-size:24px;color:var(--muted);padding-left:32px;min-height:1em}
+.vl.here{background:rgba(134,188,37,.14)}
+
+/* ---------- admin ---------- */
+#adminbtn{position:absolute;top:0;left:0;width:200px;height:150px;z-index:90}
+#admin{position:absolute;inset:0;z-index:100;background:rgba(3,4,3,.96);display:none;padding:90px 120px;
+  flex-direction:column;gap:36px;cursor:auto}
+#admin.show{display:flex}
+#admin h2{font-size:56px;font-weight:300}
+#admin .row{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+#admin input{background:#141713;border:1px solid var(--line);color:#fff;font:400 30px 'Open Sans';padding:20px 26px;
+  width:900px;border-radius:4px}
+.btn{padding:22px 40px;background:var(--green);color:#0b0f06;font:700 28px 'Open Sans';border:none;border-radius:4px;cursor:pointer}
+.btn.ghost{background:transparent;color:#c9cec3;border:1px solid var(--line)}
+.alist{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-content:start}
+.ai{padding:20px 24px;background:#12150f;border:1px solid var(--line);font-size:26px;cursor:pointer}
+.ai:hover{border-color:var(--green)}
+.note{position:absolute;right:72px;bottom:214px;font-size:20px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;z-index:31}
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="topbar">
+    <div class="brand">
+      <div class="dot"></div>
+      <div class="bm">Best Managed Companies<span>Magyarország · 2026</span></div>
+      <div class="sep"></div>
+      <div class="dl">Deloitte<em>.</em> Private</div>
+    </div>
+    <div class="topright">
+      <div class="ev">Gála · Magyar Zene Háza</div>
+      <div id="clock">—:—</div>
+    </div>
+  </div>
+
+  <div id="screens">
+
+    <!-- 1. BMC térkép (+ Global Journey) -->
+    <section class="screen" data-screen="map" id="mapscreen">
+      <div class="maplayout">
+        <div class="mapwrap" id="mapwrap">
+          <div class="maphead">
+            <div>
+              <div class="kicker">Best Managed Companies Magyarországon</div>
+              <h1 class="big">BMC <b>térkép</b></h1>
+            </div>
+            <div class="mapctl">
+              <div class="seg" id="zoomseg"><div class="on" data-z="hu">Magyarország</div><div data-z="bp">Budapest</div></div>
+              <div class="globebtn" id="globebtn"><div class="g"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0f06" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4.2" ry="10"/><path d="M2 12h20M4 6.5h16M4 17.5h16"/></svg></div>Global Journey</div>
+            </div>
+          </div>
+          <svg id="hu-map"></svg>
+          <div class="maphint" id="maphint">Koppints Budapestre a nagyításhoz</div>
+        </div>
+        <div class="side">
+          <div class="panel filters">
+            <div class="ptitle">Böngéssz a díjazottak között <small><b id="fcount">0</b> vállalat</small></div>
+            <div>
+              <div class="flabel">Díjazás éve</div>
+              <div class="chipbar" id="f-year"></div>
+            </div>
+            <div>
+              <div class="flabel">Régió</div>
+              <div class="chipbar" id="f-region"></div>
+            </div>
+            <div>
+              <div class="flabel">Iparág</div>
+              <div class="chipbar" id="f-industry"></div>
+            </div>
+          </div>
+          <div class="panel detail empty" id="detail">Koppints egy pontra a térképen<br>a vállalat adataiért</div>
+        </div>
+      </div>
+      <div class="worldview">
+        <div class="strip"><div class="strack" id="strip1"></div></div>
+        <div class="wmid">
+          <div class="wleft">
+            <div class="maphead">
+              <div>
+                <div class="kicker">Global Journey</div>
+                <h1 class="big">A program <b>45+ országban</b></h1>
+              </div>
+              <div class="backbtn" id="backbtn">← Vissza a BMC térképhez</div>
+            </div>
+            <svg id="world-map"></svg>
+          </div>
+          <div class="side" style="justify-content:center">
+            <div class="bigstat">
+              <div><div class="v">45+</div><div class="l">ország</div></div>
+              <div><div class="v">1993</div><div class="l">indulás · Kanada</div></div>
+              <div><div class="v">2022</div><div class="l">indulás · Magyarország</div></div>
+              <div><div class="v">28</div><div class="l">magyar vállalat 2026-ban</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="strip rev"><div class="strack" id="strip2"></div></div>
+      </div>
+    </section>
+
+    <!-- 3. Timeline -->
+    <section class="screen" data-screen="timeline">
+      <div class="tl">
+        <div>
+          <div class="kicker">Best Managed Companies Magyarországon</div>
+          <h1 class="big">5 év <b>története</b></h1>
+        </div>
+        <div class="tlrail" id="tlrail"></div>
+        <div class="tlbody">
+          <div class="tlcopy">
+            <div class="pg" id="tl-pg"></div>
+            <h2 id="tl-title"></h2>
+            <p id="tl-text"></p>
+            <div class="counter"><div class="n" id="tl-count">0</div><div class="u">Best Managed vállalat<br>az adott programban</div></div>
+          </div>
+          <div class="panel winners">
+            <div class="flabel" id="w-label">Az év nyertesei</div>
+            <div class="wgrid" id="wgrid"></div>
+          </div>
+        </div>
+        <div class="sumbar" id="sumbar"></div>
+      </div>
+    </section>
+
+    <!-- 4. Dashboard -->
+    <section class="screen" data-screen="dash">
+      <div class="dash">
+        <div class="panel kpi"><div class="v" data-count="0" id="kpi-all">0</div><div class="l">Best Managed vállalat<br>2022 óta</div></div>
+        <div class="panel kpi"><div class="v" data-count="0" id="kpi-emp">0</div><div class="l" id="kpi-emp-l">munkavállaló<br>összesen</div></div>
+        <div class="panel kpi"><div class="v" data-count="0" id="kpi-county">0</div><div class="l">megyében<br>vannak jelen</div></div>
+        <div class="panel kpi"><div class="v" data-count="0" id="kpi-ind">0</div><div class="l">iparág<br>képviselteti magát</div></div>
+        <div class="panel dcard" style="grid-column:span 2"><h3>Iparágak megoszlása</h3><div class="cols" id="cols"></div></div>
+        <div class="panel dcard" style="grid-column:span 2">
+          <h3 style="display:flex;justify-content:space-between">A Best Managed közösség <span class="legend"><b>★</b> ötszörös díjazott</span></h3>
+          <div class="allco" id="allco"></div>
+          <div class="groupph" id="groupph"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. A mai este -->
+    <section class="screen" data-screen="tonight">
+      <div class="tonight">
+        <div class="tcol">
+          <div>
+            <div class="kicker">A mai este</div>
+            <h1 class="big">Gála <b>számokban</b></h1>
+          </div>
+          <div class="bigstat" id="t-stats"></div>
+          <div class="panel" style="padding:40px 48px">
+            <div class="flabel" style="margin-bottom:18px">Jó tudni</div>
+            <div class="gtk" id="gtk"></div>
+          </div>
+        </div>
+        <div class="tcol">
+          <div class="flabel">Program</div>
+          <div class="agenda" id="agenda"></div>
+        </div>
+        <div class="tcol">
+          <div class="flabel">Magyar Zene Háza — tájékozódás</div>
+          <div class="venuemap">
+            <image-slot id="venue-floorplan" shape="rect" fit="contain"
+              placeholder="Húzd ide a Zene Háza alaprajzát"></image-slot>
+          </div>
+          <div class="vlist" id="vlist"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="note" id="datanote">Forrás: Ledfal data.xlsx · Deloitte Best Managed Companies</div>
+
+  <div id="nav">
+    <div class="tab" data-go="map"><div class="n">01</div><div class="t">BMC térkép</div></div>
+    <div class="tab" data-go="timeline"><div class="n">02</div><div class="t">5 év története</div></div>
+    <div class="tab" data-go="dash"><div class="n">03</div><div class="t">A közösség</div></div>
+    <div class="tab" data-go="tonight"><div class="n">04</div><div class="t">A mai este</div></div>
+  </div>
+
+  <!-- attract -->
+  <div id="attract">
+    <canvas id="particles"></canvas>
+    <div class="attract-inner">
+      <div class="mark">Deloitte Private</div>
+      <h1>Üdvözlünk a<b>Best Managed Companies</b>Gálán!</h1>
+      <div class="yr">2026 · V. jubileumi program · Magyar Zene Háza</div>
+    </div>
+    <div class="touchhint"><span class="ring"></span>Érintsd meg a képernyőt</div>
+  </div>
+
+  <!-- welcome takeover -->
+  <div id="welcome">
+    <div id="welglow"></div>
+    <div class="welrings"><i></i><i></i><i></i></div>
+    <canvas id="welfx"></canvas>
+    <div id="welsweep"></div>
+    <div class="wel">
+      <div id="guest-logo" class="logo"></div>
+      <div>
+        <div class="welrule"></div>
+        <h2>Üdvözlünk a 2026-os</h2>
+        <div class="msg"><b>Best Managed Companies</b> Gálán!</div>
+        <div class="cn" id="wel-name">—</div>
+        <div class="meta" id="wel-meta"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminbtn"></div>
+  <div id="admin">
+    <h2>Welcome vezérlés</h2>
+    <div class="row">
+      <input id="admin-input" placeholder="Vendég cégneve (szabadon írható)">
+      <button class="btn" id="admin-go">Köszöntés indítása</button>
+      <button class="btn ghost" id="admin-close">Bezárás</button>
+    </div>
+    <div class="flabel">vagy válassz a Best Managed vállalatok közül</div>
+    <div class="alist" id="alist"></div>
+  </div>
+
+</div></div>
+<script src="./companies.js"></script>
+<script src="./data.js"></script>
+<script src="./geo/budapest.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
