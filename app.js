@@ -4,7 +4,7 @@
   const D = window.BMC;
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
-  const IDLE_MS = 60000;
+  const IDLE_MS = 120000;   // 2 perc tétlenség után vissza a kezdőképernyőre
 
   /* ---------- stage fit ---------- */
   const stage = $('#stage');
