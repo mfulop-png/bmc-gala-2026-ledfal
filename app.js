@@ -556,9 +556,6 @@
     lg.className = 'logo' + (c.logoDark ? ' dark' : '');
     lg.innerHTML = c.logo ? '<img src="' + c.logo + '" alt="">' : '';
     $('.wel').classList.toggle('nologo', !c.logo);
-    $('#wel-meta').innerHTML = c.place
-      ? '<span>' + esc(c.place) + '</span><span>' + c.wins + '× Best Managed</span>'
-      : '';
     const w = $('#welcome');
     w.classList.remove('play'); void w.offsetWidth; w.classList.add('play');
     w.classList.add('show');
