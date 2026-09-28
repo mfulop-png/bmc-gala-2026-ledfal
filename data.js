@@ -11,7 +11,6 @@ window.BMC = (function () {
     place: c.city || (c.county + ' megye')   // cím nélkül csak a megye ismert
   }));
 
-  const IND = Array.from(new Set(companies.map(c => c.industry))).sort((a, b) => a.localeCompare(b, 'hu'));
   const countYear = y => companies.filter(c => c.years.indexOf(y) >= 0).length;
   const recognitions = companies.reduce((s, c) => s + c.wins, 0);
   const fiveTimes = companies.filter(c => c.wins === 5).length;
@@ -103,5 +102,5 @@ window.BMC = (function () {
   /* Global Journey fotósáv – külföldi gálák képei (BMC Graphics/bmc külföld) */
   const globalPhotos = G.globalPhotos;
 
-  return { companies, years, industries: IND, groupPhotos: G.groupPhotos, timeline, summary, world, worldAliases, tonight, globalPhotos };
+  return { companies, years, groupPhotos: G.groupPhotos, timeline, summary, world, worldAliases, tonight, globalPhotos };
 })();

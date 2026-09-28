@@ -86,7 +86,7 @@
   })();
 
   /* ---------- filters ---------- */
-  const filters = { year: null, region: null, industry: null };
+  const filters = { year: null, region: null };
   function mk(tag, cls, txt) {
     const e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -112,15 +112,12 @@
     $$('.chip', el).forEach(c => c.classList.toggle('on', (c.dataset.v || null) === v));
   }
   const regions = Array.from(new Set(D.companies.map(c => c.region))).sort((a, b) => a.localeCompare(b, 'hu'));
-  const industries = Array.from(new Set(D.companies.map(c => c.industry))).sort((a, b) => a.localeCompare(b, 'hu'));
   buildChips($('#f-year'), D.years, 'year');
   buildChips($('#f-region'), regions, 'region');
-  buildChips($('#f-industry'), industries, 'industry');
 
   function match(c) {
     if (filters.year && c.years.indexOf(+filters.year) < 0) return false;
     if (filters.region && c.region !== filters.region) return false;
-    if (filters.industry && c.industry !== filters.industry) return false;
     return true;
   }
   function applyFilters() {
@@ -157,15 +154,13 @@
     const ord = ['', 'első', 'második', 'harmadik', 'negyedik', 'ötödik'][c.wins] || c.wins + '.';
     const where = c.district ? 'Budapest ' + c.district + '. kerület' : c.place;
     const stats = [
-      c.founded && stat(c.founded, 'alapítás éve'),
-      c.employees && stat(fmt(c.employees), 'munkavállaló'),
-      c.revenue != null && stat(c.revenue.toLocaleString('hu-HU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' Mrd', 'árbevétel 2025 (Ft)')
+      c.employees && stat(fmt(c.employees), 'munkavállaló')
     ].filter(Boolean);
     const photos = c.photos.slice(0, 3);
     d.innerHTML =
       '<div class="dh">' + logoBox(c, 'dlogo') +
       '<div><div class="dname">' + esc(c.name) + '</div>' +
-      '<div class="dsub">' + esc(where) + ' · ' + esc(c.sector || c.industry) + '</div></div></div>' +
+      '<div class="dsub">' + esc(where) + '</div></div></div>' +
       (stats.length ? '<div class="dstats" style="grid-template-columns:repeat(' + stats.length + ',1fr)">' + stats.join('') + '</div>' : '') +
       '<div class="dtext">' + esc(c.desc) + '</div>' +
       '<div class="dyears">' + D.years.map(y => '<div class="yrbox' + (c.years.indexOf(y) >= 0 ? ' on' : '') + '">' + y + '</div>').join('') + '</div>' +
@@ -436,7 +431,7 @@
   /* ---------- dashboard ---------- */
   (function buildDash() {
     const counts = {};
-    D.companies.forEach(c => { counts[c.industry] = (counts[c.industry] || 0) + 1; });
+    D.companies.forEach(c => { counts[c.region] = (counts[c.region] || 0) + 1; });
     const arr = Object.entries(counts).sort((a, b) => b[1] - a[1]);
     const max = arr[0][1];
     $('#cols').innerHTML = arr.map(([k, v]) =>
@@ -464,7 +459,7 @@
     $('#kpi-emp-l').innerHTML = withEmp.length < D.companies.length
       ? 'munkavállaló<br>' + withEmp.length + ' cég adatai alapján' : 'munkavállaló<br>összesen';
     $('#kpi-county').dataset.count = new Set(D.companies.map(c => c.county)).size;
-    $('#kpi-ind').dataset.count = new Set(D.companies.map(c => c.industry)).size;
+    $('#kpi-rec').dataset.count = D.companies.reduce((s, c) => s + c.wins, 0);
     $$('.kpi .v').forEach(el => animateNum(el, +el.dataset.count, 1100));
     const fl = $$('#cols .fl'), co = $$('#allco div');
     fl.forEach(b => { b.style.transition = 'none'; b.style.height = '0'; });
@@ -562,7 +557,7 @@
     lg.innerHTML = c.logo ? '<img src="' + c.logo + '" alt="">' : '';
     $('.wel').classList.toggle('nologo', !c.logo);
     $('#wel-meta').innerHTML = c.place
-      ? '<span>' + esc(c.place) + '</span><span>' + esc(c.industry) + '</span><span>' + c.wins + '× Best Managed</span>'
+      ? '<span>' + esc(c.place) + '</span><span>' + c.wins + '× Best Managed</span>'
       : '';
     const w = $('#welcome');
     w.classList.remove('play'); void w.offsetWidth; w.classList.add('play');

@@ -13,11 +13,7 @@ window.BMC_DATA = {
    "district": "XIX",
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Agrárium",
-   "sector": "Állategészségügy, állatgyógyászati termékek",
-   "founded": 1989,
    "employees": 620,
-   "revenue": 56.1,
    "years": [
     2024,
     2025,
@@ -40,11 +36,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Élelmiszer- és italgyártás",
-   "sector": "Étrend-kiegészítők, sporttáplálkozás, élelmiszeripar",
-   "founded": 1993,
    "employees": null,
-   "revenue": null,
    "years": [
     2023
    ],
@@ -65,11 +57,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.15,
    "lon": 18.55,
-   "industry": "Élelmiszer- és italgyártás",
-   "sector": "Élelmiszeripar (gabonapelyhek, müzlik)",
-   "founded": 1988,
    "employees": null,
-   "revenue": null,
    "years": [
     2026
    ],
@@ -88,11 +76,7 @@ window.BMC_DATA = {
    "district": "XI",
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Építőipar és ingatlan",
-   "sector": "Építőipari tervezés és mérnöki szolgáltatások",
-   "founded": 1989,
    "employees": 200,
-   "revenue": 11.6,
    "years": [
     2023,
     2024,
@@ -118,11 +102,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.22,
    "lon": 19.78,
-   "industry": "Agrárium",
-   "sector": "Mezőgazdasági gépkereskedelem és gépszerviz",
-   "founded": 2008,
    "employees": null,
-   "revenue": null,
    "years": [
     2022,
     2023
@@ -144,11 +124,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Kereskedelem",
-   "sector": "Kiskereskedelem, sport- és divatáru",
-   "founded": 1989,
    "employees": null,
-   "revenue": null,
    "years": [
     2024
    ],
@@ -169,11 +145,7 @@ window.BMC_DATA = {
    "district": "I",
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "IT és technológia",
-   "sector": "Pénzügyi szoftverfejlesztés, fintech",
-   "founded": 1996,
    "employees": 246,
-   "revenue": 9.5,
    "years": [
     2022,
     2023,
@@ -199,11 +171,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.253,
    "lon": 20.1414,
-   "industry": "Egészségipar",
-   "sector": "Gyógyszeripar",
-   "founded": 1997,
    "employees": 350,
-   "revenue": 22.8,
    "years": [
     2024,
     2025,
@@ -227,11 +195,7 @@ window.BMC_DATA = {
    "district": "XI",
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "IT és technológia",
-   "sector": "IT infrastruktúra és rendszerintegráció",
-   "founded": 1993,
    "employees": 140,
-   "revenue": 13.0,
    "years": [
     2022,
     2023,
@@ -258,11 +222,7 @@ window.BMC_DATA = {
    "district": "VI",
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Élelmiszer- és italgyártás",
-   "sector": "Italgyártás (energiaitalok)",
-   "founded": 2004,
    "employees": 1326,
-   "revenue": 218.3,
    "years": [
     2022,
     2023,
@@ -289,11 +249,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.459,
    "lon": 16.9897,
-   "industry": "Energia és környezet",
-   "sector": "Vízkezelési technológia és környezetipar",
-   "founded": 1990,
    "employees": 200,
-   "revenue": 16.0,
    "years": [
     2026
    ],
@@ -312,11 +268,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.55,
    "lon": 19.45,
-   "industry": "Agrárium",
-   "sector": "Agrárlogisztika és állatkereskedelem",
-   "founded": 1992,
    "employees": null,
-   "revenue": null,
    "years": [
     2022,
     2023
@@ -338,11 +290,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.8203,
    "lon": 20.0556,
-   "industry": "Szolgáltatás és logisztika",
-   "sector": "Nemzetközi fuvarozás és logisztika",
-   "founded": 1989,
    "employees": 550,
-   "revenue": 20.9,
    "years": [
     2025,
     2026
@@ -364,11 +312,7 @@ window.BMC_DATA = {
    "district": "XIII",
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "IT és technológia",
-   "sector": "Informatikai szolgáltatások és rendszerintegráció",
-   "founded": 2016,
    "employees": 108,
-   "revenue": 15.6,
    "years": [
     2025,
     2026
@@ -390,11 +334,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Kereskedelem",
-   "sector": "Épületgépészeti kereskedelem",
-   "founded": 1991,
    "employees": null,
-   "revenue": null,
    "years": [
     2025,
     2026
@@ -416,11 +356,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.55,
    "lon": 19.45,
-   "industry": "Élelmiszer- és italgyártás",
-   "sector": "Élelmiszeripar (snackgyártás)",
-   "founded": 1990,
    "employees": null,
-   "revenue": null,
    "years": [
     2024,
     2025,
@@ -444,11 +380,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.0636,
    "lon": 19.4964,
-   "industry": "Élelmiszer- és italgyártás",
-   "sector": "Üdítőital-gyártás",
-   "founded": 1995,
    "employees": 202,
-   "revenue": 33.0,
    "years": [
     2023,
     2024,
@@ -474,11 +406,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Kereskedelem",
-   "sector": "Autókereskedelem és autószolgáltatások",
-   "founded": 1992,
    "employees": null,
-   "revenue": null,
    "years": [
     2023,
     2024,
@@ -504,11 +432,7 @@ window.BMC_DATA = {
    "district": "VIII",
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Építőipar és ingatlan",
-   "sector": "Ingatlanfejlesztés és befektetés",
-   "founded": 1997,
    "employees": 180,
-   "revenue": 23.5,
    "years": [
     2025
    ],
@@ -529,11 +453,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Szolgáltatás és logisztika",
-   "sector": "Biztosításközvetítés és pénzügyi tanácsadás",
-   "founded": 1994,
    "employees": null,
-   "revenue": null,
    "years": [
     2024,
     2025,
@@ -557,11 +477,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 45.9931,
    "lon": 18.6831,
-   "industry": "Egészségipar",
-   "sector": "Egészségipar, orvostechnológia",
-   "founded": 1991,
    "employees": 224,
-   "revenue": 7.0,
    "years": [
     2026
    ],
@@ -580,11 +496,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "IT és technológia",
-   "sector": "Informatikai tanácsadás és szoftverfejlesztés",
-   "founded": 1999,
    "employees": null,
-   "revenue": null,
    "years": [
     2022,
     2023,
@@ -608,11 +520,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.253,
    "lon": 20.1414,
-   "industry": "Gyártás és ipar",
-   "sector": "Csomagolóipar",
-   "founded": 1990,
    "employees": 200,
-   "revenue": 12.1,
    "years": [
     2025,
     2026
@@ -634,11 +542,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.9026,
    "lon": 20.3772,
-   "industry": "Egészségipar",
-   "sector": "Orvostechnikai eszközgyártás",
-   "founded": 1967,
    "employees": 250,
-   "revenue": 7.7,
    "years": [
     2026
    ],
@@ -657,11 +561,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Kereskedelem",
-   "sector": "Autókereskedelem és mobilitási szolgáltatások",
-   "founded": 1980,
    "employees": 319,
-   "revenue": 38.1,
    "years": [
     2022,
     2023,
@@ -688,11 +588,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Szolgáltatás és logisztika",
-   "sector": "Vendéglátás és étteremüzemeltetés",
-   "founded": 2003,
    "employees": null,
-   "revenue": null,
    "years": [
     2025,
     2026
@@ -714,11 +610,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.0917,
    "lon": 18.3417,
-   "industry": "Gyártás és ipar",
-   "sector": "Műanyagipar, fröccsöntés",
-   "founded": 1985,
    "employees": 340,
-   "revenue": 9.7,
    "years": [
     2023,
     2024,
@@ -744,11 +636,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.5,
    "lon": 18.55,
-   "industry": "Agrárium",
-   "sector": "Mezőgazdaság és agrárintegráció",
-   "founded": 1996,
    "employees": null,
-   "revenue": null,
    "years": [
     2025,
     2026
@@ -770,11 +658,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 48.2,
    "lon": 20.8,
-   "industry": "Kereskedelem",
-   "sector": "Acélkereskedelem és fémipar",
-   "founded": 1994,
    "employees": 150,
-   "revenue": 9.4,
    "years": [
     2022,
     2023,
@@ -801,11 +685,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.65,
    "lon": 17.35,
-   "industry": "Élelmiszer- és italgyártás",
-   "sector": "Élelmiszeripar (élelmiszer-alapanyagok, instant termékek)",
-   "founded": 1986,
    "employees": null,
-   "revenue": null,
    "years": [
     2022,
     2023,
@@ -832,11 +712,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.22,
    "lon": 19.78,
-   "industry": "Agrárium",
-   "sector": "Takarmányipar és agrárintegráció",
-   "founded": 1996,
    "employees": null,
-   "revenue": null,
    "years": [
     2024,
     2025,
@@ -861,11 +737,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "industry": "Gyártás és ipar",
-   "sector": "Papíripar és higiéniai termékek gyártása",
-   "founded": 1999,
    "employees": null,
-   "revenue": null,
    "years": [
     2024,
     2025,
@@ -889,11 +761,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.0933,
    "lon": 17.9115,
-   "industry": "Kereskedelem",
-   "sector": "Műszaki elektronikai kiskereskedelem",
-   "founded": 1989,
    "employees": 1034,
-   "revenue": 107.8,
    "years": [
     2022,
     2023,
@@ -920,11 +788,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.22,
    "lon": 19.78,
-   "industry": "Energia és környezet",
-   "sector": "Megújuló energia, napelemes rendszerek",
-   "founded": 2002,
    "employees": null,
-   "revenue": null,
    "years": [
     2023,
     2024,
@@ -950,11 +814,7 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4906,
    "lon": 17.8514,
-   "industry": "Kereskedelem",
-   "sector": "Építőanyag-kereskedelem",
-   "founded": 1997,
    "employees": 94,
-   "revenue": 98.7,
    "years": [
     2024,
     2025,
