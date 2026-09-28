@@ -30,7 +30,6 @@
     $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.go === name));
     $('#attract').classList.add('hidden');
     if (name !== 'map') setWorld(false);
-    if (name === 'dash') runDash();
     if (name === 'timeline') selectYear(tlYear, true);
     resetIdle();
   }
@@ -41,6 +40,7 @@
     $('#attract').classList.remove('hidden');
     clearDetail(); setWorld(false); setZoom('hu', true);
     $('#lightbox').classList.remove('show');
+    $('#profile').classList.remove('show');
     clearTimeout(idleT);
   }
   function resetIdle() {
@@ -165,11 +165,16 @@
     const d = $('#detail');
     d.className = 'panel detail';
     $('#mapside').classList.add('open');
+    fillProfile(d, c, clearDetail);
+  }
+
+  /* cégprofil tartalma – a térkép oldalsávja és a timeline profilablaka is ezt használja */
+  function fillProfile(el, c, onClose) {
     const ord = ['', 'első', 'második', 'harmadik', 'negyedik', 'ötödik'][c.wins] || c.wins + '.';
     const where = c.district ? 'Budapest ' + c.district + '. kerület' : c.place;
     const photos = c.photos;
-    d.innerHTML =
-      '<div class="dclose" id="dclose" aria-label="Bezárás">×</div>' +
+    el.innerHTML =
+      '<div class="dclose" aria-label="Bezárás">×</div>' +
       '<div class="dh">' + logoBox(c, 'dlogo') +
       '<div><div class="dname">' + esc(c.name) + '</div>' +
       '<div class="dsub">' + esc(where) + '</div></div></div>' +
@@ -187,10 +192,19 @@
         : c.years.length === 1 && c.first === 2026
           ? '<div class="dphotos"><div class="badge pending">Új nyertes — gálafotók a mai este után</div></div>'
           : '');
-    d.scrollTop = 0;
-    $('#dclose').addEventListener('click', clearDetail);
-    $$('.dph', d).forEach(e => e.addEventListener('click', () => openPhoto(c, +e.dataset.i)));
+    el.scrollTop = 0;
+    $('.dclose', el).addEventListener('click', e => { e.stopPropagation(); onClose(); });
+    $$('.dph', el).forEach(e => e.addEventListener('click', ev => { ev.stopPropagation(); openPhoto(c, +e.dataset.i); }));
   }
+
+  /* cégprofil ablak a timeline-on – a háttérre koppintva is bezárul */
+  const prof = $('#profile');
+  function openProfile(c) {
+    fillProfile($('#pcard'), c, closeProfile);
+    prof.classList.add('show');
+  }
+  function closeProfile() { prof.classList.remove('show'); }
+  prof.addEventListener('click', e => { if (e.target === prof) closeProfile(); });
 
   /* fotó teljes képernyőn – koppintásra bezárul */
   const lb = $('#lightbox');
@@ -417,7 +431,6 @@
   /* Global Journey */
   function setWorld(on) {
     $('#mapscreen').classList.toggle('worldmode', !!on);
-    $('#datanote').style.opacity = on ? '0' : '';
   }
   $('#globebtn').addEventListener('click', () => setWorld(true));
   $('#backbtn').addEventListener('click', () => setWorld(false));
@@ -478,9 +491,19 @@
     $('#tl-text').textContent = t.text;
     animateNum($('#tl-count'), t.count, 900);
     const winners = D.companies.filter(c => c.years.indexOf(year) >= 0);
+    const isNew = c => c.first === year;
+    const isJub = c => year === 2026 && c.wins === 5;   // jubiláló: csak 2026-ban, az ötödik elismerésnél
+    const nNew = winners.filter(isNew).length;
+    $('#tl-split').innerHTML = '<div class="n"><b>' + nNew + '</b>új</div><div><b>' + (winners.length - nNew) + '</b>visszatérő</div>';
     $('#w-label').textContent = year + ' — ' + winners.length + ' elismert vállalat';
+    $('#w-legend').classList.toggle('y2026', year === 2026);
+    // sorrend: új cégek elöl, aztán ábécé
+    winners.sort((a, b) => isNew(b) - isNew(a) || a.name.localeCompare(b.name, 'hu'));
     $('#wgrid').innerHTML = winners.map(c =>
-      '<div class="wg' + (c.wins === 5 ? ' five' : '') + '">' + esc(c.short) + (c.wins === 5 ? ' ★' : '') + '</div>').join('');
+      '<div class="wg' + (isNew(c) ? ' new' : '') + (isJub(c) ? ' jub' : '') + '" data-id="' + c.id + '">' +
+      (isNew(c) ? '<i class="new">ÚJ</i>' : '') + '<span class="nm">' + esc(c.name) + '</span>' +
+      (isJub(c) ? '<span class="st">★</span>' : '') + '</div>').join('');
+    $$('#wgrid .wg').forEach(e => e.addEventListener('click', () => openProfile(byId[e.dataset.id])));
   }
   function animateNum(el, to, dur) {
     const t0 = performance.now();
@@ -492,48 +515,6 @@
     setTimeout(() => { el.textContent = fmt(to); }, dur + 150);
   }
   selectYear(2026, true);
-
-  /* ---------- dashboard ---------- */
-  (function buildDash() {
-    const counts = {};
-    D.companies.forEach(c => { counts[c.region] = (counts[c.region] || 0) + 1; });
-    const arr = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const max = arr[0][1];
-    $('#cols').innerHTML = arr.map(([k, v]) =>
-      '<div class="col"><div class="area"><div class="c">' + v + '</div><div class="fl" data-h="' + (v / max * 88) + '%"></div></div>' +
-      '<div class="lb">' + esc(k) + '</div></div>').join('');
-    $('#allco').innerHTML = D.companies.slice()
-      .sort((a, b) => (b.wins === 5) - (a.wins === 5) || a.name.localeCompare(b.name, 'hu'))
-      .map(c => '<div class="' + (c.wins === 5 ? 'five' : '') + '">' + esc(c.short) + '</div>').join('');
-    // korábbi gálák csoportképei, lassan váltakozva
-    const G = D.groupPhotos, box = $('#groupph');
-    if (!G.length) return;
-    box.innerHTML = G.map((p, i) => '<img src="' + p + '" alt=""' + (i ? '' : ' class="on"') + '>').join('');
-    if (G.length > 1) {
-      let i = 0;
-      setInterval(() => {
-        const imgs = $$('img', box);
-        imgs[i].classList.remove('on'); i = (i + 1) % imgs.length; imgs[i].classList.add('on');
-      }, 7000);
-    }
-  })();
-  function runDash() {
-    $('#kpi-all').dataset.count = D.companies.length;
-    const withEmp = D.companies.filter(c => c.employees);
-    $('#kpi-emp').dataset.count = withEmp.reduce((s, c) => s + c.employees, 0);
-    $('#kpi-emp-l').innerHTML = withEmp.length < D.companies.length
-      ? 'munkavállaló<br>' + withEmp.length + ' cég adatai alapján' : 'munkavállaló<br>összesen';
-    $('#kpi-county').dataset.count = new Set(D.companies.map(c => c.county)).size;
-    $('#kpi-rec').dataset.count = D.companies.reduce((s, c) => s + c.wins, 0);
-    $$('.kpi .v').forEach(el => animateNum(el, +el.dataset.count, 1100));
-    const fl = $$('#cols .fl'), co = $$('#allco div');
-    fl.forEach(b => { b.style.transition = 'none'; b.style.height = '0'; });
-    co.forEach(e => e.classList.remove('in'));
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      fl.forEach((b, i) => { b.style.transition = ''; b.style.transitionDelay = (i * 60) + 'ms'; b.style.height = b.dataset.h; });
-      co.forEach((e, i) => { e.style.transitionDelay = (300 + i * 25) + 'ms'; e.classList.add('in'); });
-    }));
-  }
 
   /* ---------- tonight ---------- */
   (function tonight() {

@@ -6,7 +6,6 @@ window.BMC_DATA = {
   {
    "id": "alphavet",
    "name": "ALPHAVET Zrt.",
-   "short": "ALPHAVET Zrt.",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -29,7 +28,6 @@ window.BMC_DATA = {
   {
    "id": "biotechusa",
    "name": "BioTechUSA-cégcsoport",
-   "short": "BioTechUSA",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -50,7 +48,6 @@ window.BMC_DATA = {
   {
    "id": "cerbona",
    "name": "Cerbona",
-   "short": "Cerbona",
    "city": null,
    "county": "Fejér",
    "region": "Közép-Dunántúl",
@@ -69,7 +66,6 @@ window.BMC_DATA = {
   {
    "id": "ceh",
    "name": "CÉH zRt.",
-   "short": "CÉH zRt.",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -95,7 +91,6 @@ window.BMC_DATA = {
   {
    "id": "dm-ker",
    "name": "DM-KER Nyrt.",
-   "short": "DM-KER Nyrt.",
    "city": null,
    "county": "Pest",
    "region": "Közép-Magyarország",
@@ -117,7 +112,6 @@ window.BMC_DATA = {
   {
    "id": "dorko",
    "name": "Dorko",
-   "short": "Dorko",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -138,7 +132,6 @@ window.BMC_DATA = {
   {
    "id": "dorsum",
    "name": "Dorsum Zrt.",
-   "short": "Dorsum Zrt.",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -164,7 +157,6 @@ window.BMC_DATA = {
   {
    "id": "goodwill",
    "name": "Goodwill Pharma Nyrt.",
-   "short": "Goodwill Pharma",
    "city": "Szeged",
    "county": "Csongrád-Csanád",
    "region": "Dél-Alföld",
@@ -188,7 +180,6 @@ window.BMC_DATA = {
   {
    "id": "h1-systems",
    "name": "H1 Systems Mérnöki Szolgáltatások Kft.",
-   "short": "H1 Systems",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -215,7 +206,6 @@ window.BMC_DATA = {
   {
    "id": "hell",
    "name": "HELL ENERGY Magyarország Kft.",
-   "short": "HELL ENERGY",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -242,7 +232,6 @@ window.BMC_DATA = {
   {
    "id": "hidrofilt",
    "name": "Hidrofilt Vízkezelést Tervező és Kivitelező Kft.",
-   "short": "Hidrofilt",
    "city": "Nagykanizsa",
    "county": "Zala",
    "region": "Nyugat-Dunántúl",
@@ -261,7 +250,6 @@ window.BMC_DATA = {
   {
    "id": "hunland",
    "name": "Hunland Csoport",
-   "short": "Hunland Csoport",
    "city": null,
    "county": "Bács-Kiskun",
    "region": "Dél-Alföld",
@@ -283,7 +271,6 @@ window.BMC_DATA = {
   {
    "id": "k-v",
    "name": "K & V Nemzetközi Fuvarozó Kft.",
-   "short": "K&V",
    "city": "Markaz",
    "county": "Heves",
    "region": "Észak-Magyarország",
@@ -305,7 +292,6 @@ window.BMC_DATA = {
   {
    "id": "kermann",
    "name": "Kermann IT Solutions Nyrt.",
-   "short": "Kermann IT Solutions",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -327,7 +313,6 @@ window.BMC_DATA = {
   {
    "id": "merkapt",
    "name": "Merkapt Zrt.",
-   "short": "Merkapt Zrt.",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -349,7 +334,6 @@ window.BMC_DATA = {
   {
    "id": "mogyi",
    "name": "MOGYI Kft.",
-   "short": "MOGYI Kft.",
    "city": null,
    "county": "Bács-Kiskun",
    "region": "Dél-Alföld",
@@ -373,7 +357,6 @@ window.BMC_DATA = {
   {
    "id": "marka",
    "name": "Márka Üdítőgyártó Kft.",
-   "short": "Márka Üdítőgyártó",
    "city": "Felsőlajos",
    "county": "Bács-Kiskun",
    "region": "Dél-Alföld",
@@ -399,7 +382,6 @@ window.BMC_DATA = {
   {
    "id": "petranyi",
    "name": "Petrányi Autó Kft.",
-   "short": "Petrányi Autó Kft.",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -425,7 +407,6 @@ window.BMC_DATA = {
   {
    "id": "planning-trading",
    "name": "Planning & Trading Kft.",
-   "short": "Planning & Trading",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -446,7 +427,6 @@ window.BMC_DATA = {
   {
    "id": "prime-rate",
    "name": "Prime Rate Zrt.",
-   "short": "Prime Rate Zrt.",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -470,7 +450,6 @@ window.BMC_DATA = {
   {
    "id": "prophyl",
    "name": "PROPHYL Holding Zrt.",
-   "short": "PROPHYL Holding Zrt.",
    "city": "Mohács",
    "county": "Baranya",
    "region": "Dél-Dunántúl",
@@ -489,7 +468,6 @@ window.BMC_DATA = {
   {
    "id": "qualysoft",
    "name": "Qualysoft Informatikai Zrt.",
-   "short": "Qualysoft",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -513,7 +491,6 @@ window.BMC_DATA = {
   {
    "id": "rotapack",
    "name": "RotaPack Csomagolástechnikai Zrt.",
-   "short": "RotaPack",
    "city": "Szeged",
    "county": "Csongrád-Csanád",
    "region": "Dél-Alföld",
@@ -535,7 +512,6 @@ window.BMC_DATA = {
   {
    "id": "sanatmetal",
    "name": "Sanatmetal Kft.",
-   "short": "Sanatmetal Kft.",
    "city": "Eger",
    "county": "Heves",
    "region": "Észak-Magyarország",
@@ -554,7 +530,6 @@ window.BMC_DATA = {
   {
    "id": "schiller",
    "name": "Schiller Autó Család",
-   "short": "Schiller Autó Család",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -581,7 +556,6 @@ window.BMC_DATA = {
   {
    "id": "semsei",
    "name": "Semsei Gastronomy Group",
-   "short": "Semsei Gastronomy Group",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -603,7 +577,6 @@ window.BMC_DATA = {
   {
    "id": "simon-plastics",
    "name": "Simon Plastics Kft.",
-   "short": "Simon Plastics Kft.",
    "city": "Kőszárhegy",
    "county": "Fejér",
    "region": "Közép-Dunántúl",
@@ -629,7 +602,6 @@ window.BMC_DATA = {
   {
    "id": "tolnagro",
    "name": "Tolnagro Csoport",
-   "short": "Tolnagro Csoport",
    "city": null,
    "county": "Tolna",
    "region": "Dél-Dunántúl",
@@ -651,7 +623,6 @@ window.BMC_DATA = {
   {
    "id": "tom-ferr",
    "name": "TOM-FERR Zrt.",
-   "short": "TOM-FERR Zrt.",
    "city": null,
    "county": "Borsod-Abaúj-Zemplén",
    "region": "Észak-Magyarország",
@@ -678,7 +649,6 @@ window.BMC_DATA = {
   {
    "id": "tutti",
    "name": "TUTTI Kft.",
-   "short": "TUTTI Kft.",
    "city": null,
    "county": "Győr-Moson-Sopron",
    "region": "Nyugat-Dunántúl",
@@ -705,7 +675,6 @@ window.BMC_DATA = {
   {
    "id": "ubm",
    "name": "UBM Csoport",
-   "short": "UBM Csoport",
    "city": null,
    "county": "Pest",
    "region": "Közép-Magyarország",
@@ -730,7 +699,6 @@ window.BMC_DATA = {
   {
    "id": "vajda-papir",
    "name": "Vajda-Papír Csoport",
-   "short": "Vajda-Papír Csoport",
    "city": "Budapest",
    "county": "Budapest",
    "region": "Közép-Magyarország",
@@ -754,7 +722,6 @@ window.BMC_DATA = {
   {
    "id": "euronics",
    "name": "Vöröskő Kft. (Euronics)",
-   "short": "Euronics (Vöröskő)",
    "city": "Veszprém",
    "county": "Veszprém",
    "region": "Közép-Dunántúl",
@@ -781,7 +748,6 @@ window.BMC_DATA = {
   {
    "id": "wagner-solar",
    "name": "Wagner Solar Hungária Kft.",
-   "short": "Wagner Solar",
    "city": null,
    "county": "Pest",
    "region": "Közép-Magyarország",
@@ -807,7 +773,6 @@ window.BMC_DATA = {
   {
    "id": "ujhaz",
    "name": "Újház Zrt.",
-   "short": "Újház Zrt.",
    "city": "Tápszentmiklós",
    "county": "Győr-Moson-Sopron",
    "region": "Nyugat-Dunántúl",

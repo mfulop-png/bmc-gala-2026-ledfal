@@ -43,7 +43,7 @@ a:hover{color:#a6dc45}
 .topright .ev{font-size:26px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
 #clock{font-size:42px;font-weight:300;font-variant-numeric:tabular-nums;color:#fff}
 
-#nav{position:absolute;bottom:0;left:0;right:0;height:190px;display:grid;grid-template-columns:repeat(4,1fr);
+#nav{position:absolute;bottom:0;left:0;right:0;height:190px;display:grid;grid-template-columns:repeat(3,1fr);
   gap:0;border-top:1px solid var(--line);background:rgba(8,10,7,.86);backdrop-filter:blur(8px);z-index:30}
 .tab{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 54px;position:relative;
   border-right:1px solid var(--line);transition:background .25s}
@@ -292,41 +292,41 @@ h1.big b{font-weight:700;color:var(--green)}
 .counter .u{font-size:38px;color:var(--muted);letter-spacing:.06em}
 .winners{padding:36px;display:flex;flex-direction:column;min-height:0}
 .winners .flabel{margin-bottom:22px}
+.whead{display:flex;justify-content:space-between;align-items:baseline;gap:30px;margin-bottom:24px}
+.whead .flabel{margin:0}
+.wlegend{display:flex;gap:34px;font-size:22px;color:var(--muted);flex-wrap:wrap;justify-content:flex-end}
+.wlegend span{display:flex;align-items:center;gap:12px}
+.wlegend i{font-style:normal}
+.wlegend .jub b{color:var(--teal);font-size:28px}
+.wlegend .jub{display:none}
+.wlegend.y2026 .jub{display:flex}
+i.new{font-style:normal;font-size:18px;font-weight:800;letter-spacing:.08em;color:#0b0f06;background:var(--green);padding:4px 10px;border-radius:4px}
+i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border-radius:2px}
 .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;overflow:hidden;align-content:start}
-.wg{font-size:31px;font-weight:600;padding:14px 20px;background:var(--panel-2);border-left:3px solid var(--green);color:#d3d8cd;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.wg.five{border-left-color:var(--teal)}
+.wg{font-size:27px;font-weight:600;line-height:1.25;padding:14px 18px;background:var(--panel-2);border-left:4px solid var(--line-g);color:#d3d8cd;
+  display:flex;align-items:center;gap:12px;cursor:pointer;min-height:76px}
+.wg .nm{flex:1;min-width:0}
+.wg.new{border-left-color:var(--green);color:#fff}
+.wg.jub{border-left-color:var(--teal)}
+.wg .st{color:var(--teal);font-size:32px}
+.wg:active{background:#232a21}
+.tlsplit{display:flex;gap:44px;margin-top:6px}
+.tlsplit div{font-size:30px;color:var(--muted)}
+.tlsplit b{display:block;font-size:72px;font-weight:800;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+.tlsplit .n b{color:var(--green)}
+/* cégprofil ablak (timeline) */
+#profile{position:absolute;inset:0;z-index:60;background:rgba(3,4,3,.82);display:none;align-items:center;justify-content:center}
+#profile.show{display:flex;animation:dIn .35s ease}
+#profile .pcard{position:relative;width:1560px;max-height:1880px;overflow-y:auto;touch-action:pan-y;padding:56px 60px 60px;
+  box-shadow:0 40px 140px rgba(0,0,0,.6)}
+#profile .dphotos{grid-template-columns:repeat(3,1fr)}
+#profile .dphotos.n1{grid-template-columns:1fr 1fr}
 .sumbar{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);border:1px solid var(--line-g)}
 .sumbar>div{background:linear-gradient(180deg,rgba(134,188,37,.10),rgba(134,188,37,0));padding:34px 40px}
 .sumbar .v{font-size:76px;font-weight:800;color:var(--green);line-height:1}
 .sumbar .u{font-size:30px;color:#fff;margin-top:10px;font-weight:600}
 .sumbar .l{font-size:22px;color:var(--muted);margin-top:4px}
 
-/* ---------- 4. dashboard ---------- */
-.dash{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto 1fr;gap:28px;height:100%}
-.kpi{padding:40px 42px;display:flex;flex-direction:column;gap:12px}
-.kpi .v{font-size:110px;font-weight:800;color:var(--green);line-height:.95;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
-.kpi .l{font-size:26px;color:var(--muted);letter-spacing:.06em}
-.dcard{padding:38px 42px;display:flex;flex-direction:column;min-height:0}
-.dcard h3{font-size:22px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:28px}
-.cols{flex:1;min-height:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:26px;align-items:stretch}
-.col{display:flex;flex-direction:column;gap:16px;min-width:0}
-.col .area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;background:rgba(255,255,255,.03)}
-.col .fl{height:0;background:linear-gradient(180deg,var(--green),#5f861a);transition:height 1.1s cubic-bezier(.2,.8,.2,1);position:relative}
-.col .c{font-size:56px;font-weight:800;color:var(--green);text-align:center;font-variant-numeric:tabular-nums;line-height:1}
-.col .lb{height:100px;font-size:24px;line-height:1.25;color:#c9cec3;text-align:center;text-wrap:balance}
-.allco{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 24px}
-.allco div{font-size:27px;font-weight:600;color:#e3e7dd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 0;
-  border-bottom:1px solid var(--line);opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
-.allco div.in{opacity:1;transform:none}
-.allco div.five{color:#fff}
-.allco div.five::after{content:' \2605';color:var(--teal)}
-.groupph{flex:1;min-height:0;margin-top:30px;position:relative}
-.groupph{border-radius:4px;overflow:hidden;background:var(--panel-2)}
-.groupph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
-.groupph img.on{opacity:1}
-.legend{font-size:22px;color:var(--muted);letter-spacing:.04em;text-transform:none}
-.legend b{color:var(--teal)}
 
 /* ---------- 5. tonight ---------- */
 .tonight{display:grid;grid-template-columns:1fr 1.15fr 1.2fr;gap:56px;height:100%}
@@ -334,6 +334,7 @@ h1.big b{font-weight:700;color:var(--green)}
 .tonight h1.big{font-size:118px}
 .tonight .flabel{font-size:26px;margin:0}
 .tonight .bigstat{flex:1}
+.tonight .bigstat>div:first-child{grid-column:1/-1}
 .tonight .bigstat>div{display:flex;flex-direction:column;justify-content:center;padding:40px 48px}
 .tonight .bigstat .v{font-size:140px}
 .tonight .bigstat .l{font-size:28px}
@@ -459,9 +460,11 @@ h1.big b{font-weight:700;color:var(--green)}
             <h2 id="tl-title"></h2>
             <p id="tl-text"></p>
             <div class="counter"><div class="n" id="tl-count">0</div><div class="u">Best Managed vállalat<br>az adott programban</div></div>
+            <div class="tlsplit" id="tl-split"></div>
           </div>
           <div class="panel winners">
-            <div class="flabel" id="w-label">Az év nyertesei</div>
+            <div class="whead"><div class="flabel" id="w-label">Az év nyertesei</div>
+              <div class="wlegend" id="w-legend"><span><i class="new">ÚJ</i>első elismerés</span><span><i class="ret"></i>visszatérő</span><span class="jub"><b>★</b>ötödik elismerés – jubiláló</span></div></div>
             <div class="wgrid" id="wgrid"></div>
           </div>
         </div>
@@ -469,23 +472,7 @@ h1.big b{font-weight:700;color:var(--green)}
       </div>
     </section>
 
-    <!-- 4. Dashboard -->
-    <section class="screen" data-screen="dash">
-      <div class="dash">
-        <div class="panel kpi"><div class="v" data-count="0" id="kpi-all">0</div><div class="l">Best Managed vállalat<br>2022 óta</div></div>
-        <div class="panel kpi"><div class="v" data-count="0" id="kpi-emp">0</div><div class="l" id="kpi-emp-l">munkavállaló<br>összesen</div></div>
-        <div class="panel kpi"><div class="v" data-count="0" id="kpi-county">0</div><div class="l">megyében<br>vannak jelen</div></div>
-        <div class="panel kpi"><div class="v" data-count="0" id="kpi-rec">0</div><div class="l">Best Managed elismerés<br>öt program alatt</div></div>
-        <div class="panel dcard" style="grid-column:span 2"><h3>Díjazottak régiónként</h3><div class="cols" id="cols"></div></div>
-        <div class="panel dcard" style="grid-column:span 2">
-          <h3 style="display:flex;justify-content:space-between">A Best Managed közösség <span class="legend"><b>★</b> ötszörös díjazott</span></h3>
-          <div class="allco" id="allco"></div>
-          <div class="groupph" id="groupph"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. A mai este -->
+    <!-- 4. A mai este -->
     <section class="screen" data-screen="tonight">
       <div class="tonight">
         <div class="tcol">
@@ -516,13 +503,11 @@ h1.big b{font-weight:700;color:var(--green)}
 
   </div>
 
-  <div class="note" id="datanote">Forrás: Ledfal data.xlsx · Deloitte Best Managed Companies</div>
 
   <div id="nav">
     <div class="tab" data-go="map"><div class="n">01</div><div class="t">BMC térkép</div></div>
     <div class="tab" data-go="timeline"><div class="n">02</div><div class="t">5 év története</div></div>
-    <div class="tab" data-go="dash"><div class="n">03</div><div class="t">A közösség</div></div>
-    <div class="tab" data-go="tonight"><div class="n">04</div><div class="t">A mai este</div></div>
+    <div class="tab" data-go="tonight"><div class="n">03</div><div class="t">A mai este</div></div>
   </div>
 
   <!-- attract -->
@@ -535,6 +520,9 @@ h1.big b{font-weight:700;color:var(--green)}
     </div>
     <div class="touchhint"><span class="ring"></span>Érintsd meg a képernyőt</div>
   </div>
+
+  <!-- cégprofil (timeline-ról) -->
+  <div id="profile"><div class="panel pcard" id="pcard"></div></div>
 
   <!-- fotó nagyítva -->
   <div id="lightbox"><img alt=""><div class="lbx">×</div><div class="lbn"></div></div>

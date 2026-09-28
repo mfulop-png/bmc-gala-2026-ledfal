@@ -14,7 +14,6 @@ window.BMC = (function () {
   const countYear = y => companies.filter(c => c.years.indexOf(y) >= 0).length;
   const recognitions = companies.reduce((s, c) => s + c.wins, 0);
   const fiveTimes = companies.filter(c => c.wins === 5).length;
-  const counties = new Set(companies.map(c => c.county)).size;
 
   const years = [2022, 2023, 2024, 2025, 2026];
 
@@ -75,11 +74,9 @@ window.BMC = (function () {
     stats: [
       { value: null, label: 'vendég a gálán' },
       { value: String(countYear(2026)), label: 'díjazott vállalat' },
-      { value: String(fiveTimes), label: 'ötszörös nyertes' },
-      { value: String(counties), label: 'képviselt megye' }
+      { value: String(fiveTimes), label: 'ötszörös nyertes' }
     ],
     agenda: [
-      { time: null, title: 'Freddie kiállítás – 3 turnusban', place: 'Magyar Zene Háza' },
       { time: null, title: 'Érkezés, regisztráció, welcome drink', place: 'Előtér' },
       { time: null, title: 'Megnyitó', place: 'Nagyterem' },
       { time: null, title: 'Best Managed Companies díjátadó', place: 'Nagyterem' },
@@ -89,18 +86,17 @@ window.BMC = (function () {
     venue: [
       { name: 'Nagyterem', note: 'Díjátadó és vacsora' },
       { name: 'Előtér', note: 'Regisztráció és welcome drink' },
-      { name: 'Freddie kiállítás', note: '3 turnusban, az est elején' },
       { name: 'Étel-ital pult', note: '' },
       { name: 'Koktélpult', note: '' },
       { name: 'Sommelier', note: '' },
       { name: 'Fotófal', note: 'Céges és közös fotók' },
       { name: 'Ledfal', note: 'Itt vagy most' }
     ],
-    goodToKnow: 'A Freddie kiállítás az est elején, 3 turnusban látogatható. A fotófal az előtérben található, a díjátadóról készült képek a gála után elérhetők lesznek a résztvevők számára.'
+    goodToKnow: 'A fotófal az előtérben található, a díjátadóról készült képek a gála után elérhetők lesznek a résztvevők számára.'
   };
 
   /* Global Journey fotósáv – külföldi gálák képei (BMC Graphics/bmc külföld) */
   const globalPhotos = G.globalPhotos;
 
-  return { companies, years, groupPhotos: G.groupPhotos, timeline, summary, world, worldAliases, tonight, globalPhotos };
+  return { companies, years, timeline, summary, world, worldAliases, tonight, globalPhotos };
 })();
