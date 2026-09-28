@@ -372,7 +372,6 @@
       if (place === 'Budapest' && ring.length && ring.length < list.length) {
         labData.push({ p: base, t: 'Budapest · pontos cím nélkül', cls: 'bp-name bp-only', dy: rr + 56, fixed: true });
       }
-      labData.push({ p: base, t: place, cls: 'hu-city hu-only', dy: list.length > 1 ? r + 40 : 40 });
     });
     // vízrajzi feliratok
     if (HG) [['Balaton', 17.74, 46.84], ['Tisza', 20.33, 46.92], ['Duna', 18.83, 46.42]].forEach(w =>
@@ -387,9 +386,10 @@
       dotData.forEach(d => boxes.push([V.x + V.k * d.real[0] - 36, V.y + V.k * d.real[1] - 36, 72, 72]));
       const hit = b => boxes.some(o => b[0] < o[0] + o[2] && b[0] + b[2] > o[0] && b[1] < o[1] + o[3] && b[1] + b[3] > o[1]);
       labData.filter(d => d.cls.indexOf('bp-name') === 0 && !d.fixed).sort((p, q) => p.p[1] - q.p[1]).forEach(d => {
-        const sx = V.x + V.k * d.p[0], sy = V.y + V.k * d.p[1], w = d.t.length * 14 + 10, h = 34;
-        const cand = [[44, 0, 'start'], [-44, 0, 'end'], [44, -46, 'start'], [-44, -46, 'end'], [44, 46, 'start'], [-44, 46, 'end'],
-          [44, -92, 'start'], [-44, 92, 'end']];
+        // 36 px-es felirat: kb. 20 px/karakter
+        const sx = V.x + V.k * d.p[0], sy = V.y + V.k * d.p[1], w = d.t.length * 20 + 14, h = 50;
+        const cand = [[48, 0, 'start'], [-48, 0, 'end'], [48, -60, 'start'], [-48, -60, 'end'], [48, 60, 'start'], [-48, 60, 'end'],
+          [48, -120, 'start'], [-48, 120, 'end'], [48, 120, 'start'], [-48, -120, 'end']];
         let pick = cand[0];
         for (const c of cand) {
           const bx = c[2] === 'start' ? sx + c[0] : sx + c[0] - w;
