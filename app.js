@@ -40,6 +40,7 @@
     $$('.tab').forEach(t => t.classList.remove('active'));
     $('#attract').classList.remove('hidden');
     clearDetail(); setWorld(false); setZoom('hu', true);
+    $('#lightbox').classList.remove('show');
     clearTimeout(idleT);
   }
   function resetIdle() {
@@ -153,35 +154,52 @@
     const d = $('#detail');
     d.className = 'panel detail empty';
     d.innerHTML = 'Koppints egy pontra a térképen<br>a vállalat adataiért';
+    $('#mapside').classList.remove('open');
     $$('#hu-map .hu-dot').forEach(g => g.classList.remove('sel'));
   }
+  // összecsukott szűrősávra koppintva is bezárul az adatlap
+  $('#filters').addEventListener('click', () => { if (selected) clearDetail(); });
   function showCompany(c) {
     selected = c;
     $$('#hu-map .hu-dot').forEach(g => g.classList.toggle('sel', g.dataset.id === c.id));
     const d = $('#detail');
     d.className = 'panel detail';
+    $('#mapside').classList.add('open');
     const ord = ['', 'első', 'második', 'harmadik', 'negyedik', 'ötödik'][c.wins] || c.wins + '.';
     const where = c.district ? 'Budapest ' + c.district + '. kerület' : c.place;
-    const stats = [
-      c.employees && stat(fmt(c.employees), 'munkavállaló')
-    ].filter(Boolean);
-    const photos = c.photos.slice(0, 3);
+    const photos = c.photos;
     d.innerHTML =
+      '<div class="dclose" id="dclose" aria-label="Bezárás">×</div>' +
       '<div class="dh">' + logoBox(c, 'dlogo') +
       '<div><div class="dname">' + esc(c.name) + '</div>' +
       '<div class="dsub">' + esc(where) + '</div></div></div>' +
-      (stats.length ? '<div class="dstats" style="grid-template-columns:repeat(' + stats.length + ',1fr)">' + stats.join('') + '</div>' : '') +
+      '<div class="dmeta">' +
+        (c.employees ? stat(fmt(c.employees), 'munkavállaló') : '') +
+        '<div class="dyearsbox"><div class="dyears">' +
+          D.years.map(y => '<div class="yrbox' + (c.years.indexOf(y) >= 0 ? ' on' : '') + '">' + y + '</div>').join('') + '</div>' +
+          '<div class="dwins">Első elismerés: <b>' + c.first + '</b> · ' + ord + ' alkalommal Best Managed (' + c.wins + '×)</div>' +
+        '</div>' +
+      '</div>' +
       '<div class="dtext">' + esc(c.desc) + '</div>' +
-      '<div class="dyears">' + D.years.map(y => '<div class="yrbox' + (c.years.indexOf(y) >= 0 ? ' on' : '') + '">' + y + '</div>').join('') + '</div>' +
-      '<div class="dsub" style="margin-top:22px">Első elismerés: <b style="color:#fff">' + c.first + '</b> · ' +
-      ord + ' alkalommal Best Managed (' + c.wins + '×)</div>' +
       (photos.length
-        ? '<div class="dphotos" style="grid-template-columns:repeat(' + photos.length + ',1fr)">' +
-          photos.map(p => '<div class="dph"><img src="' + p + '" alt="" loading="lazy"></div>').join('') + '</div>'
+        ? '<div class="dphotos n' + Math.min(photos.length, 2) + '">' +
+          photos.map((p, i) => '<div class="dph" data-i="' + i + '"><img src="' + p + '" alt=""></div>').join('') + '</div>'
         : c.years.length === 1 && c.first === 2026
-          ? '<div class="dphotos"><div class="badge pending" style="grid-column:span 2">Új nyertes — gálafotók a mai este után</div></div>'
+          ? '<div class="dphotos"><div class="badge pending">Új nyertes — gálafotók a mai este után</div></div>'
           : '');
+    d.scrollTop = 0;
+    $('#dclose').addEventListener('click', clearDetail);
+    $$('.dph', d).forEach(e => e.addEventListener('click', () => openPhoto(c, +e.dataset.i)));
   }
+
+  /* fotó teljes képernyőn – koppintásra bezárul */
+  const lb = $('#lightbox');
+  function openPhoto(c, i) {
+    $('img', lb).src = c.photos[i];
+    $('.lbn', lb).textContent = c.name + ' · ' + (i + 1) + ' / ' + c.photos.length;
+    lb.classList.add('show');
+  }
+  lb.addEventListener('click', () => lb.classList.remove('show'));
   function logoBox(c, cls) {
     return '<div class="' + cls + (c.logoDark ? ' dark' : '') + '">' +
       (c.logo ? '<img src="' + c.logo + '" alt="' + esc(c.name) + '">' : '<span>' + esc(c.name) + '</span>') + '</div>';

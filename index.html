@@ -185,28 +185,53 @@ h1.big b{font-weight:700;color:var(--green)}
 .maphint{position:absolute;left:0;bottom:0;font-size:24px;color:var(--dim);letter-spacing:.08em}
 .side{display:flex;flex-direction:column;gap:28px;min-height:0}
 .filters{padding:34px 36px;display:flex;flex-direction:column;gap:26px}
-.detail{flex:1;padding:40px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+.detail{flex:1;padding:40px;overflow:hidden;display:flex;flex-direction:column;min-height:0;position:relative}
 .detail.empty{align-items:center;justify-content:center;text-align:center;color:var(--dim);font-size:32px;font-weight:300}
-.dh{display:flex;gap:32px;align-items:center}
-.dlogo{width:260px;height:150px;flex:none;border:1px solid var(--line);border-radius:4px;background:#fff;
-  display:grid;place-items:center;padding:18px;overflow:hidden}
+/* cégadatlap nyitva: a szűrők egy sávvá csukódnak, az adatlap kitölti az oldalsávot */
+.side.open .filters{padding:26px 36px;gap:0;cursor:pointer}
+.side.open .filters > div:not(.ptitle){display:none}
+.side.open .filters .ptitle{font-size:34px}
+.fopen{display:none;font-size:24px;font-weight:600;color:var(--green);letter-spacing:.04em}
+.side.open .fopen{display:inline}
+.side.open .ptitle small{display:none}
+.side.open .detail{padding:44px 48px 48px;overflow-y:auto;touch-action:pan-y;animation:dIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes dIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.detail::-webkit-scrollbar{width:8px}
+.detail::-webkit-scrollbar-thumb{background:var(--line-g);border-radius:4px}
+.dclose{position:absolute;top:30px;right:30px;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--line);background:var(--panel-2);font-size:56px;font-weight:300;color:#fff;line-height:1;cursor:pointer;z-index:2}
+.dclose:active{background:var(--green);color:#0b0f06}
+.dh{display:flex;gap:36px;align-items:center;padding-right:120px}
+.dlogo{width:380px;height:220px;flex:none;border:1px solid var(--line);border-radius:6px;background:#fff;
+  display:grid;place-items:center;padding:24px;overflow:hidden}
 .dlogo img,.wel .logo img{width:100%;height:100%;min-height:0;object-fit:contain;display:block}
-.dlogo span{color:#1a1d18;font-size:24px;font-weight:700;text-align:center;line-height:1.2}
+.dlogo span{color:#1a1d18;font-size:30px;font-weight:700;text-align:center;line-height:1.2}
 .dlogo.dark,.wel .logo.dark{background:#1d221c}
-.dname{font-size:50px;font-weight:700;line-height:1.1}
-.dsub{font-size:26px;color:var(--muted);margin-top:10px}
-.dstats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line);margin-top:26px}
-.dstat{background:var(--panel-2);padding:24px 26px}
-.dstat .v{font-size:44px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.dname{font-size:60px;font-weight:700;line-height:1.08}
+.dsub{font-size:30px;color:var(--muted);margin-top:14px}
+.dmeta{display:flex;gap:28px;align-items:stretch;margin-top:36px;flex-wrap:wrap}
+.dstat{background:var(--panel-2);border:1px solid var(--line);padding:22px 30px;border-radius:4px}
+.dstat .v{font-size:52px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;line-height:1.1}
 .dstat .l{font-size:20px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
-.dtext{font-size:26px;line-height:1.45;color:#d3d8cd;margin-top:24px;font-weight:300}
-.dyears{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
-.yrbox{width:104px;height:64px;display:grid;place-items:center;font-size:24px;border:1px solid var(--line);color:var(--dim)}
+.dyearsbox{display:flex;flex-direction:column;justify-content:center;gap:14px}
+.dyears{display:flex;gap:12px;flex-wrap:wrap}
+.yrbox{width:112px;height:66px;display:grid;place-items:center;font-size:26px;border:1px solid var(--line);color:var(--dim)}
 .yrbox.on{background:var(--green);color:#0b0f06;border-color:var(--green);font-weight:700}
-.dphotos{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:auto;padding-top:20px;flex:none;min-height:0}
-.dph{height:130px;border-radius:4px;overflow:hidden;background:var(--panel-2)}
-.dph img{width:100%;height:100%;object-fit:cover;display:block}
-.detail .dtext{flex:0 1 auto;overflow:hidden}
+.dwins{font-size:26px;color:var(--muted)}
+.dwins b{color:#fff}
+.dtext{font-size:32px;line-height:1.5;color:#dfe3da;margin-top:36px;font-weight:300}
+.dphotos{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px;align-items:start}
+.dphotos.n1{grid-template-columns:1fr}
+.dph{border-radius:6px;overflow:hidden;background:var(--panel-2);cursor:pointer}
+.dph img{width:100%;height:auto;display:block}
+.dphotos .pending{grid-column:1/-1}
+/* fotó teljes képernyőn */
+#lightbox{position:absolute;inset:0;z-index:70;background:rgba(3,4,3,.94);display:none;align-items:center;justify-content:center;padding:120px}
+#lightbox.show{display:flex;animation:dIn .35s ease}
+#lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 30px 120px rgba(0,0,0,.6)}
+#lightbox .lbx{position:absolute;top:60px;right:80px;width:120px;height:120px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--line);background:var(--panel-2);font-size:70px;font-weight:300;color:#fff}
+#lightbox .lbn{position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:28px;color:var(--muted)}
 
 /* ---------- world (Global Journey) ---------- */
 .worldview{position:absolute;inset:0;display:flex;flex-direction:column;gap:30px;padding:40px 0;opacity:0;pointer-events:none;
@@ -376,9 +401,9 @@ h1.big b{font-weight:700;color:var(--green)}
           <svg id="hu-map"></svg>
           <div class="maphint" id="maphint">Két ujjal nagyíthatsz · koppints Budapestre</div>
         </div>
-        <div class="side">
-          <div class="panel filters">
-            <div class="ptitle">Böngéssz a díjazottak között <small><b id="fcount">0</b> vállalat</small></div>
+        <div class="side" id="mapside">
+          <div class="panel filters" id="filters">
+            <div class="ptitle">Böngéssz a díjazottak között <small><b id="fcount">0</b> vállalat</small><span class="fopen">Szűrők ▾</span></div>
             <div>
               <div class="flabel">Díjazás éve</div>
               <div class="chipbar" id="f-year"></div>
@@ -507,6 +532,9 @@ h1.big b{font-weight:700;color:var(--green)}
     </div>
     <div class="touchhint"><span class="ring"></span>Érintsd meg a képernyőt</div>
   </div>
+
+  <!-- fotó nagyítva -->
+  <div id="lightbox"><img alt=""><div class="lbx">×</div><div class="lbn"></div></div>
 
   <!-- welcome takeover -->
   <div id="welcome">
