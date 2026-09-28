@@ -50,6 +50,15 @@
   $$('.tab').forEach(t => t.addEventListener('click', () => go(t.dataset.go)));
   $('#attract').addEventListener('pointerdown', () => go('map'));
 
+  /* ---------- oldal-zoom tiltása: csippentés csak a térképet nagyítja ---------- */
+  const noop = e => e.preventDefault();
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, noop, { passive: false }));   // Safari
+  document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+  document.addEventListener('wheel', e => { if (e.ctrlKey && !e.target.closest('#hu-map')) e.preventDefault(); }, { passive: false });
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '0'].indexOf(e.key) >= 0) e.preventDefault();
+  });
+
   /* ---------- attract particles ---------- */
   (function particles() {
     const cv = $('#particles'), ctx = cv.getContext('2d');
@@ -217,24 +226,40 @@
       if (d.keep) {   // kerület nélküli budapesti cégek: nagyítva a bal alsó sarokba úsznak
         return 'translate(' + (x + (Z.side[0] - x) * Z.bp + d.off[0]) + ',' + (y + (Z.side[1] - y) * Z.bp + d.off[1]) + ')';
       }
-      return 'translate(' + (x + d.off[0] * (1 - Z.bp)) + ',' + (y + d.off[1] * (1 - Z.bp)) + ')';
+      const o = d.c.city === 'Budapest' ? 1 - Z.bp : 1;   // vidéki klaszterek nagyítva is széthúzva maradnak
+      return 'translate(' + (x + d.off[0] * o) + ',' + (y + d.off[1] * o) + ')';
     });
-    Z.labels.attr('transform', d => d.fixed ? 'translate(' + Z.side[0] + ',' + Z.side[1] + ')'
-      : 'translate(' + (v.x + v.k * d.p[0]) + ',' + (v.y + v.k * d.p[1]) + ')');
+    Z.labels.attr('transform', d => {
+      const x = v.x + v.k * d.p[0], y = v.y + v.k * d.p[1];
+      return d.fixed ? 'translate(' + (x + (Z.side[0] - x) * Z.bp) + ',' + (y + (Z.side[1] - y) * Z.bp) + ')'
+        : 'translate(' + x + ',' + y + ')';
+    });
+  }
+
+  /* Érintéses zoom: a kerületi nézet a nagyítás mértékéből jön, ha Budapest látszik */
+  function updateBp() {
+    if (!Z.bpView) { Z.bp = 0; return; }
+    const v = Z.view, kA = 1 + (Z.bpView.k - 1) * .3, kB = Z.bpView.k * .85;
+    const sx = v.x + v.k * Z.bpCenter[0], sy = v.y + v.k * Z.bpCenter[1];
+    const inView = sx > 0 && sx < Z.W && sy > 0 && sy < Z.H;
+    Z.bp = inView ? Math.max(0, Math.min(1, (v.k - kA) / (kB - kA))) : 0;
+    const mode = Z.bp > .5 ? 'bp' : 'hu';
+    if (mode !== Z.mode) {
+      Z.mode = mode;
+      $$('#zoomseg div').forEach(e => e.classList.toggle('on', e.dataset.z === mode));
+      $('#mapwrap').classList.toggle('mode-bp', mode === 'bp');
+      $('#maphint').textContent = mode === 'bp' ? 'Budapesti díjazottak kerületenként'
+        : 'Két ujjal nagyíthatsz · koppints Budapestre';
+    }
   }
   function setZoom(mode, instant) {
-    if (!Z.gBase || (mode === Z.mode && !instant)) return;
-    Z.mode = mode;
-    $$('#zoomseg div').forEach(e => e.classList.toggle('on', e.dataset.z === mode));
-    $('#mapwrap').classList.toggle('mode-bp', mode === 'bp');
-    $('#maphint').textContent = mode === 'bp' ? 'Budapesti díjazottak kerületenként' : 'Koppints Budapestre a nagyításhoz';
-    const to = mode === 'bp' ? Z.bpView : { k: 1, x: 0, y: 0 }, bpTo = mode === 'bp' ? 1 : 0;
-    const d3sel = d3.select('#hu-map');
-    d3sel.interrupt();
-    if (instant) { Z.view = to; Z.bp = bpTo; renderZoom(); return; }
-    const iv = d3.interpolate(Z.view, to), ib = d3.interpolate(Z.bp, bpTo);
-    d3sel.transition().duration(1300).ease(d3.easeCubicInOut)
-      .tween('zoom', () => t => { Z.view = iv(t); Z.bp = ib(t); renderZoom(); });
+    if (!Z.zoom) return;
+    const to = mode === 'bp' && Z.bpView ? Z.bpView : { k: 1, x: 0, y: 0 };
+    const t = d3.zoomIdentity.translate(to.x, to.y).scale(to.k);
+    const svg = d3.select('#hu-map');
+    svg.interrupt();
+    if (instant) svg.call(Z.zoom.transform, t);
+    else svg.transition().duration(1300).ease(d3.easeCubicInOut).call(Z.zoom.transform, t);
   }
   $$('#zoomseg div').forEach(e => e.addEventListener('click', () => setZoom(e.dataset.z)));
 
@@ -268,7 +293,7 @@
       const k = Math.min(W * .9 / dx, H * .9 / dy);
       const cx = (b[0][0] + b[1][0]) / 2, cy = (b[0][1] + b[1][1]) / 2;
       Z.bpView = { k: k, x: W / 2 - k * cx, y: H / 2 - k * cy };
-      bpCentroid = [cx, cy];
+      Z.bpCenter = bpCentroid = [cx, cy];
     }
 
     // budapesti cégek: az irányítószámból ismert kerület közepe (azonos kerületen belül kicsit széthúzva)
@@ -341,6 +366,17 @@
     Z.dots.append('circle').attr('class', 'halo').attr('r', d => 12 + d.c.wins * 5);
     Z.dots.append('circle').attr('class', 'core').attr('r', d => 8 + d.c.wins * 2.4);
     Z.dots.append('circle').attr('r', 40).attr('fill', 'transparent');
+    Z.zoom = d3.zoom()
+      .extent([[0, 0], [W, H]])
+      .scaleExtent([1, Z.bpView ? Z.bpView.k * 2.5 : 8])
+      .translateExtent([[0, 0], [W, H]])
+      .clickDistance(12)                       // ujjal koppintás kis elmozdulással is koppintás marad
+      .on('zoom', ev => {
+        const t = ev.transform;
+        Z.view = { k: t.k, x: t.x, y: t.y };
+        updateBp(); renderZoom();
+      });
+    svg.call(Z.zoom).on('dblclick.zoom', null);
     Z.dots.on('click', (ev, d) => {
       if (Z.mode === 'hu' && d.c.city === 'Budapest' && Z.bpView) { setZoom('bp'); return; }   // első koppintás: nagyítás
       showCompany(d.c);

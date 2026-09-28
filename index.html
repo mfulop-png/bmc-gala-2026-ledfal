@@ -19,7 +19,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#000;overflow:hidden;font-family:'Open Sans',system-ui,sans-serif;color:var(--ink);
-  -webkit-user-select:none;user-select:none;touch-action:manipulation;cursor:none}
+  -webkit-user-select:none;user-select:none;touch-action:none;cursor:none}
 a{color:var(--green);text-decoration:none}
 a:hover{color:#a6dc45}
 #fit{position:fixed;inset:0;display:block;background:#000}
@@ -161,7 +161,7 @@ h1.big b{font-weight:700;color:var(--green)}
 .globebtn .g{width:96px;height:96px;border-radius:50%;background:var(--green);display:grid;place-items:center}
 .globebtn .g svg{width:60px;height:60px;animation:spin 14s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-#hu-map{flex:1;min-height:0;width:100%;overflow:hidden}
+#hu-map{flex:1;min-height:0;width:100%;overflow:hidden;touch-action:none}
 #hu-map path{vector-effect:non-scaling-stroke}
 .hu-country{fill:#14180f;stroke:rgba(255,255,255,.07);stroke-width:1}
 .hu-main{fill:url(#huGrad);stroke:var(--green);stroke-width:2.5}
@@ -374,7 +374,7 @@ h1.big b{font-weight:700;color:var(--green)}
             </div>
           </div>
           <svg id="hu-map"></svg>
-          <div class="maphint" id="maphint">Koppints Budapestre a nagyításhoz</div>
+          <div class="maphint" id="maphint">Két ujjal nagyíthatsz · koppints Budapestre</div>
         </div>
         <div class="side">
           <div class="panel filters">
