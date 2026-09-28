@@ -165,7 +165,7 @@ h1.big b{font-weight:700;color:var(--green)}
 #hu-map path{vector-effect:non-scaling-stroke}
 .hu-country{fill:#14180f;stroke:rgba(255,255,255,.07);stroke-width:1}
 .hu-main{fill:url(#huGrad);stroke:var(--green);stroke-width:2.5}
-.hu-river{fill:none;stroke:rgba(0,151,169,.45);stroke-width:3;stroke-linecap:round}
+.hu-river{fill:none;stroke:rgba(38,178,196,.8);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
 .bp-outline{fill:rgba(134,188,37,.10);stroke:var(--green);stroke-width:2}
 .bp-district{fill:rgba(134,188,37,.05);stroke:rgba(134,188,37,.55);stroke-width:1.5;transition:opacity .6s}
 .bp-duna{fill:none;stroke:rgba(0,151,169,.35);stroke-width:34;stroke-linecap:round;stroke-linejoin:round;transition:opacity .6s}
@@ -181,6 +181,9 @@ h1.big b{font-weight:700;color:var(--green)}
 .hu-dot.sel circle.halo{opacity:.35}
 .hu-dot.dimmed{opacity:.12;pointer-events:none}
 .hu-city{font-size:19px;fill:var(--muted);letter-spacing:.06em;pointer-events:none}
+.hu-county{fill:none;stroke:rgba(134,188,37,.30);stroke-width:1.2;stroke-linejoin:round;pointer-events:none}
+.hu-lake{fill:rgba(0,151,169,.42);stroke:rgba(0,151,169,.8);stroke-width:1.5;pointer-events:none}
+.hu-water{font-size:20px;font-style:italic;font-weight:600;fill:rgba(64,190,205,.85);letter-spacing:.18em;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .bp-name{font-size:24px;fill:#fff;font-weight:600;pointer-events:none}
 .maphint{position:absolute;left:0;bottom:0;font-size:24px;color:var(--dim);letter-spacing:.08em}
 .side{display:flex;flex-direction:column;gap:28px;min-height:0}
@@ -568,6 +571,7 @@ h1.big b{font-weight:700;color:var(--green)}
 <script src="./companies.js"></script>
 <script src="./data.js"></script>
 <script src="./geo/budapest.js"></script>
+<script src="./geo/hungary.js"></script>
 <script src="./app.js"></script>
 </body>
 </html>

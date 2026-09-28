@@ -297,6 +297,14 @@
     g.append('g').selectAll('path').data(feats.filter(f => f.properties.name !== 'Hungary'))
       .join('path').attr('class', 'hu-country').attr('d', path);
     g.append('path').datum(hu).attr('class', 'hu-main').attr('d', path);
+    // megyehatárok, Balaton, Tisza (geo/hungary.js – tools/build_geo.py)
+    const HG = window.HU_GEO;
+    if (HG) {
+      g.append('g').selectAll('path').data(HG.counties.map(rewind)).join('path')
+        .attr('class', 'hu-county hu-only').attr('d', path);
+      g.append('path').datum(rewind(HG.balaton)).attr('class', 'hu-lake').attr('d', path);
+      g.append('path').datum(HG.tisza).attr('class', 'hu-river').attr('d', path);
+    }
     const G = window.BP_GEO;
     let bpCentroid = proj([19.04, 47.4979]);
     if (G) {
@@ -352,6 +360,9 @@
       }
       labData.push({ p: base, t: place, cls: 'hu-city hu-only', dy: list.length > 1 ? r + 40 : 40 });
     });
+    // vízrajzi feliratok
+    if (HG) [['Balaton', 17.74, 46.84], ['Tisza', 20.33, 46.92], ['Duna', 18.83, 46.42]].forEach(w =>
+      labData.push({ p: proj([w[1], w[2]]), t: w[0], cls: 'hu-water hu-only', dy: 0, sub: true }));
     if (G) G.districts.forEach(d => {
       const p = path.centroid(d);
       if (isFinite(p[0])) labData.push({ p: p, t: d.properties.n, cls: 'bp-dlabel bp-only', dy: 0, sub: true });
