@@ -34,6 +34,7 @@
     $$('.screen').forEach(s => s.classList.toggle('active', s.dataset.screen === name));
     $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.go === name));
     $('#attract').classList.add('hidden');
+    $$('#bgs div').forEach(b => b.classList.toggle('on', b.dataset.bg === name));   // képernyőnkénti háttér
     if (name === 'timeline') selectYear(tlYear, true);
     resetIdle();
   }
@@ -85,37 +86,37 @@
   }
 
   /* ---------- attract particles ---------- */
-  (function particles() {
+  /* ---------- várakozó képernyő: arany csillámok (bokeh), lassan felfelé úszva, pislákolva ---------- */
+  (function sparkles() {
     if (WEB) return;
     const cv = $('#particles'), ctx = cv.getContext('2d');
     cv.width = 3840; cv.height = 2160;
-    const pts = Array.from({ length: 90 }, () => ({
+    // előre renderelt, lágy szélű fénypötty – a 'lighter' keverés adja a ragyogást
+    const spr = document.createElement('canvas'); spr.width = spr.height = 128;
+    const sc = spr.getContext('2d'), g = sc.createRadialGradient(64, 64, 0, 64, 64, 64);
+    g.addColorStop(0, 'rgba(255,238,170,1)'); g.addColorStop(.25, 'rgba(252,197,66,.75)');
+    g.addColorStop(.6, 'rgba(215,173,84,.18)'); g.addColorStop(1, 'rgba(143,90,38,0)');
+    sc.fillStyle = g; sc.fillRect(0, 0, 128, 128);
+    const mk = () => ({
       x: Math.random() * 3840, y: Math.random() * 2160,
-      vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
-      r: 2 + Math.random() * 4
-    }));
+      s: Math.random() < .12 ? 40 + Math.random() * 70 : 6 + Math.random() * 26,   // néhány nagy, életlen bokeh
+      vy: -(.15 + Math.random() * .55), sway: Math.random() * 6.28, sp: .004 + Math.random() * .01,
+      tw: Math.random() * 6.28, ts: .01 + Math.random() * .03
+    });
+    const pts = Array.from({ length: 170 }, mk);
     function frame() {
-      ctx.clearRect(0, 0, 3840, 2160);
-      for (const p of pts) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > 3840) p.vx *= -1;
-        if (p.y < 0 || p.y > 2160) p.vy *= -1;
-      }
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d2 = dx * dx + dy * dy;
-          if (d2 < 360000) {
-            ctx.strokeStyle = 'rgba(134,188,37,' + (.16 * (1 - d2 / 360000)) + ')';
-            ctx.lineWidth = 1.4;
-            ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
-          }
-        }
-      }
-      for (const p of pts) {
-        ctx.fillStyle = 'rgba(134,188,37,.55)';
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
-      }
       requestAnimationFrame(frame);
+      if ($('#attract').classList.contains('hidden')) return;
+      ctx.clearRect(0, 0, 3840, 2160);
+      ctx.globalCompositeOperation = 'lighter';
+      for (const p of pts) {
+        p.y += p.vy; p.sway += p.sp; p.tw += p.ts;
+        const x = p.x + Math.sin(p.sway) * 30;
+        if (p.y < -120) { Object.assign(p, mk()); p.y = 2200; }
+        ctx.globalAlpha = (p.s > 40 ? .10 : .35) + .45 * (.5 + .5 * Math.sin(p.tw)) * (p.s > 40 ? .3 : 1);
+        ctx.drawImage(spr, x - p.s, p.y - p.s, p.s * 2, p.s * 2);
+      }
+      ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
     }
     frame();
   })();
@@ -244,7 +245,7 @@
   }
   lb.addEventListener('click', () => lb.classList.remove('show'));
   function logoBox(c, cls) {
-    return '<div class="' + cls + (c.logoDark ? ' dark' : '') + '">' +
+    return '<div class="' + cls + (c.logoOnDark ? ' ondark' : c.logoDark ? ' dark' : '') + '">' +
       (c.logo ? '<img src="' + c.logo + '" alt="' + esc(c.name) + '">' : '<span>' + esc(c.name) + '</span>') + '</div>';
   }
   function stat(v, l) { return '<div class="dstat"><div class="v">' + v + '</div><div class="l">' + l + '</div></div>'; }
@@ -381,8 +382,8 @@
     const path = d3.geoPath(proj);
     svg.append('defs').html(
       '<linearGradient id="huGrad" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0%" stop-color="rgba(134,188,37,.18)"/>' +
-      '<stop offset="100%" stop-color="rgba(134,188,37,.05)"/></linearGradient>');
+      '<stop offset="0%" stop-color="rgba(245,221,134,.20)"/>' +
+      '<stop offset="100%" stop-color="rgba(143,90,38,.08)"/></linearGradient>');
     const g = Z.gBase = svg.append('g');
     g.append('g').selectAll('path').data(feats.filter(f => f.properties.name !== 'Hungary'))
       .join('path').attr('class', 'hu-country').attr('d', path);
@@ -481,10 +482,12 @@
         updateBp(); renderZoom();
       });
     svg.call(Z.zoom).on('dblclick.zoom', null);
-    Z.dots.on('click', (ev, d) => {
+    Z.names.on('click', (ev, d) => onDot(d));
+    Z.dots.on('click', (ev, d) => onDot(d));
+    function onDot(d) {
       if (Z.mode === 'hu' && d.c.city === 'Budapest' && Z.bpView) { setZoom('bp'); return; }   // első koppintás: nagyítás
       showCompany(d.c);
-    });
+    }
     renderZoom();
     applyFilters();
   }
@@ -510,7 +513,7 @@
     svg.attr('viewBox', '0 0 ' + W + ' ' + H).attr('preserveAspectRatio', 'xMidYMid meet');
     svg.append('defs').html(
       '<radialGradient id="wOcean" cx="42%" cy="38%" r="65%">' +
-      '<stop offset="0%" stop-color="#1b2a1c"/><stop offset="70%" stop-color="#0d140d"/><stop offset="100%" stop-color="#070a07"/></radialGradient>');
+      '<stop offset="0%" stop-color="#2b2417"/><stop offset="70%" stop-color="#110e0a"/><stop offset="100%" stop-color="#060504"/></radialGradient>');
     GL.R = H / 2 - 24;
     GL.proj = d3.geoOrthographic().translate([W / 2, H / 2]).scale(GL.R).clipAngle(90).precision(.7).rotate(GL.rot);
     GL.path = d3.geoPath(GL.proj);
@@ -696,7 +699,7 @@
   const welCtx = welCv.getContext('2d');
   let confetti = [], welRaf = null;
   function burst() {
-    const COL = ['#86BC25', '#a6dc45', '#0097A9', '#ffffff', '#d6f09a'];
+    const COL = ['#fcc542', '#f5dd86', '#d7ad54', '#ffffff', '#8f5a26'];
     confetti = [];
     for (let i = 0; i < 260; i++) {
       const a = Math.random() * Math.PI * 2, sp = 6 + Math.random() * 26;
@@ -734,7 +737,7 @@
     admin.classList.remove('show');
     $('#wel-name').textContent = c.name;
     const lg = $('#guest-logo');
-    lg.className = 'logo' + (c.logoDark ? ' dark' : '');
+    lg.className = 'logo' + (c.logoOnDark ? ' ondark' : c.logoDark ? ' dark' : '');
     lg.innerHTML = c.logo ? '<img src="' + c.logo + '" alt="">' : '';
     $('.wel').classList.toggle('nologo', !c.logo);
     const w = $('#welcome');

@@ -1,7 +1,7 @@
 /* GENERÁLT FÁJL – ne szerkeszd kézzel. Forrás: Ledfal data.xlsx + BMC Graphics
    Újragenerálás: tools/build_assets.py, majd tools/build_data.py */
 window.BMC_DATA = {
- "generated": "2026-09-28",
+ "generated": "2026-09-29",
  "companies": [
   {
    "id": "alphavet",
@@ -19,8 +19,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "Az ALPHAVET több mint 30 éve foglalkozik állatgyógyászati termékek, állateledelek és felszerelések fejlesztésével, gyártásával és forgalmazásával, különös figyelmet fordítva az élelmiszerbiztonságra, az agrárium folyamatos fejlődésére és állataink jóllétére.",
-   "logo": "assets/logos/alphavet.png",
-   "logoDark": true,
+   "logo": "assets/logos/alphavet-2026.svg",
+   "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/alphavet-1.jpg"
    ]
@@ -41,6 +42,7 @@ window.BMC_DATA = {
    "desc": "A magyar tulajdonú BioTechUSA Cégcsoport Európa egyik vezető étrend-kiegészítő és speciális élelmiszer gyártója és forgalmazója. Több évtizedes fejlődése során nemzetközi vállalatcsoporttá vált, amely termékeivel és szakértelmével emberek millióit támogatja az egészségesebb és aktívabb életmód elérésében világszerte.",
    "logo": "assets/logos/biotechusa.png",
    "logoDark": false,
+   "logoOnDark": false,
    "photos": [
     "assets/photos/biotechusa-1.jpg"
    ]
@@ -59,8 +61,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Cerbona piacvezető müzliszelet-gyártó Magyarországon, amely széles termékportfóliójával - müzlikkel, zabtermékekkel és funkcionális termékekkel- innovatív újdonságokat hoz a piacra.",
-   "logo": "assets/logos/cerbona.png",
+   "logo": "assets/logos/cerbona-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": []
   },
   {
@@ -80,8 +83,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "Az 1989-ben alapított CÉH zRt. Magyarország egyik vezető mérnöki irodája, amely teljes körű mérnöki szolgáltatásokat - tervezés, projektmenedzsment és szakértés - nyújt mind a magasépítés, mind a hídépítés területén.",
-   "logo": "assets/logos/ceh.png",
+   "logo": "assets/logos/ceh-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/ceh-1.jpg",
     "assets/photos/ceh-2.jpg",
@@ -105,6 +109,7 @@ window.BMC_DATA = {
    "desc": "A DM-KER Nyrt. száz százalékban magyar tulajdonú vállalat, amely mezőgazdasági és építőipari gépek forgalmazásával, szervizelésével és bérbeadásával foglalkozik. Dinamikus fejlődésének és szakmai elkötelezettségének köszönhetően meghatározó szereplővé vált a hazai gépkereskedelmi piacon.",
    "logo": "assets/logos/dm-ker.png",
    "logoDark": false,
+   "logoOnDark": false,
    "photos": [
     "assets/photos/dm-ker-1.jpg"
    ]
@@ -125,6 +130,7 @@ window.BMC_DATA = {
    "desc": "A Dorko az egyik legismertebb magyar streetwear és sportmárka, amely a hazai kreativitásra, önkifejezésre és közösségépítésre építi működését. A márka célja, hogy inspirálja a magyar tehetségeket, miközben termékein és társadalmi kezdeményezésein keresztül pozitív hatást gyakorol a közösségekre.",
    "logo": "assets/logos/dorko.png",
    "logoDark": false,
+   "logoOnDark": false,
    "photos": [
     "assets/photos/dorko-1.jpg"
    ]
@@ -148,6 +154,7 @@ window.BMC_DATA = {
    "desc": "A Dorsum Zrt. vezető európai pénzügyi szoftverfejlesztő vállalat, amely innovatív technológiai megoldásokkal támogatja a befektetési és vagyonkezelési szektort. Közel három évtizedes tapasztalatával, több országban jelen lévő szakértői csapatával hozzájárul a pénzügyi szolgáltatások digitalizációjához és modernizációjához.",
    "logo": "assets/logos/dorsum.png",
    "logoDark": false,
+   "logoOnDark": false,
    "photos": [
     "assets/photos/dorsum-1.jpg",
     "assets/photos/dorsum-2.jpg",
@@ -170,8 +177,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Goodwill Pharma Nyrt. 1997-ben alapított, szegedi központú, tőzsdén jegyzett magyar gyógyszeripari vállalat, amely termékeivel és szolgáltatásaival közel három évtizede van jelen az ágazat számos területén, és mára regionális szereplővé fejlődött.",
-   "logo": "assets/logos/goodwill.png",
+   "logo": "assets/logos/goodwill-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/goodwill-1.jpg",
     "assets/photos/goodwill-2.jpg"
@@ -195,8 +203,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A H1 Systems Magyarország vezetői épülettechnológiai és adatközponti megoldásszállító szakcége, amely több évtizedes tapasztalattal rendelkezik a szünetmentes digitális infrastruktúra biztosításában.",
-   "logo": "assets/logos/h1-systems.png",
+   "logo": "assets/logos/h1-systems-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/h1-systems-1.jpg",
     "assets/photos/h1-systems-2.jpg",
@@ -221,8 +230,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A 100%-ban magyar tulajdonú HELL ENERGY több mint 60 országban jelen lévő, saját gyártási háttérrel rendelkező italipari vállalat, valamint a hazai FMCG-szektor meghatározó exportvállalata.",
-   "logo": "assets/logos/hell.png",
+   "logo": "assets/logos/hell-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/hell-1.jpg",
     "assets/photos/hell-2.jpg",
@@ -243,8 +253,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Hidrofilt Csoport 1990 óta nyújt komplex technológiai-, ivóvíz és szennyvízkezelési megoldásokat ipari és közműpartnerei számára.",
-   "logo": "assets/logos/hidrofilt.svg",
+   "logo": "assets/logos/hidrofilt-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": []
   },
   {
@@ -264,6 +275,7 @@ window.BMC_DATA = {
    "desc": "Az 1992-ben alapított Hunland Csoport az élőállat-kereskedelem, az állattenyésztés és a mezőgazdasági szolgáltatások nemzetközileg elismert szereplője. A vállalat a fenntarthatóság, az állatjólét és a hosszú távú partneri kapcsolatok iránti elkötelezettségével vált a hazai és európai agrárszektor meghatározó vállalkozásává.",
    "logo": "assets/logos/hunland.png",
    "logoDark": false,
+   "logoOnDark": false,
    "photos": [
     "assets/photos/hunland-1.jpg"
    ]
@@ -283,8 +295,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A K&V  Nemzetközi Fuvarozó Kft. dinamikusan fejlődő magyar családi vállalkozásként több, mint 35 éve nyújt kimagasló minőségű, korszerű logisztikai szolgáltatásokat Európa-szerte.",
-   "logo": "assets/logos/k-v.png",
+   "logo": "assets/logos/k-v-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/k-v-1.jpg"
    ]
@@ -304,8 +317,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Kermann IT Solutions Nyrt. a hazai IT-infrastruktúra és kapcsolódó szolgáltatások piacának meghatározó szereplője, a Budapesti Értéktőzsde Xtend piacán jegyzett, stabil és innovatív vállalat.",
-   "logo": "assets/logos/kermann.svg",
+   "logo": "assets/logos/kermann-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/kermann-1.jpg"
    ]
@@ -325,8 +339,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Merkapt Zrt. 1991 óta 100%-ban magyar tulajdonú épületgépészeti vállalat, országos hálózattal, kis- és nagykereskedelemmel, szakmai tanácsadással szolgálja a lakossági és professzionális ügyfeleket.",
-   "logo": "assets/logos/merkapt.svg",
+   "logo": "assets/logos/merkapt-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/merkapt-1.jpg"
    ]
@@ -347,8 +362,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A MOGYI Kft. egy 100%-ban magyar tulajdonú nemzetközi cégcsoport, mely a magyar élelmiszeripar meghatározó szereplője.",
-   "logo": "assets/logos/mogyi.png",
+   "logo": "assets/logos/mogyi-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/mogyi-1.jpg",
     "assets/photos/mogyi-2.jpg"
@@ -371,8 +387,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Márka Üdítőgyártó Kft. magyar, családi tulajdonú italgyártó vállalat, amely üdítőitalok, jeges teák, gyümölcsitalok, energiaitalok és egyéb alkoholmentes italok gyártásával foglalkozik.",
-   "logo": "assets/logos/marka.png",
+   "logo": "assets/logos/marka-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/marka-1.jpg",
     "assets/photos/marka-2.jpg",
@@ -396,8 +413,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Petrányi név 50 éve ismert a hazai autósok körében, a vállalat pedig az ügyfélközpontú partnerségre és a folyamatos fejlődésre építve mára a mobilitási igények széles spektrumát lefedő cégcsoporttá vált.",
-   "logo": "assets/logos/petranyi.png",
+   "logo": "assets/logos/petranyi-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/petranyi-1.jpg",
     "assets/photos/petranyi-2.jpg",
@@ -420,6 +438,7 @@ window.BMC_DATA = {
    "desc": "A Planning & Trading Kft. a magyar klíma- és konyhatechnikai piac meghatározó nagykereskedelmi szereplője. Több mint két évtizedes tapasztalatával, kiterjedt partnerhálózatával és magas színvonalú logisztikai szolgáltatásaival megbízható partnere a szakmai közösségnek és viszonteladóinak.",
    "logo": "assets/logos/planning-trading.png",
    "logoDark": false,
+   "logoOnDark": false,
    "photos": [
     "assets/photos/planning-trading-1.jpg"
    ]
@@ -440,8 +459,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Prime Rate Zrt. a régió legnagyobb és legmodernebb íves digitális nyomdája és meghatározó ofszet nyomdai szolgáltatója.",
-   "logo": "assets/logos/prime-rate.png",
+   "logo": "assets/logos/prime-rate-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/prime-rate-1.jpg",
     "assets/photos/prime-rate-2.jpg"
@@ -461,8 +481,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Prophyl a prémium minőségű SPF-tojástermelést korszerű kutatási és gyártási kapacitásokkal, valamint saját fejlesztésekkel ötvöző nemzetközileg elismert vállalat, amely a humán- és állategészségügyi innovációt szolgálja.",
-   "logo": "assets/logos/prophyl.png",
+   "logo": "assets/logos/prophyl-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": []
   },
   {
@@ -483,6 +504,7 @@ window.BMC_DATA = {
    "desc": "A Qualysoft Informatikai Zrt. nemzetközi háttérrel rendelkező informatikai tanácsadó és szoftverfejlesztő vállalat. Több mint 25 éve támogatja ügyfeleit innovatív technológiai megoldásokkal, digitális transzformációs projektek megvalósításával és üzleti értéket teremtő informatikai szolgáltatásokkal",
    "logo": "assets/logos/qualysoft.png",
    "logoDark": false,
+   "logoOnDark": false,
    "photos": [
     "assets/photos/qualysoft-1.jpg",
     "assets/photos/qualysoft-2.jpg"
@@ -503,8 +525,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A RotaPack Zrt. egy ipari csomagoló fóliákat gyártó magyar családi vállalkozás, termékeit a hazai piac kiszolgálása mellett szinte az összes európai országba exportálja.",
-   "logo": "assets/logos/rotapack.png",
+   "logo": "assets/logos/rotapack-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/rotapack-1.jpg"
    ]
@@ -523,8 +546,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "Sanatmetal Kft. közel 60 éves múlttal rendelkező magyar tulajdonú orvostechnikai vállalat, amely traumatológiai, ortopédiai, gerincsebészeti és fogászati implantátumokat fejleszt, gyárt és értékesít.",
-   "logo": "assets/logos/sanatmetal.png",
+   "logo": "assets/logos/sanatmetal-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": []
   },
   {
@@ -545,8 +569,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Schiller Autó Család alapítása egészen 1980-ig nyúlik vissza, 3 generációs családi vállalkozásként BYD, Geely, Lexus, Skoda és Toyota autók értékesítével, valamint 10 márka szervizelésével, márkától független bérautó, flottakezelő, karosszéria javító és használtautó üzletágával fedi le ügyfeleinek autós igényeit A-Z-ig.",
-   "logo": "assets/logos/schiller.png",
+   "logo": "assets/logos/schiller-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/schiller-1.jpg",
     "assets/photos/schiller-2.jpg",
@@ -568,8 +593,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Semsei Gastronomy Group ernyőmárka foglalja egységbe a cégcsoport üzletágait, a VakVarjú éttermeket, a Dobay Cukrászdát, a Budapest Party Service rendezvénygasztronómiai vállalatot, a Puli és Juhász csárdát és biergartent, és az önkiszolgáló éttermeket.",
-   "logo": "assets/logos/semsei.png",
+   "logo": "assets/logos/semsei-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/semsei-1.jpg"
    ]
@@ -591,8 +617,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Simon Plastics Kft. egy 100 %-ban magyar, családi tulajdonban levő dinamikus, műanyagfeldolgozással foglalkozó vállalat 75 fröccsöntőgéppel 10 milliárd Ft feletti árbevétellel, közel 400 dolgozóval Székesfehérvár közelében, Kőszárhegyen.",
-   "logo": "assets/logos/simon-plastics.png",
+   "logo": "assets/logos/simon-plastics-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/simon-plastics-1.jpg",
     "assets/photos/simon-plastics-2.jpg",
@@ -614,8 +641,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Tolnagro Csoport Magyarország piacvezető állatgyógyászati nagyvállalata, amely 30 éve kínál megbízható, innovatív és ügyfélközpontú megoldásokat állatorvosoknak és állattartóknak egyaránt!",
-   "logo": "assets/logos/tolnagro.png",
+   "logo": "assets/logos/tolnagro-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/tolnagro-1.jpg"
    ]
@@ -638,8 +666,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A több mint 25 éves múltra visszatekintő Tom-Ferr Zrt. családi vállalat, nem csak Magyarország vezető acélcső nagykereskedése, hanem egyedüli autóipari acélcső gyártója és alkatrész megmunkálója is , melynek 20.000 tonnás éves cső felhasználásával a földgömb kerületét évente kétszer körbe lehetne fektetni",
-   "logo": null,
+   "logo": "assets/logos/tom-ferr-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/tom-ferr-1.jpg",
     "assets/photos/tom-ferr-2.jpg",
@@ -664,8 +693,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A 40 éves TUTTI por alapú élelmiszereket fejleszt és gyárt. Innovatív megoldásokat kínál fogyasztói és B2B piacokra, saját márkás, private label és egyedi termékekkel, hosszú távú partnerségekre építve.",
-   "logo": "assets/logos/tutti.png",
+   "logo": "assets/logos/tutti-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/tutti-1.jpg",
     "assets/photos/tutti-2.jpg",
@@ -688,8 +718,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "Az UBM Csoport Magyarország piacvezető takarmánygyártó- és alapanyag-nagykereskedő vállalata, a Budapesti Értéktőzsde jelenleg egyetlen agráripari vállalkozása, amely már több mint 30 éve aktív szereplője a hazai takarmányiparnak.",
-   "logo": "assets/logos/ubm.png",
+   "logo": "assets/logos/ubm-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/ubm-1.jpg",
     "assets/photos/ubm-2.jpg",
@@ -712,8 +743,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Vajda-Papír Csoport csaknem 1000 munkavállalót foglalkoztat négy magyarországi és egy norvégiai gyárában, a hazai higiéniai papírtermék-kereslet közel 60%-át biztosítja, termelésének 60%-át pedig exportálja.",
-   "logo": "assets/logos/vajda-papir.png",
-   "logoDark": true,
+   "logo": "assets/logos/vajda-papir-2026.svg",
+   "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/vajda-papir-1.jpg",
     "assets/photos/vajda-papir-2.jpg"
@@ -737,8 +769,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "Az Euronics - Vöröskő Kft. 100%-ban magyar tulajdonú, több mint 35 éve működő műszaki áruházlánc és webáruház, amely innovációval, modern logisztikával és emberközpontú szemlélettel formálja a hazai piacot.",
-   "logo": "assets/logos/euronics.png",
+   "logo": "assets/logos/euronics-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/euronics-1.jpg",
     "assets/photos/euronics-2.jpg",
@@ -762,8 +795,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "A Wagner Solar 2002 óta valósít meg komplex energetikai rendszereket cégeknek és magánszemélyeknek, a napelemes és energiatárolós megoldásoktól a hőszivattyúig.",
-   "logo": "assets/logos/wagner-solar.png",
+   "logo": "assets/logos/wagner-solar-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/wagner-solar-1.jpg",
     "assets/photos/wagner-solar-2.jpg",
@@ -786,8 +820,9 @@ window.BMC_DATA = {
     2026
    ],
    "desc": "Az Újház Magyarország egyik piacvezető építőanyag-kereskedelmi hálózataként, országos lefedettséggel kínál széles termékválasztékot építkezőknek és felújítóknak.",
-   "logo": "assets/logos/ujhaz.png",
+   "logo": "assets/logos/ujhaz-2026.svg",
    "logoDark": false,
+   "logoOnDark": true,
    "photos": [
     "assets/photos/ujhaz-1.jpg",
     "assets/photos/ujhaz-2.jpg"

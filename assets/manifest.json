@@ -1,11 +1,12 @@
 {
  "companies": {
   "alphavet": {
-   "logo": "logos/alphavet.png",
-   "logoDark": true,
+   "logo": "logos/alphavet-2026.svg",
+   "logoDark": false,
    "photos": [
     "photos/alphavet-1.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "biotechusa": {
    "logo": "logos/biotechusa.png",
@@ -15,18 +16,20 @@
    ]
   },
   "ceh": {
-   "logo": "logos/ceh.png",
+   "logo": "logos/ceh-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/ceh-1.jpg",
     "photos/ceh-2.jpg",
     "photos/ceh-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "cerbona": {
-   "logo": "logos/cerbona.png",
+   "logo": "logos/cerbona-2026.svg",
    "logoDark": false,
-   "photos": []
+   "photos": [],
+   "logoOnDark": true
   },
   "dorko": {
    "logo": "logos/dorko.png",
@@ -52,35 +55,39 @@
    ]
   },
   "goodwill": {
-   "logo": "logos/goodwill.png",
+   "logo": "logos/goodwill-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/goodwill-1.jpg",
     "photos/goodwill-2.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "h1-systems": {
-   "logo": "logos/h1-systems.png",
+   "logo": "logos/h1-systems-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/h1-systems-1.jpg",
     "photos/h1-systems-2.jpg",
     "photos/h1-systems-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "hell": {
-   "logo": "logos/hell.png",
+   "logo": "logos/hell-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/hell-1.jpg",
     "photos/hell-2.jpg",
     "photos/hell-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "hidrofilt": {
-   "logo": "logos/hidrofilt.svg",
+   "logo": "logos/hidrofilt-2026.svg",
    "logoDark": false,
-   "photos": []
+   "photos": [],
+   "logoOnDark": true
   },
   "hunland": {
    "logo": "logos/hunland.png",
@@ -90,51 +97,57 @@
    ]
   },
   "k-v": {
-   "logo": "logos/k-v.png",
+   "logo": "logos/k-v-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/k-v-1.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "kermann": {
-   "logo": "logos/kermann.svg",
+   "logo": "logos/kermann-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/kermann-1.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "marka": {
-   "logo": "logos/marka.png",
+   "logo": "logos/marka-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/marka-1.jpg",
     "photos/marka-2.jpg",
     "photos/marka-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "merkapt": {
-   "logo": "logos/merkapt.svg",
+   "logo": "logos/merkapt-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/merkapt-1.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "mogyi": {
-   "logo": "logos/mogyi.png",
+   "logo": "logos/mogyi-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/mogyi-1.jpg",
     "photos/mogyi-2.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "petranyi": {
-   "logo": "logos/petranyi.png",
+   "logo": "logos/petranyi-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/petranyi-1.jpg",
     "photos/petranyi-2.jpg",
     "photos/petranyi-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "planning-trading": {
    "logo": "logos/planning-trading.png",
@@ -144,17 +157,19 @@
    ]
   },
   "prime-rate": {
-   "logo": "logos/prime-rate.png",
+   "logo": "logos/prime-rate-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/prime-rate-1.jpg",
     "photos/prime-rate-2.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "prophyl": {
-   "logo": "logos/prophyl.png",
+   "logo": "logos/prophyl-2026.svg",
    "logoDark": false,
-   "photos": []
+   "photos": [],
+   "logoOnDark": true
   },
   "qualysoft": {
    "logo": "logos/qualysoft.png",
@@ -165,109 +180,122 @@
    ]
   },
   "rotapack": {
-   "logo": "logos/rotapack.png",
+   "logo": "logos/rotapack-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/rotapack-1.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "sanatmetal": {
-   "logo": "logos/sanatmetal.png",
+   "logo": "logos/sanatmetal-2026.svg",
    "logoDark": false,
-   "photos": []
+   "photos": [],
+   "logoOnDark": true
   },
   "schiller": {
-   "logo": "logos/schiller.png",
+   "logo": "logos/schiller-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/schiller-1.jpg",
     "photos/schiller-2.jpg",
     "photos/schiller-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "semsei": {
-   "logo": "logos/semsei.png",
+   "logo": "logos/semsei-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/semsei-1.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "simon-plastics": {
-   "logo": "logos/simon-plastics.png",
+   "logo": "logos/simon-plastics-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/simon-plastics-1.jpg",
     "photos/simon-plastics-2.jpg",
     "photos/simon-plastics-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "tolnagro": {
-   "logo": "logos/tolnagro.png",
+   "logo": "logos/tolnagro-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/tolnagro-1.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "tom-ferr": {
-   "logo": null,
+   "logo": "logos/tom-ferr-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/tom-ferr-1.jpg",
     "photos/tom-ferr-2.jpg",
     "photos/tom-ferr-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "tutti": {
-   "logo": "logos/tutti.png",
+   "logo": "logos/tutti-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/tutti-1.jpg",
     "photos/tutti-2.jpg",
     "photos/tutti-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "ubm": {
-   "logo": "logos/ubm.png",
+   "logo": "logos/ubm-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/ubm-1.jpg",
     "photos/ubm-2.jpg",
     "photos/ubm-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "ujhaz": {
-   "logo": "logos/ujhaz.png",
+   "logo": "logos/ujhaz-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/ujhaz-1.jpg",
     "photos/ujhaz-2.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "vajda-papir": {
-   "logo": "logos/vajda-papir.png",
-   "logoDark": true,
+   "logo": "logos/vajda-papir-2026.svg",
+   "logoDark": false,
    "photos": [
     "photos/vajda-papir-1.jpg",
     "photos/vajda-papir-2.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "euronics": {
-   "logo": "logos/euronics.png",
+   "logo": "logos/euronics-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/euronics-1.jpg",
     "photos/euronics-2.jpg",
     "photos/euronics-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   },
   "wagner-solar": {
-   "logo": "logos/wagner-solar.png",
+   "logo": "logos/wagner-solar-2026.svg",
    "logoDark": false,
    "photos": [
     "photos/wagner-solar-1.jpg",
     "photos/wagner-solar-2.jpg",
     "photos/wagner-solar-3.jpg"
-   ]
+   ],
+   "logoOnDark": true
   }
  },
  "group": [
