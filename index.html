@@ -261,7 +261,8 @@ h1.big b{font-weight:700}
 .homebtn{display:flex;align-items:center;padding:22px 40px;border-radius:999px;border:1px solid var(--line-g);background:rgba(252,197,66,.08);
   font-size:28px;font-weight:600;align-self:flex-start;cursor:pointer}
 .homebtn:active{background:var(--green);color:#1a1204}
-#world-map{touch-action:none;cursor:grab}
+#world-map{touch-action:none}
+html.web #world-map{cursor:grab}
 .w-ocean{fill:url(#wOcean);stroke:none}
 .w-rim{fill:none;stroke:rgba(252,197,66,.45);stroke-width:2}
 .w-bmc{cursor:pointer}
@@ -285,10 +286,11 @@ h1.big b{font-weight:700}
 .w-ping{fill:none;stroke:var(--gold-1);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
 @keyframes ping{from{transform:scale(.3);opacity:1}to{transform:scale(2.4);opacity:0}}
 .strip{height:250px;overflow:hidden;flex:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.strack{display:flex;gap:20px;width:max-content;height:100%;animation:marq 70s linear infinite;animation-play-state:paused}
-.strip.rev .strack{animation-direction:reverse;animation-duration:84s}
-.screen.active .strack{animation-play-state:running}
-@keyframes marq{to{transform:translateX(-50%)}}
+.strack{display:flex;gap:20px;width:max-content;height:100%;will-change:transform}
+.strip{touch-action:none}
+html.web .strip{cursor:grab}
+html.web .strip:active{cursor:grabbing}
+.ph img{pointer-events:none}
 .ph{position:relative;width:420px;height:100%;flex:none;border-radius:4px;overflow:hidden;background:
   repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 18px,transparent 18px 36px),#16130f;border:1px solid var(--line)}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}

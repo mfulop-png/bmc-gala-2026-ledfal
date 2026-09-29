@@ -491,15 +491,79 @@
   }
 
   /* Global Journey */
+  /* Global Journey fotósávok: maguktól futnak, de ujjal/egérrel meg is foghatók és húzhatók
+     (elengedve lendülettel csúsznak tovább); egy képre koppintva teljes képernyőn nyílik meg. */
   (function strips() {
-    const tile = p => '<div class="ph">' + (p.src ? '<img src="' + p.src + '" alt="">' : '<div class="pe">Fotó érkezik</div>') +
+    const A = D.globalPhotos;
+    const tile = p => '<div class="ph" data-i="' + A.indexOf(p) + '">' + (p.src ? '<img src="' + p.src + '" alt="" draggable="false">' : '<div class="pe">Fotó érkezik</div>') +
       '<div class="pc">' + esc(p.country) + '</div></div>';
-    const A = D.globalPhotos, half = Math.ceil(A.length / 2);
+    const half = Math.ceil(A.length / 2);
     const s1 = A.slice(0, half), s2 = A.slice(half).concat(A.slice(0, Math.max(0, half - (A.length - half))));
     const fill = arr => { let o = arr.slice(); while (o.length < 9) o = o.concat(arr); return o; };
     const t1 = fill(s1).map(tile).join(''), t2 = fill(s2).map(tile).join('');
     $('#strip1').innerHTML = t1 + t1;
     $('#strip2').innerHTML = t2 + t2;
+
+    const TILE = 420 + 20;                            // csempe szélessége + rés (4K-s színpadpixel)
+    const S = [['#strip1', -1, 70], ['#strip2', 1, 84]].map(([sel, dir, secs]) => {
+      const track = $(sel), period = track.children.length / 2 * TILE;
+      return { track, strip: track.parentNode, period, speed: dir * period / (secs * 1000), off: -period / 2,
+               drag: null, vel: 0 };
+    });
+    const norm = (st) => { while (st.off <= -st.period) st.off += st.period; while (st.off > 0) st.off -= st.period; };
+    const scale = () => stage.getBoundingClientRect().width / 3840;   // képernyőpixel -> színpadpixel
+
+    S.forEach(st => {
+      st.strip.addEventListener('pointerdown', e => {
+        st.strip.setPointerCapture(e.pointerId);
+        st.drag = { id: e.pointerId, x: e.clientX, off: st.off, t: performance.now(), lastX: e.clientX, moved: 0 };
+        st.vel = 0;
+      });
+      st.strip.addEventListener('pointermove', e => {
+        const d = st.drag;
+        if (!d || d.id !== e.pointerId) return;
+        const k = scale(), now = performance.now(), dx = (e.clientX - d.lastX) / k;
+        st.off = d.off + (e.clientX - d.x) / k; norm(st);
+        d.moved = Math.max(d.moved, Math.abs(e.clientX - d.x));
+        if (now > d.t) st.vel = .8 * st.vel + .2 * (dx / (now - d.t));   // simított sebesség (px/ms)
+        d.t = now; d.lastX = e.clientX;
+        // az abszolút eltolást a normalizálás után is konzisztensen tartjuk
+        d.off = st.off - (e.clientX - d.x) / k;
+      });
+      const end = e => {
+        const d = st.drag;
+        if (!d || d.id !== e.pointerId) return;
+        st.drag = null;
+        if (d.moved < 10 && e.type === 'pointerup') {             // koppintás: kép nagyítása
+          const ph = document.elementFromPoint(e.clientX, e.clientY);
+          const el = ph && ph.closest('.ph');
+          if (el && A[+el.dataset.i] && A[+el.dataset.i].src) {
+            const list = A.filter(p => p.src), i = list.indexOf(A[+el.dataset.i]);
+            openGallery(list.map(p => p.src), i, A[+el.dataset.i].country);
+          }
+          st.vel = 0;
+        }
+      };
+      st.strip.addEventListener('pointerup', end);
+      st.strip.addEventListener('pointercancel', end);
+    });
+
+    let last = performance.now();
+    (function frame(now) {
+      requestAnimationFrame(frame);
+      const dt = Math.min(64, now - last); last = now;
+      if (!$('.screen[data-screen="global"]').classList.contains('active')) return;
+      S.forEach(st => {
+        if (!st.drag) {
+          // lendület lecsengése, majd vissza az alap sebességre
+          st.vel *= Math.pow(.94, dt / 16.7);
+          if (Math.abs(st.vel) < .01) st.vel = 0;
+          st.off += (st.speed + st.vel) * dt;
+          norm(st);
+        }
+        st.track.style.transform = 'translate3d(' + st.off + 'px,0,0)';
+      });
+    })(last);
   })();
   /* Global Journey földgömb: egy ujjal forgatható, két ujjal nagyítható, tétlenül lassan forog.
      Kiemelt országra koppintva odafordul, és jobb oldalt megjelenik az ország kártyája. */
