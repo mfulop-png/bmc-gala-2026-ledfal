@@ -130,7 +130,8 @@ h1.big b{font-weight:700}
   box-shadow:0 0 0 0 rgba(252,197,66,0)}
 .welrule{width:0;height:5px;background:var(--green);margin-bottom:40px}
 .wel h2{font-family:var(--serif);font-size:60px;font-weight:400;color:var(--muted)}
-.wel .cn{font-size:132px;font-weight:700;line-height:1.05;margin:28px 0 46px;letter-spacing:-.02em;
+/* színátmenetes név: a festett doboz kibővítve (lelógó betűk, ékezetek), negatív margóval kompenzálva */
+.wel .cn{font-size:132px;font-weight:700;line-height:1.08;padding:18px 12px 26px;margin:10px -12px 20px;letter-spacing:-.02em;
   background:linear-gradient(100deg,#fff 30%,#f5dd86 50%,#fff 70%);background-size:220% 100%;
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .wel .msg{font-family:var(--serif);font-size:72px;font-weight:400;color:#fff;line-height:1.2}
@@ -265,7 +266,7 @@ html.web #world-map{cursor:grab}
 .wcard{flex:1;min-height:0;padding:40px 44px;display:flex;flex-direction:column;gap:26px;overflow:hidden;animation:dIn .4s ease}
 .wcard.empty{align-items:center;justify-content:center;text-align:center;color:var(--muted);font-family:var(--serif);font-size:52px;line-height:1.3}
 .wc-kicker{font-size:26px;letter-spacing:.22em;text-transform:uppercase;color:var(--green)}
-.wc-name{font-family:var(--serif);font-size:112px;font-weight:700;line-height:1.05;margin-top:-6px;padding-bottom:.06em}
+.wc-name{font-family:var(--serif);font-size:112px;font-weight:700;line-height:1.05;padding:.12em .08em .16em;margin:calc(-6px - .12em) -.08em -.1em}
 .wc-stats{display:flex;gap:64px}
 .wc-stats div{font-size:28px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 .wc-stats b{display:block;font-size:104px;letter-spacing:0;line-height:1.1;font-variant-numeric:tabular-nums}
