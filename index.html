@@ -43,7 +43,7 @@ a:hover{color:#a6dc45}
 .topright .ev{font-size:26px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
 #clock{font-size:42px;font-weight:300;font-variant-numeric:tabular-nums;color:#fff}
 
-#nav{position:absolute;bottom:0;left:0;right:0;height:190px;display:grid;grid-template-columns:repeat(3,1fr);
+#nav{position:absolute;bottom:0;left:0;right:0;height:190px;display:grid;grid-template-columns:repeat(4,1fr);
   gap:0;border-top:1px solid var(--line);background:rgba(8,10,7,.86);backdrop-filter:blur(8px);z-index:30}
 .tab{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 54px;position:relative;
   border-right:1px solid var(--line);transition:background .25s}
@@ -156,10 +156,6 @@ h1.big b{font-weight:700;color:var(--green)}
 .seg{display:flex;border:1px solid var(--line);border-radius:999px;padding:6px;background:rgba(255,255,255,.03)}
 .seg div{padding:22px 40px;border-radius:999px;font-size:28px;font-weight:600;color:#c9cec3;transition:background .25s,color .25s}
 .seg div.on{background:var(--green);color:#0b0f06}
-.globebtn{display:flex;align-items:center;gap:22px;padding:10px 40px 10px 10px;border-radius:999px;border:1px solid var(--line-g);
-  background:rgba(134,188,37,.08);font-size:28px;font-weight:600}
-.globebtn .g{width:96px;height:96px;border-radius:50%;background:var(--green);display:grid;place-items:center}
-.globebtn .g svg{width:60px;height:60px;animation:spin 14s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 #hu-map{flex:1;min-height:0;width:100%;overflow:hidden;touch-action:none}
 #hu-map path{vector-effect:non-scaling-stroke}
@@ -237,10 +233,7 @@ h1.big b{font-weight:700;color:var(--green)}
 #lightbox .lbn{position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:28px;color:var(--muted)}
 
 /* ---------- world (Global Journey) ---------- */
-.worldview{position:absolute;inset:0;display:flex;flex-direction:column;gap:30px;padding:40px 0;opacity:0;pointer-events:none;
-  transform:scale(1.35);transition:transform .9s cubic-bezier(.6,0,.2,1),opacity .6s ease .15s}
-.worldmode .worldview{opacity:1;pointer-events:auto;transform:none}
-.worldmode .maplayout{transform:scale(.35);opacity:0;pointer-events:none}
+.worldview{position:absolute;inset:0;display:flex;flex-direction:column;gap:30px;padding:40px 0}
 .wmid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 980px;gap:56px;padding:0 72px}
 .wleft{display:flex;flex-direction:column;gap:20px;min-height:0}
 #world-map{flex:1;min-height:0;width:100%}
@@ -253,14 +246,13 @@ h1.big b{font-weight:700;color:var(--green)}
 .strip{height:250px;overflow:hidden;flex:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .strack{display:flex;gap:20px;width:max-content;height:100%;animation:marq 70s linear infinite;animation-play-state:paused}
 .strip.rev .strack{animation-direction:reverse;animation-duration:84s}
-.worldmode .strack{animation-play-state:running}
+.screen.active .strack{animation-play-state:running}
 @keyframes marq{to{transform:translateX(-50%)}}
 .ph{position:relative;width:420px;height:100%;flex:none;border-radius:4px;overflow:hidden;background:
   repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 18px,transparent 18px 36px),#12160f;border:1px solid var(--line)}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .ph .pe{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase}
 .ph .pc{position:absolute;left:14px;bottom:14px;padding:6px 14px;border-radius:999px;background:rgba(0,0,0,.65);font-size:20px;font-weight:600;color:#fff}
-.backbtn{display:flex;align-items:center;gap:20px;padding:22px 40px;border-radius:999px;border:1px solid var(--line-g);background:rgba(134,188,37,.08);font-size:28px;font-weight:600;align-self:flex-start}
 .bigstat{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border:1px solid var(--line)}
 .bigstat>div{background:var(--panel);padding:38px 40px}
 .bigstat .v{font-size:86px;font-weight:700;color:var(--green);line-height:1;font-variant-numeric:tabular-nums}
@@ -388,7 +380,7 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
 
   <div id="screens">
 
-    <!-- 1. BMC térkép (+ Global Journey) -->
+    <!-- 1. BMC térkép -->
     <section class="screen" data-screen="map" id="mapscreen">
       <div class="maplayout">
         <div class="mapwrap" id="mapwrap">
@@ -399,7 +391,6 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
             </div>
             <div class="mapctl">
               <div class="seg" id="zoomseg"><div class="on" data-z="hu">Magyarország</div><div data-z="bp">Budapest</div></div>
-              <div class="globebtn" id="globebtn"><div class="g"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0f06" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4.2" ry="10"/><path d="M2 12h20M4 6.5h16M4 17.5h16"/></svg></div>Global Journey</div>
             </div>
           </div>
           <svg id="hu-map"></svg>
@@ -420,6 +411,10 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
           <div class="panel detail empty" id="detail">Koppints egy pontra a térképen<br>a vállalat adataiért</div>
         </div>
       </div>
+    </section>
+
+    <!-- 2. Global Journey -->
+    <section class="screen" data-screen="global">
       <div class="worldview">
         <div class="strip"><div class="strack" id="strip1"></div></div>
         <div class="wmid">
@@ -429,7 +424,6 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
                 <div class="kicker">Global Journey</div>
                 <h1 class="big">A program <b>45+ országban</b></h1>
               </div>
-              <div class="backbtn" id="backbtn">← Vissza a BMC térképhez</div>
             </div>
             <svg id="world-map"></svg>
           </div>
@@ -506,8 +500,9 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
 
   <div id="nav">
     <div class="tab" data-go="map"><div class="n">01</div><div class="t">BMC térkép</div></div>
-    <div class="tab" data-go="timeline"><div class="n">02</div><div class="t">5 év története</div></div>
-    <div class="tab" data-go="tonight"><div class="n">03</div><div class="t">A mai este</div></div>
+    <div class="tab" data-go="global"><div class="n">02</div><div class="t">Global Journey</div></div>
+    <div class="tab" data-go="timeline"><div class="n">03</div><div class="t">5 év története</div></div>
+    <div class="tab" data-go="tonight"><div class="n">04</div><div class="t">A mai este</div></div>
   </div>
 
   <!-- attract -->

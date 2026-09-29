@@ -29,7 +29,6 @@
     $$('.screen').forEach(s => s.classList.toggle('active', s.dataset.screen === name));
     $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.go === name));
     $('#attract').classList.add('hidden');
-    if (name !== 'map') setWorld(false);
     if (name === 'timeline') selectYear(tlYear, true);
     resetIdle();
   }
@@ -38,7 +37,7 @@
     $$('.screen').forEach(s => s.classList.remove('active'));
     $$('.tab').forEach(t => t.classList.remove('active'));
     $('#attract').classList.remove('hidden');
-    clearDetail(); setWorld(false); setZoom('hu', true);
+    clearDetail(); setZoom('hu', true);
     $('#lightbox').classList.remove('show');
     $('#profile').classList.remove('show');
     clearTimeout(idleT);
@@ -430,11 +429,6 @@
   }
 
   /* Global Journey */
-  function setWorld(on) {
-    $('#mapscreen').classList.toggle('worldmode', !!on);
-  }
-  $('#globebtn').addEventListener('click', () => setWorld(true));
-  $('#backbtn').addEventListener('click', () => setWorld(false));
   (function strips() {
     const tile = p => '<div class="ph">' + (p.src ? '<img src="' + p.src + '" alt="">' : '<div class="pe">Fotó érkezik</div>') +
       '<div class="pc">' + esc(p.country) + '</div></div>';
