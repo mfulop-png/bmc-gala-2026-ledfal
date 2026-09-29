@@ -305,6 +305,10 @@
  ],
  "global": [
   {
+   "file": "global/australia.jpg",
+   "source": "australia"
+  },
+  {
    "file": "global/austria.jpg",
    "source": "austria"
   },
@@ -389,12 +393,28 @@
    "source": "kuala lumpur"
   },
   {
-   "file": "global/poland.jpg",
-   "source": "poland"
+   "file": "global/kozep-amerika.jpg",
+   "source": "közép-amerika"
+  },
+  {
+   "file": "global/kozep-amerika2.jpg",
+   "source": "közép-amerika2"
   },
   {
    "file": "global/poland.jpg",
    "source": "poland"
+  },
+  {
+   "file": "global/poland-2.jpg",
+   "source": "poland"
+  },
+  {
+   "file": "global/poland2.jpg",
+   "source": "poland2"
+  },
+  {
+   "file": "global/poland3.jpg",
+   "source": "poland3"
   },
   {
    "file": "global/slovakia.jpg",
@@ -419,6 +439,10 @@
   {
    "file": "global/uk.jpg",
    "source": "uk"
+  },
+  {
+   "file": "global/uk2.jpg",
+   "source": "uk2"
   }
  ]
 }

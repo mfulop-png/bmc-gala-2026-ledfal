@@ -805,6 +805,10 @@ window.BMC_DATA = {
    "country": "Ausztria"
   },
   {
+   "src": "assets/global/australia.jpg",
+   "country": "Ausztrália"
+  },
+  {
    "src": "assets/global/belgium.jpg",
    "country": "Belgium"
   },
@@ -830,6 +834,10 @@ window.BMC_DATA = {
   },
   {
    "src": "assets/global/uk.jpg",
+   "country": "Egyesült Királyság"
+  },
+  {
+   "src": "assets/global/uk2.jpg",
    "country": "Egyesült Királyság"
   },
   {
@@ -865,11 +873,27 @@ window.BMC_DATA = {
    "country": "Kína"
   },
   {
+   "src": "assets/global/kozep-amerika.jpg",
+   "country": "Közép-Amerika"
+  },
+  {
+   "src": "assets/global/kozep-amerika2.jpg",
+   "country": "Közép-Amerika"
+  },
+  {
    "src": "assets/global/poland.jpg",
    "country": "Lengyelország"
   },
   {
-   "src": "assets/global/poland.jpg",
+   "src": "assets/global/poland-2.jpg",
+   "country": "Lengyelország"
+  },
+  {
+   "src": "assets/global/poland2.jpg",
+   "country": "Lengyelország"
+  },
+  {
+   "src": "assets/global/poland3.jpg",
    "country": "Lengyelország"
   },
   {
