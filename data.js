@@ -83,15 +83,6 @@ window.BMC = (function () {
       { time: null, title: 'Vacsora', place: 'Nagyterem' },
       { time: null, title: 'Networking, kötetlen beszélgetés és fotókészítés', place: 'Előtér · Fotófal' }
     ],
-    venue: [
-      { name: 'Nagyterem', note: 'Díjátadó és vacsora' },
-      { name: 'Előtér', note: 'Regisztráció és welcome drink' },
-      { name: 'Étel-ital pult', note: '' },
-      { name: 'Koktélpult', note: '' },
-      { name: 'Sommelier', note: '' },
-      { name: 'Fotófal', note: 'Céges és közös fotók' },
-      { name: 'Ledfal', note: 'Itt vagy most' }
-    ],
     goodToKnow: 'A fotófal az előtérben található, a díjátadóról készült képek a gála után elérhetők lesznek a résztvevők számára.'
   };
 

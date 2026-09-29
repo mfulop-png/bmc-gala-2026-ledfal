@@ -88,7 +88,6 @@
   /* ---------- attract particles ---------- */
   /* ---------- várakozó képernyő: arany csillámok (bokeh), lassan felfelé úszva, pislákolva ---------- */
   (function sparkles() {
-    if (WEB) return;
     const cv = $('#particles'), ctx = cv.getContext('2d');
     cv.width = 3840; cv.height = 2160;
     // előre renderelt, lágy szélű fénypötty – a 'lighter' keverés adja a ragyogást
@@ -701,7 +700,10 @@
       '<div class="wg' + (isNew(c) ? ' new' : '') + (isJub(c) ? ' jub' : '') + '" data-id="' + c.id + '">' +
       (isNew(c) ? '<i class="new">ÚJ</i>' : '') + '<span class="nm">' + esc(c.name) + '</span>' +
       (isJub(c) ? '<span class="st">★</span>' : '') + '</div>').join('');
-    $$('#wgrid .wg').forEach(e => e.addEventListener('click', () => openProfile(byId[e.dataset.id])));
+    $$('#wgrid .wg').forEach((e, i) => {
+      e.style.setProperty('--d', (i * 0.3) + 's');
+      e.addEventListener('click', () => openProfile(byId[e.dataset.id]));
+    });
   }
   function animateNum(el, to, dur) {
     const t0 = performance.now();
@@ -723,17 +725,21 @@
     $('#agenda').innerHTML = D.tonight.agenda.map(a =>
       '<div class="ag"><div class="tm' + (a.time ? '' : ' tbd') + '">' + (a.time || 'időpont<br>érkezik') + '</div>' +
       '<div><div class="tt">' + esc(a.title) + '</div><div class="pl">' + esc(a.place) + '</div></div></div>').join('');
-    $('#vlist').innerHTML = D.tonight.venue.map(v =>
-      '<div class="vl' + (v.name === 'Ledfal' ? ' here' : '') + '"><span class="n">' + esc(v.name) + '</span>' +
-      '<span class="s">' + esc(v.note) + '</span></div>').join('');
   })();
 
   /* ---------- admin / welcome ---------- */
   const admin = $('#admin');
-  let pressT = null;
-  if (!WEB) $('#adminbtn').addEventListener('pointerdown', () => { pressT = setTimeout(openAdmin, 2000); });
-  ['pointerup', 'pointerleave', 'pointercancel'].forEach(e =>
-    $('#adminbtn').addEventListener(e, () => clearTimeout(pressT)));
+  // bal felső BMC logó: rövid koppintás -> kezdőképernyő, 2 mp nyomva tartás -> admin (csak kioszk)
+  let pressT = null, longPress = false;
+  $('#adminbtn').addEventListener('pointerdown', () => {
+    longPress = false;
+    if (!WEB) pressT = setTimeout(() => { longPress = true; openAdmin(); }, 2000);
+  });
+  $('#adminbtn').addEventListener('pointerup', () => {
+    clearTimeout(pressT);
+    if (!longPress && !admin.classList.contains('show')) toAttract();
+  });
+  ['pointerleave', 'pointercancel'].forEach(e => $('#adminbtn').addEventListener(e, () => clearTimeout(pressT)));
   if (!WEB) {
     document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'a' && e.ctrlKey) openAdmin(); });
     if (location.search.indexOf('admin') >= 0) openAdmin();
@@ -759,40 +765,35 @@
   let welT = null;
   const welCv = $('#welfx'); welCv.width = 3840; welCv.height = 2160;
   const welCtx = welCv.getContext('2d');
-  let confetti = [], welRaf = null;
-  function burst() {
-    const COL = ['#fcc542', '#f5dd86', '#d7ad54', '#ffffff', '#8f5a26'];
-    confetti = [];
-    for (let i = 0; i < 260; i++) {
-      const a = Math.random() * Math.PI * 2, sp = 6 + Math.random() * 26;
-      confetti.push({
-        x: 1920, y: 1080, vx: Math.cos(a) * sp * 1.7, vy: Math.sin(a) * sp - 6,
-        w: 8 + Math.random() * 12, h: 18 + Math.random() * 26,
-        rot: Math.random() * 6.28, vr: (Math.random() - .5) * .22,
-        c: COL[(Math.random() * COL.length) | 0], life: 1
-      });
-    }
+  let welRaf = null;
+  // visszafogott csillámok: a logó és a név körül lassan felszálló, halványuló arany fénypontok
+  const welSpr = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,240,190,1)'); g.addColorStop(.3, 'rgba(245,221,134,.6)'); g.addColorStop(1, 'rgba(143,90,38,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 64, 64); return c;
+  })();
+  function sparkleWelcome() {
+    const pts = [];
+    const spawn = () => ({ x: 300 + Math.random() * 3240, y: 1500 + Math.random() * 800, s: 4 + Math.random() * 14,
+      vy: -(.25 + Math.random() * .6), sway: Math.random() * 6.28, life: 0, max: 280 + Math.random() * 260 });
     cancelAnimationFrame(welRaf);
     let last = performance.now();
     (function frame(t) {
-      const dt = Math.min(2.5, (t - last) / 16.67); last = t;
+      const dt = Math.min(3, (t - last) / 16.67); last = t;
+      if (pts.length < 70 && Math.random() < .5) pts.push(spawn());
       welCtx.clearRect(0, 0, 3840, 2160);
-      let alive = 0;
-      for (const p of confetti) {
-        p.vy += .42 * dt; p.vx *= .992;
-        p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
-        p.life -= .0042 * dt;
-        if (p.life <= 0 || p.y > 2300) continue;
-        alive++;
-        welCtx.save();
-        welCtx.globalAlpha = Math.max(0, Math.min(1, p.life));
-        welCtx.translate(p.x, p.y); welCtx.rotate(p.rot);
-        welCtx.fillStyle = p.c;
-        welCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * (.4 + .6 * Math.abs(Math.cos(p.rot))));
-        welCtx.restore();
+      welCtx.globalCompositeOperation = 'lighter';
+      for (let k = pts.length - 1; k >= 0; k--) {
+        const p = pts[k];
+        p.life += dt; p.y += p.vy * dt; p.sway += .01 * dt;
+        const a = Math.sin(Math.PI * Math.min(1, p.life / p.max));   // lassan fel, lassan le
+        if (p.life >= p.max) { pts.splice(k, 1); continue; }
+        welCtx.globalAlpha = .55 * a;
+        welCtx.drawImage(welSpr, p.x + Math.sin(p.sway) * 24 - p.s, p.y - p.s, p.s * 2, p.s * 2);
       }
-      if (alive) welRaf = requestAnimationFrame(frame);
-      else welCtx.clearRect(0, 0, 3840, 2160);
+      welCtx.globalAlpha = 1; welCtx.globalCompositeOperation = 'source-over';
+      welRaf = requestAnimationFrame(frame);
     })(last);
   }
   function welcome(c) {
@@ -805,8 +806,7 @@
     const w = $('#welcome');
     w.classList.remove('play'); void w.offsetWidth; w.classList.add('play');
     w.classList.add('show');
-    setTimeout(burst, 420);
-    setTimeout(burst, 1400);
+    sparkleWelcome();
     clearTimeout(welT);
     welT = setTimeout(closeWelcome, 15000);
   }
@@ -819,6 +819,47 @@
     }, 550);
   }
   $('#welcome').addEventListener('pointerdown', () => { clearTimeout(welT); closeWelcome(); });
+
+  /* ---------- érintés-jelzések: ha egy ideig senki nem nyúl semmihez, egy koppintó kéz mutatja,
+     mire lehet bökni (térképpont, kiemelt ország, timeline-csempe). Csak a kioszkon. ---------- */
+  $$('#hu-map .hu-dot').forEach((g, i) => g.style.setProperty('--d', (-(i * 0.37) % 3.2).toFixed(2) + 's'));
+  (function nudges() {
+    if (WEB) return;
+    const nudge = $('#nudge');
+    let lastTouch = performance.now(), lastNudge = 0;
+    const hide = () => nudge.classList.remove('show');
+    document.addEventListener('pointerdown', () => { lastTouch = performance.now(); hide(); }, true);
+    const inView = (r, box) => r.width > 0 && r.left > box.left + 40 && r.right < box.right - 40 && r.top > box.top + 40 && r.bottom < box.bottom - 40;
+    function target() {
+      let els = [], box;
+      if (current === 'map' && !selected) {
+        box = $('#hu-map').getBoundingClientRect();
+        els = $$('#hu-map .hu-dot:not(.dimmed) circle.core');
+      } else if (current === 'global') {
+        box = $('#world-map').getBoundingClientRect();
+        els = $$('#world-map path.w-bmc');
+      } else if (current === 'timeline' && !$('#profile').classList.contains('show')) {
+        box = $('#wgrid').getBoundingClientRect();
+        els = $$('#wgrid .wg');
+      }
+      els = els.filter(e => inView(e.getBoundingClientRect(), box));
+      return els.length ? els[(Math.random() * els.length) | 0] : null;
+    }
+    setInterval(() => {
+      const now = performance.now();
+      const busy = !current || $('#lightbox').classList.contains('show') || $('#welcome').classList.contains('show') ||
+        $('#admin').classList.contains('show');
+      if (busy) { hide(); return; }
+      if (nudge.classList.contains('show')) { if (now - lastNudge > 4200) hide(); return; }
+      if (now - lastTouch < 7000 || now - lastNudge < 12000) return;
+      const el = target();
+      if (!el) return;
+      const r = el.getBoundingClientRect(), st = stage.getBoundingClientRect(), k = st.width / 3840;
+      nudge.style.transform = 'translate(' + ((r.left + r.width / 2 - st.left) / k) + 'px,' + ((r.top + r.height / 2 - st.top) / k) + 'px)';
+      nudge.classList.add('show');
+      lastNudge = now;
+    }, 700);
+  })();
 
   if (WEB) go('map'); else toAttract();
 })();

@@ -92,7 +92,7 @@ h1.big b{font-weight:700}
 #attract.hidden{opacity:0;pointer-events:none}
 #particles{position:absolute;inset:0}
 .attract-inner{position:relative;text-align:center;padding:0 200px;width:100%}
-.attract-inner .mark{font-size:30px;letter-spacing:.42em;text-transform:uppercase;color:var(--green);margin-bottom:60px}
+.attract-inner .mark{display:block;height:120px;width:auto;margin:0 auto 70px}
 .attract-inner h1{font-family:var(--serif);font-size:180px;font-weight:400;line-height:1.05;letter-spacing:0}
 .attract-inner h1 b{font-weight:700;display:block;padding:.06em 0}
 .attract-inner .yr{font-size:48px;color:var(--muted);font-weight:300;margin-top:54px;letter-spacing:.06em}
@@ -107,28 +107,22 @@ h1.big b{font-weight:700}
 #welcome{position:absolute;inset:0;z-index:80;background:#000 url(assets/bg/welcome.jpg) center/cover;display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity .5s ease;overflow:hidden}
 #welcome.show{opacity:1;pointer-events:auto}
-#welfx,#welsweep,#welglow{position:absolute;inset:0;pointer-events:none}
-#welglow{background:radial-gradient(1400px 1400px at 50% 50%, rgba(252,197,66,.22), rgba(252,197,66,.05) 45%, transparent 70%);
-  opacity:0;transform:scale(.3)}
-#welsweep{background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.14) 48%,rgba(252,197,66,.30) 50%,
-  rgba(255,255,255,.14) 52%,transparent 62%);transform:translateX(-120%)}
-.welrings{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
-.welrings i{position:absolute;left:0;top:0;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;
-  border:2px solid rgba(252,197,66,.45);opacity:0}
-#welcome.play #welglow{animation:welGlow 1.1s cubic-bezier(.2,.8,.2,1) forwards}
-#welcome.play #welsweep{animation:welSweep 1.5s .35s cubic-bezier(.4,0,.2,1) forwards}
-#welcome.play .welrings i{animation:welRing 2.8s ease-out infinite}
-#welcome.play .welrings i:nth-child(2){animation-delay:.9s}
-#welcome.play .welrings i:nth-child(3){animation-delay:1.8s}
-@keyframes welGlow{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
-@keyframes welSweep{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
-@keyframes welRing{0%{transform:scale(.25);opacity:0}18%{opacity:.7}100%{transform:scale(2.6);opacity:0}}
+#welfx,#welglow{position:absolute;inset:0;pointer-events:none}
+#welglow{background:radial-gradient(1300px 1000px at 30% 50%, rgba(252,197,66,.10), transparent 70%);opacity:0}
+.welrings{position:absolute;left:30%;top:50%;width:0;height:0;pointer-events:none}
+.welrings i{position:absolute;left:0;top:0;width:1100px;height:1100px;margin:-550px 0 0 -550px;border-radius:50%;
+  border:1px solid rgba(245,221,134,.28);opacity:0}
+#welcome.play #welglow{animation:welFade 2.4s ease forwards}
+#welcome.play .welrings i{animation:welRing 7s ease-out infinite}
+#welcome.play .welrings i:nth-child(2){animation-delay:3.5s}
+@keyframes welFade{from{opacity:0}to{opacity:1}}
+@keyframes welRing{0%{transform:scale(.55);opacity:0}25%{opacity:.6}100%{transform:scale(1.6);opacity:0}}
 .wel{position:relative;z-index:3;display:grid;grid-template-columns:900px 1fr;gap:140px;align-items:center;padding:0 200px;width:100%}
 .wel.nologo{grid-template-columns:1fr;text-align:center}
 .wel.nologo .welrule{margin-left:auto;margin-right:auto}
 .wel.nologo .meta{justify-content:center}
 .wel.nologo .logo{display:none}
-.wel .logo{width:900px;height:520px;border:1px solid var(--line-g);border-radius:8px;background:#fff;
+.wel .logo{width:900px;height:520px;border:1px solid var(--line);border-radius:8px;background:#fff;
   display:grid;place-items:center;padding:60px;
   box-shadow:0 0 0 0 rgba(252,197,66,0)}
 .welrule{width:0;height:5px;background:var(--green);margin-bottom:40px}
@@ -140,17 +134,15 @@ h1.big b{font-weight:700}
 .wel .msg b{font-weight:700}
 .wel .meta{margin-top:56px;font-size:32px;color:var(--muted);display:flex;gap:56px;flex-wrap:wrap}
 .wel .meta span{padding-left:30px;border-left:2px solid var(--line-g)}
-#welcome.play .wel .logo{animation:welLogo 1.1s .15s cubic-bezier(.2,.9,.2,1) both}
-#welcome.play .welrule{animation:welRule .8s .5s cubic-bezier(.2,.8,.2,1) both}
-#welcome.play .wel h2{animation:welRise .8s .6s cubic-bezier(.2,.8,.2,1) both}
-#welcome.play .wel .msg{animation:welRise .8s .72s cubic-bezier(.2,.8,.2,1) both}
-#welcome.play .wel .cn{animation:welRise .9s .86s cubic-bezier(.2,.8,.2,1) both, welShine 3.4s 1.6s ease-in-out infinite}
+#welcome.play .wel .logo{animation:welLogo 1.6s .2s cubic-bezier(.2,.8,.2,1) both}
+#welcome.play .welrule{animation:welRule 1.2s .8s cubic-bezier(.2,.8,.2,1) both}
+#welcome.play .wel h2{animation:welRise 1.2s .9s cubic-bezier(.2,.8,.2,1) both}
+#welcome.play .wel .msg{animation:welRise 1.2s 1.05s cubic-bezier(.2,.8,.2,1) both}
+#welcome.play .wel .cn{animation:welRise 1.3s 1.25s cubic-bezier(.2,.8,.2,1) both, welShine 7s 2.6s ease-in-out infinite}
 #welcome.play .wel .meta{animation:welRise .8s 1.05s cubic-bezier(.2,.8,.2,1) both}
-@keyframes welLogo{from{opacity:0;transform:scale(.86) translateY(40px)}
-  60%{box-shadow:0 0 90px 12px rgba(252,197,66,.55)}
-  to{opacity:1;transform:none;box-shadow:0 0 60px 0 rgba(252,197,66,.22)}}
+@keyframes welLogo{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
 @keyframes welRule{from{width:0;opacity:0}to{width:220px;opacity:1}}
-@keyframes welRise{from{opacity:0;transform:translateY(46px)}to{opacity:1;transform:none}}
+@keyframes welRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes welShine{0%,100%{background-position:140% 0}50%{background-position:-40% 0}}
 
 /* ---------- panels / generic ---------- */
@@ -380,20 +372,41 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
 .ag .tm.tbd{font-size:24px;font-weight:600;color:#d8a13a;letter-spacing:.1em;line-height:1.3}
 .ag .tt{font-size:44px;font-weight:600;color:#fff;line-height:1.2}
 .ag .pl{font-size:28px;color:var(--muted);margin-top:8px}
-.venuemap{flex:1;min-height:0;position:relative;border:1px solid var(--line)}
-.vlist{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border:1px solid var(--line)}
-.vl{background:var(--panel);padding:24px 30px;display:flex;flex-direction:column;gap:6px}
-.vl .n{font-size:34px;font-weight:700;display:flex;align-items:center;gap:16px}
-.vl .n::before{content:'';width:16px;height:16px;background:var(--green);border-radius:50%;flex:none}
-.vl .s{font-size:24px;color:var(--muted);padding-left:32px;min-height:1em}
-.vl.here{background:rgba(252,197,66,.14)}
+.tbrand{align-items:center;justify-content:center}
+.tbrand img{width:88%;height:auto;filter:drop-shadow(0 0 60px rgba(252,197,66,.10))}
+
+/* ---------- érintés-jelzések (kioszk) ---------- */
+/* térképpontok finom „lélegzése” */
+.hu-dot circle.halo{transform-box:fill-box;transform-origin:center;animation:breathe 3.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+.hu-dot.dimmed circle.halo,.hu-dot.sel circle.halo{animation:none}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.18}50%{transform:scale(1.55);opacity:.06}}
+/* timeline-csempék: időnként végigfutó fény */
+.wg{position:relative;overflow:hidden}
+.wg::after{content:'';position:absolute;inset:0;pointer-events:none;transform:translateX(-110%);
+  background:linear-gradient(100deg,transparent 35%,rgba(245,221,134,.13) 50%,transparent 65%);
+  animation:shimmer 9s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes shimmer{0%,70%{transform:translateX(-110%)}85%,100%{transform:translateX(110%)}}
+/* koppintó kéz + hullámzó kör, ha egy ideig senki nem nyúl semmihez */
+#nudge{position:absolute;left:0;top:0;width:0;height:0;z-index:45;pointer-events:none;opacity:0;transition:opacity .6s ease}
+#nudge.show{opacity:1}
+#nudge .rp{position:absolute;left:-90px;top:-90px;width:180px;height:180px;border-radius:50%;border:3px solid var(--gold-1);
+  opacity:0;animation:nRipple 1.8s ease-out infinite}
+#nudge .rp:nth-child(2){animation-delay:.6s}
+#nudge svg{position:absolute;left:-78px;top:-32px;width:176px;height:176px;fill:#fff;
+  filter:drop-shadow(0 8px 20px rgba(0,0,0,.7));animation:nTap 1.8s ease-in-out infinite}
+#nudge .nt{position:absolute;left:108px;top:70px;white-space:nowrap;font-size:36px;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold-1);text-shadow:0 2px 12px rgba(0,0,0,.9)}
+@keyframes nRipple{0%,20%{transform:scale(.3);opacity:0}25%{opacity:.95}100%{transform:scale(1.9);opacity:0}}
+@keyframes nTap{0%,100%{transform:translate(0,22px)}25%{transform:translate(0,0) scale(.97)}50%{transform:translate(0,22px)}}
+html.web #nudge{display:none}
 
 /* ---------- admin ---------- */
-#adminbtn{position:absolute;top:0;left:0;width:200px;height:150px;z-index:90}
+#adminbtn{position:absolute;top:0;left:0;width:320px;height:150px;z-index:90;cursor:pointer}
 
 /* ---------- webes változat (?mode=web) ---------- */
 html.web body{cursor:default;touch-action:auto}
-html.web #attract,html.web #adminbtn,html.web #welcome{display:none}
+html.web #welcome{display:none}
+html.web #attract{cursor:pointer}
 html.web .tab,html.web .chip,html.web .seg div,html.web .homebtn,html.web .dclose,html.web .wg,
 html.web .dph,html.web .wc-photos div,html.web #lightbox,html.web .fopen{cursor:pointer}
 html.web .tab:hover:not(.active){background:rgba(252,197,66,.06)}
@@ -546,13 +559,8 @@ html.web #world-map:active{cursor:grabbing}
           <div class="flabel">Program</div>
           <div class="agenda" id="agenda"></div>
         </div>
-        <div class="tcol">
-          <div class="flabel">Magyar Zene Háza — tájékozódás</div>
-          <div class="venuemap">
-            <image-slot id="venue-floorplan" shape="rect" fit="contain"
-              placeholder="Húzd ide a Zene Háza alaprajzát"></image-slot>
-          </div>
-          <div class="vlist" id="vlist"></div>
+        <div class="tcol tbrand">
+          <img src="assets/brand/bmc.svg" alt="Best Managed Companies Hungary">
         </div>
       </div>
     </section>
@@ -571,12 +579,17 @@ html.web #world-map:active{cursor:grabbing}
   <div id="attract">
     <canvas id="particles"></canvas>
     <div class="attract-inner">
-      <div class="mark">Deloitte Private</div>
+      <img class="mark" src="assets/brand/deloitte-private.svg" alt="Deloitte Private">
       <h1>Üdvözlünk a<b>Best Managed Companies</b>Gálán!</h1>
       <div class="yr">2026 · V. jubileumi program · Magyar Zene Háza</div>
     </div>
     <div class="touchhint"><span class="ring"></span>Érintsd meg a képernyőt</div>
   </div>
+
+  <!-- érintés-jelzés (Material „touch_app” ikon, Apache 2.0) -->
+  <div id="nudge"><div class="rp"></div><div class="rp"></div>
+    <svg viewBox="0 0 24 24"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg>
+    <div class="nt">Érintsd meg</div></div>
 
   <!-- cégprofil (timeline-ról) -->
   <div id="profile"><div class="panel pcard" id="pcard"></div></div>
@@ -587,9 +600,8 @@ html.web #world-map:active{cursor:grabbing}
   <!-- welcome takeover -->
   <div id="welcome">
     <div id="welglow"></div>
-    <div class="welrings"><i></i><i></i><i></i></div>
+    <div class="welrings"><i></i><i></i></div>
     <canvas id="welfx"></canvas>
-    <div id="welsweep"></div>
     <div class="wel">
       <div id="guest-logo" class="logo"></div>
       <div>
