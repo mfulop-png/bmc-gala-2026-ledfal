@@ -406,8 +406,9 @@
     Z.labels.filter(d => d.sub).lower();
     Z.dots = svg.append('g').selectAll('g').data(dotData).join('g').attr('class', 'hu-dot')
       .attr('data-id', d => d.c.id);
-    Z.dots.append('circle').attr('class', 'halo').attr('r', d => 12 + d.c.wins * 5);
-    Z.dots.append('circle').attr('class', 'core').attr('r', d => 8 + d.c.wins * 2.4);
+    // minden cég azonos méretű jelölőt kap (nem függ a díjak számától)
+    Z.dots.append('circle').attr('class', 'halo').attr('r', 27);
+    Z.dots.append('circle').attr('class', 'core').attr('r', 15);
     Z.dots.append('circle').attr('r', 40).attr('fill', 'transparent');
     Z.zoom = d3.zoom()
       .extent([[0, 0], [W, H]])
