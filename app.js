@@ -208,7 +208,6 @@
       '<div><div class="dname">' + esc(c.name) + '</div>' +
       '<div class="dsub">' + esc(where) + '</div></div></div>' +
       '<div class="dmeta">' +
-        (c.employees ? stat(fmt(c.employees), 'munkavállaló') : '') +
         '<div class="dyearsbox"><div class="dyears">' +
           D.years.map(y => '<div class="yrbox' + (c.years.indexOf(y) >= 0 ? ' on' : '') + '">' + y + '</div>').join('') + '</div>' +
           '<div class="dwins">Első elismerés: <b>' + c.first + '</b> · ' + ord + ' alkalommal Best Managed (' + c.wins + '×)</div>' +
@@ -248,7 +247,6 @@
     return '<div class="' + cls + (c.logoOnDark ? ' ondark' : c.logoDark ? ' dark' : '') + '">' +
       (c.logo ? '<img src="' + c.logo + '" alt="' + esc(c.name) + '">' : '<span>' + esc(c.name) + '</span>') + '</div>';
   }
-  function stat(v, l) { return '<div class="dstat"><div class="v">' + v + '</div><div class="l">' + l + '</div></div>'; }
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
   function esc(s) { return String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m])); }
 

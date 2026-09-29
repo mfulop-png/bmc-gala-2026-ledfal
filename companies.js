@@ -12,7 +12,6 @@ window.BMC_DATA = {
    "district": "XIX",
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 620,
    "years": [
     2024,
     2025,
@@ -35,7 +34,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2023
    ],
@@ -56,7 +54,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.15,
    "lon": 18.55,
-   "employees": null,
    "years": [
     2026
    ],
@@ -75,7 +72,6 @@ window.BMC_DATA = {
    "district": "XI",
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 200,
    "years": [
     2023,
     2024,
@@ -101,7 +97,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.22,
    "lon": 19.78,
-   "employees": null,
    "years": [
     2022,
     2023
@@ -123,7 +118,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2024
    ],
@@ -144,7 +138,6 @@ window.BMC_DATA = {
    "district": "I",
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 246,
    "years": [
     2022,
     2023,
@@ -170,7 +163,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.253,
    "lon": 20.1414,
-   "employees": 350,
    "years": [
     2024,
     2025,
@@ -194,7 +186,6 @@ window.BMC_DATA = {
    "district": "XI",
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 140,
    "years": [
     2022,
     2023,
@@ -221,7 +212,6 @@ window.BMC_DATA = {
    "district": "VI",
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 1326,
    "years": [
     2022,
     2023,
@@ -248,7 +238,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.459,
    "lon": 16.9897,
-   "employees": 200,
    "years": [
     2026
    ],
@@ -267,7 +256,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.55,
    "lon": 19.45,
-   "employees": null,
    "years": [
     2022,
     2023
@@ -289,7 +277,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.8203,
    "lon": 20.0556,
-   "employees": 550,
    "years": [
     2025,
     2026
@@ -311,7 +298,6 @@ window.BMC_DATA = {
    "district": "XIII",
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 108,
    "years": [
     2025,
     2026
@@ -333,7 +319,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2025,
     2026
@@ -355,7 +340,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.55,
    "lon": 19.45,
-   "employees": null,
    "years": [
     2024,
     2025,
@@ -379,7 +363,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.0636,
    "lon": 19.4964,
-   "employees": 202,
    "years": [
     2023,
     2024,
@@ -405,7 +388,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2023,
     2024,
@@ -431,7 +413,6 @@ window.BMC_DATA = {
    "district": "VIII",
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 180,
    "years": [
     2025
    ],
@@ -452,7 +433,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2024,
     2025,
@@ -476,7 +456,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 45.9931,
    "lon": 18.6831,
-   "employees": 224,
    "years": [
     2026
    ],
@@ -495,7 +474,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2022,
     2023,
@@ -519,7 +497,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.253,
    "lon": 20.1414,
-   "employees": 200,
    "years": [
     2025,
     2026
@@ -541,7 +518,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.9026,
    "lon": 20.3772,
-   "employees": 250,
    "years": [
     2026
    ],
@@ -560,7 +536,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": 319,
    "years": [
     2022,
     2023,
@@ -587,7 +562,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2025,
     2026
@@ -609,7 +583,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.0917,
    "lon": 18.3417,
-   "employees": 340,
    "years": [
     2023,
     2024,
@@ -635,7 +608,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 46.5,
    "lon": 18.55,
-   "employees": null,
    "years": [
     2025,
     2026
@@ -657,7 +629,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 48.2,
    "lon": 20.8,
-   "employees": 150,
    "years": [
     2022,
     2023,
@@ -684,7 +655,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.65,
    "lon": 17.35,
-   "employees": null,
    "years": [
     2022,
     2023,
@@ -711,7 +681,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.22,
    "lon": 19.78,
-   "employees": null,
    "years": [
     2024,
     2025,
@@ -736,7 +705,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4979,
    "lon": 19.0402,
-   "employees": null,
    "years": [
     2024,
     2025,
@@ -760,7 +728,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.0933,
    "lon": 17.9115,
-   "employees": 1034,
    "years": [
     2022,
     2023,
@@ -787,7 +754,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.22,
    "lon": 19.78,
-   "employees": null,
    "years": [
     2023,
     2024,
@@ -813,7 +779,6 @@ window.BMC_DATA = {
    "district": null,
    "lat": 47.4906,
    "lon": 17.8514,
-   "employees": 94,
    "years": [
     2024,
     2025,
