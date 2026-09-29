@@ -179,6 +179,10 @@ h1.big b{font-weight:700;color:var(--green)}
 .hu-county{fill:none;stroke:rgba(134,188,37,.30);stroke-width:1.2;stroke-linejoin:round;pointer-events:none}
 .hu-lake{fill:rgba(0,151,169,.42);stroke:rgba(0,151,169,.8);stroke-width:1.5;pointer-events:none}
 .hu-water{font-size:20px;font-style:italic;font-weight:600;fill:rgba(64,190,205,.85);letter-spacing:.18em;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.mk-name{font-size:34px;fill:#fff;font-weight:600;pointer-events:none;opacity:0;transition:opacity .25s;
+  stroke:#0b0e09;stroke-width:7px;stroke-linejoin:round;paint-order:stroke}
+.mk-name.on{opacity:1}
+.mk-name.sel{fill:var(--green)}
 .bp-name{font-size:36px;fill:#fff;font-weight:600;pointer-events:none;
   stroke:#0b0e09;stroke-width:7px;stroke-linejoin:round;paint-order:stroke}
 .maphint{position:absolute;left:0;bottom:0;font-size:24px;color:var(--dim);letter-spacing:.08em}
@@ -235,7 +239,27 @@ h1.big b{font-weight:700;color:var(--green)}
 /* ---------- world (Global Journey) ---------- */
 .worldview{position:absolute;inset:0;display:flex;flex-direction:column;gap:30px;padding:40px 0}
 .wmid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 980px;gap:56px;padding:0 72px}
-.wleft{display:flex;flex-direction:column;gap:20px;min-height:0}
+.wleft{display:flex;flex-direction:column;gap:20px;min-height:0;position:relative}
+.wleft .maphint{left:0;bottom:0}
+.homebtn{display:flex;align-items:center;padding:22px 40px;border-radius:999px;border:1px solid var(--line-g);background:rgba(134,188,37,.08);
+  font-size:28px;font-weight:600;align-self:flex-start;cursor:pointer}
+.homebtn:active{background:var(--green);color:#0b0f06}
+#world-map{touch-action:none;cursor:grab}
+.w-ocean{fill:url(#wOcean);stroke:none}
+.w-rim{fill:none;stroke:rgba(134,188,37,.45);stroke-width:2}
+.w-bmc{cursor:pointer}
+.w-sel{fill:var(--green) !important;stroke:#fff !important;stroke-width:1.6 !important}
+.wcard{flex:1;min-height:0;padding:40px 44px;display:flex;flex-direction:column;gap:26px;overflow:hidden;animation:dIn .4s ease}
+.wcard.empty{align-items:center;justify-content:center;text-align:center;color:var(--dim);font-size:30px;font-weight:300}
+.wc-kicker{font-size:22px;letter-spacing:.22em;text-transform:uppercase;color:var(--green)}
+.wc-name{font-size:72px;font-weight:700;line-height:1.05;margin-top:-10px}
+.wc-stats{display:flex;gap:48px}
+.wc-stats div{font-size:22px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.wc-stats b{display:block;font-size:64px;color:var(--green);letter-spacing:0;line-height:1.1;font-variant-numeric:tabular-nums}
+.wc-note{font-size:28px;color:#c6ccbf;font-weight:300;line-height:1.45}
+.wc-photos{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(0,1fr);gap:14px;min-height:0}
+.wc-photos div{min-height:0;border-radius:6px;overflow:hidden;cursor:pointer;background:var(--panel-2)}
+.wc-photos img{width:100%;height:100%;object-fit:cover;display:block}
 #world-map{flex:1;min-height:0;width:100%}
 .w-land{fill:#14180f;stroke:rgba(255,255,255,.06);stroke-width:.7}
 .w-bmc{fill:rgba(134,188,37,.30);stroke:var(--green);stroke-width:1}
@@ -424,16 +448,19 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
                 <div class="kicker">Global Journey</div>
                 <h1 class="big">A program <b>45+ országban</b></h1>
               </div>
+              <div class="homebtn" id="gohome">Magyarország</div>
             </div>
             <svg id="world-map"></svg>
+            <div class="maphint">Forgasd egy ujjal · két ujjal nagyíthatsz · koppints egy kiemelt országra</div>
           </div>
-          <div class="side" style="justify-content:center">
+          <div class="side">
             <div class="bigstat">
               <div><div class="v">45+</div><div class="l">ország</div></div>
               <div><div class="v">1993</div><div class="l">indulás · Kanada</div></div>
               <div><div class="v">2022</div><div class="l">indulás · Magyarország</div></div>
               <div><div class="v">28</div><div class="l">magyar vállalat 2026-ban</div></div>
             </div>
+            <div class="panel wcard empty" id="wcard">Koppints egy kiemelt országra<br>a földgömbön</div>
           </div>
         </div>
         <div class="strip rev"><div class="strack" id="strip2"></div></div>

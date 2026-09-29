@@ -55,7 +55,7 @@ window.BMC = (function () {
     ['United Arab Emirates', 'Egyesült Arab Emírségek', null], ['Saudi Arabia', 'Szaúd-Arábia', null],
     ['South Africa', 'Dél-Afrika', null], ['India', 'India', null], ['China', 'Kína', null],
     ['Japan', 'Japán', null], ['South Korea', 'Dél-Korea', null], ['Singapore', 'Szingapúr', null],
-    ['Malaysia', 'Malajzia', null], ['Indonesia', 'Indonézia', null], ['Philippines', 'Fülöp-szigetek', null],
+    ['Malaysia', 'Malajzia', null], ['Thailand', 'Thaiföld', null], ['Indonesia', 'Indonézia', null], ['Philippines', 'Fülöp-szigetek', null],
     ['Australia', 'Ausztrália', null], ['New Zealand', 'Új-Zéland', null]
   ].map(function (w) {
     return { key: w[0], name: w[1], since: w[2], companies: w[0] === 'Hungary' ? countYear(2026) : null };
@@ -98,5 +98,5 @@ window.BMC = (function () {
   /* Global Journey fotósáv – külföldi gálák képei (BMC Graphics/bmc külföld) */
   const globalPhotos = G.globalPhotos;
 
-  return { companies, years, timeline, summary, world, worldAliases, tonight, globalPhotos };
+  return { companies, years, groupPhotos: G.groupPhotos, timeline, summary, world, worldAliases, tonight, globalPhotos };
 })();

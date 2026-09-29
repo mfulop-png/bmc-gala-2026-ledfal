@@ -40,6 +40,7 @@
     clearDetail(); setZoom('hu', true);
     $('#lightbox').classList.remove('show');
     $('#profile').classList.remove('show');
+    resetGlobe();
     clearTimeout(idleT);
   }
   function resetIdle() {
@@ -137,6 +138,7 @@
       g.classList.toggle('dimmed', !ok);
     });
     $('#fcount').textContent = n;
+    placeNames();
     if (selected && !match(selected)) clearDetail();
     if (!selected) {
       $('#detail').innerHTML = n ? 'Koppints egy pontra a térképen<br>a vállalat adataiért'
@@ -155,12 +157,14 @@
     d.innerHTML = 'Koppints egy pontra a térképen<br>a vállalat adataiért';
     $('#mapside').classList.remove('open');
     $$('#hu-map .hu-dot').forEach(g => g.classList.remove('sel'));
+    placeNames();
   }
   // összecsukott szűrősávra koppintva is bezárul az adatlap
   $('#filters').addEventListener('click', () => { if (selected) clearDetail(); });
   function showCompany(c) {
     selected = c;
     $$('#hu-map .hu-dot').forEach(g => g.classList.toggle('sel', g.dataset.id === c.id));
+    placeNames();
     const d = $('#detail');
     d.className = 'panel detail';
     $('#mapside').classList.add('open');
@@ -207,9 +211,10 @@
 
   /* fotó teljes képernyőn – koppintásra bezárul */
   const lb = $('#lightbox');
-  function openPhoto(c, i) {
-    $('img', lb).src = c.photos[i];
-    $('.lbn', lb).textContent = c.name + ' · ' + (i + 1) + ' / ' + c.photos.length;
+  function openPhoto(c, i) { openGallery(c.photos, i, c.name); }
+  function openGallery(list, i, caption) {
+    $('img', lb).src = list[i];
+    $('.lbn', lb).textContent = caption + ' · ' + (i + 1) + ' / ' + list.length;
     lb.classList.add('show');
   }
   lb.addEventListener('click', () => lb.classList.remove('show'));
@@ -234,7 +239,15 @@
   loadAtlas().then(topo => {
     const feats = topojson.feature(topo, topo.objects.countries).features;
     drawHungary(feats);
-    drawWorld(feats);
+    // a forgó gömbhöz a kevésbé részletes atlasz kell (képkockánként újravetítjük);
+    // az abból hiányzó kis BMC-országokat (pl. Szingapúr) a részletesből pótoljuk
+    fetch(ATLAS[1]).then(r => r.json()).then(t110 => {
+      const light = topojson.feature(t110, t110.objects.countries).features;
+      const have = new Set(light.map(f => f.properties.name));
+      const bmc = new Set(D.world.map(w => w.key));
+      const norm = n => D.worldAliases[n] || n;
+      drawWorld(light.concat(feats.filter(f => bmc.has(norm(f.properties.name)) && !have.has(f.properties.name))));
+    }).catch(() => drawWorld(feats));
   }).catch(e => console.error('atlas', e));
 
   // Nominatim-poligonok: d3 óramutató szerinti külső gyűrűt vár
@@ -255,15 +268,54 @@
     Z.dots.attr('transform', d => {
       const x = v.x + v.k * d.real[0], y = v.y + v.k * d.real[1];
       if (d.keep) {   // kerület nélküli budapesti cégek: nagyítva a bal alsó sarokba úsznak
-        return 'translate(' + (x + (Z.side[0] - x) * Z.bp + d.off[0]) + ',' + (y + (Z.side[1] - y) * Z.bp + d.off[1]) + ')';
+        d.pos = [x + (Z.side[0] - x) * Z.bp + d.off[0], y + (Z.side[1] - y) * Z.bp + d.off[1]];
+      } else {
+        const o = d.c.city === 'Budapest' ? 1 - Z.bp : 1;   // vidéki klaszterek nagyítva is széthúzva maradnak
+        d.pos = [x + d.off[0] * o, y + d.off[1] * o];
       }
-      const o = d.c.city === 'Budapest' ? 1 - Z.bp : 1;   // vidéki klaszterek nagyítva is széthúzva maradnak
-      return 'translate(' + (x + d.off[0] * o) + ',' + (y + d.off[1] * o) + ')';
+      return 'translate(' + d.pos[0] + ',' + d.pos[1] + ')';
     });
+    placeNames();
     Z.labels.attr('transform', d => {
       const x = v.x + v.k * d.p[0], y = v.y + v.k * d.p[1];
       return d.fixed ? 'translate(' + (x + (Z.side[0] - x) * Z.bp) + ',' + (y + (Z.side[1] - y) * Z.bp) + ')'
         : 'translate(' + x + ',' + y + ')';
+    });
+  }
+
+  /* Cégnevek a pontok mellett: nagyítás közben képkockánként újraszámolva. Egy név csak akkor
+     jelenik meg, ha elfér – nem takar másik nevet vagy pontot, és a térképen belül marad. */
+  const NAME_MIN_K = 1.35, NAME_H = 46, NAME_GAP = 40;
+  const NAME_CAND = [['r', NAME_GAP, 0], ['l', -NAME_GAP, 0], ['t', 0, -52], ['b', 0, 52]];
+  function placeNames() {
+    if (!Z.names) return;
+    const show = Z.view.k >= NAME_MIN_K, els = Z.names.nodes(), dots = Z.dots.nodes();
+    const boxes = [];
+    Z.dotData.forEach((d, i) => { if (!dots[i].classList.contains('dimmed')) boxes.push([d.pos[0] - 30, d.pos[1] - 30, 60, 60]); });
+    const hit = b => b[0] < 8 || b[1] < 8 || b[0] + b[2] > Z.W - 8 || b[1] + b[3] > Z.H - 8 ||
+      boxes.some(o => b[0] < o[0] + o[2] && b[0] + b[2] > o[0] && b[1] < o[1] + o[3] && b[1] + b[3] > o[1]);
+    // sorrend: kiválasztott cég elöl, aztán ami eddig is látszott (kevesebb ugrálás), végül fentről lefelé
+    const order = Z.dotData.map((d, i) => i).sort((a, b) => {
+      const A = Z.dotData[a], B = Z.dotData[b];
+      return ((B.c === selected) - (A.c === selected)) || ((!!B.nameAt) - (!!A.nameAt)) || A.pos[1] - B.pos[1];
+    });
+    order.forEach(i => {
+      const d = Z.dotData[i], el = els[i];
+      let pick = null;
+      if (show && !dots[i].classList.contains('dimmed')) {
+        if (!d.w) d.w = el.getComputedTextLength() || d.c.name.length * 19;
+        const cands = d.nameAt ? [NAME_CAND.find(c => c[0] === d.nameAt)].concat(NAME_CAND) : NAME_CAND;
+        for (const c of cands) {
+          const x = d.pos[0] + c[1], y = d.pos[1] + c[2];
+          const bx = c[0] === 'r' ? x : c[0] === 'l' ? x - d.w : x - d.w / 2;
+          const b = [bx - 6, y - NAME_H / 2, d.w + 12, NAME_H];
+          if (!hit(b)) { pick = c; boxes.push(b); el.setAttribute('x', x); el.setAttribute('y', y);
+            el.setAttribute('text-anchor', c[0] === 'r' ? 'start' : c[0] === 'l' ? 'end' : 'middle'); break; }
+        }
+      }
+      d.nameAt = pick && pick[0];
+      el.classList.toggle('on', !!pick);
+      el.classList.toggle('sel', d.c === selected);
     });
   }
 
@@ -366,7 +418,6 @@
         const rad = keep && place === 'Budapest' ? rr : r;
         dotData.push({ c: c, real: real, keep: keep && place === 'Budapest',
           off: [base[0] + Math.cos(ang) * rad - real[0], base[1] + Math.sin(ang) * rad - real[1]] });
-        if (!keep) labData.push({ p: real, t: c.name, cls: 'bp-name bp-only', dy: -44 });
       });
       if (place === 'Budapest' && ring.length && ring.length < list.length) {
         labData.push({ p: base, t: 'Budapest · pontos cím nélkül', cls: 'bp-name bp-only', dy: rr + 56, fixed: true });
@@ -379,25 +430,6 @@
       const p = path.centroid(d);
       if (isFinite(p[0])) labData.push({ p: p, t: d.properties.n, cls: 'bp-dlabel bp-only', dy: 0, sub: true });
     });
-    // budapesti névcímkék: ütközéskerülés a nagyított nézet koordinátáiban
-    if (Z.bpView) {
-      const V = Z.bpView, boxes = [];
-      dotData.forEach(d => boxes.push([V.x + V.k * d.real[0] - 36, V.y + V.k * d.real[1] - 36, 72, 72]));
-      const hit = b => boxes.some(o => b[0] < o[0] + o[2] && b[0] + b[2] > o[0] && b[1] < o[1] + o[3] && b[1] + b[3] > o[1]);
-      labData.filter(d => d.cls.indexOf('bp-name') === 0 && !d.fixed).sort((p, q) => p.p[1] - q.p[1]).forEach(d => {
-        // 36 px-es felirat: kb. 20 px/karakter
-        const sx = V.x + V.k * d.p[0], sy = V.y + V.k * d.p[1], w = d.t.length * 20 + 14, h = 50;
-        const cand = [[48, 0, 'start'], [-48, 0, 'end'], [48, -60, 'start'], [-48, -60, 'end'], [48, 60, 'start'], [-48, 60, 'end'],
-          [48, -120, 'start'], [-48, 120, 'end'], [48, 120, 'start'], [-48, -120, 'end']];
-        let pick = cand[0];
-        for (const c of cand) {
-          const bx = c[2] === 'start' ? sx + c[0] : sx + c[0] - w;
-          const b = [bx, sy + c[1] - h / 2, w, h];
-          if (!hit(b)) { pick = c; boxes.push(b); break; }
-        }
-        d.dx = pick[0]; d.dy = pick[1]; d.anchor = pick[2]; d.baseline = 'middle';
-      });
-    }
     Z.labels = svg.append('g').selectAll('g').data(labData).join('g');
     Z.labels.append('text').attr('class', d => d.cls).attr('x', d => d.dx || 0).attr('y', d => d.dy)
       .attr('text-anchor', d => d.anchor || 'middle').attr('dominant-baseline', d => d.baseline || null).text(d => d.t);
@@ -409,6 +441,9 @@
     Z.dots.append('circle').attr('class', 'halo').attr('r', 27);
     Z.dots.append('circle').attr('class', 'core').attr('r', 15);
     Z.dots.append('circle').attr('r', 40).attr('fill', 'transparent');
+    Z.dotData = dotData;
+    Z.names = svg.append('g').selectAll('text').data(dotData).join('text').attr('class', 'mk-name')
+      .attr('dominant-baseline', 'middle').text(d => d.c.name);
     Z.zoom = d3.zoom()
       .extent([[0, 0], [W, H]])
       .scaleExtent([1, Z.bpView ? Z.bpView.k * 2.5 : 8])
@@ -439,24 +474,100 @@
     $('#strip1').innerHTML = t1 + t1;
     $('#strip2').innerHTML = t2 + t2;
   })();
+  /* Global Journey földgömb: egy ujjal forgatható, két ujjal nagyítható, tétlenül lassan forog.
+     Kiemelt országra koppintva odafordul, és jobb oldalt megjelenik az ország kártyája. */
+  const GL = { rot: [-19, -30, 0], k: 1, R: 0, prev: null, lastUse: 0, anim: false, sel: null };
+  const HU_LL = [19.4, 47.2];
   function drawWorld(feats) {
     const svg = d3.select('#world-map');
     const W = 2400, H = 1100;
     svg.attr('viewBox', '0 0 ' + W + ' ' + H).attr('preserveAspectRatio', 'xMidYMid meet');
-    const proj = d3.geoNaturalEarth1().fitExtent([[20, 10], [W - 20, H - 10]], { type: 'Sphere' });
-    const path = d3.geoPath(proj);
-    svg.append('path').datum(d3.geoGraticule10()).attr('class', 'w-graticule').attr('d', path);
+    svg.append('defs').html(
+      '<radialGradient id="wOcean" cx="42%" cy="38%" r="65%">' +
+      '<stop offset="0%" stop-color="#1b2a1c"/><stop offset="70%" stop-color="#0d140d"/><stop offset="100%" stop-color="#070a07"/></radialGradient>');
+    GL.R = H / 2 - 24;
+    GL.proj = d3.geoOrthographic().translate([W / 2, H / 2]).scale(GL.R).clipAngle(90).precision(.7).rotate(GL.rot);
+    GL.path = d3.geoPath(GL.proj);
     const map = {};
     D.world.forEach(w => { map[w.key] = w; });
     const norm = n => D.worldAliases[n] || n;
-    svg.append('g').selectAll('path').data(feats).join('path').attr('d', path)
-      .attr('class', f => {
-        const k = norm(f.properties.name);
-        return k === 'Hungary' ? 'w-hu' : map[k] ? 'w-bmc' : 'w-land';
+    GL.sphere = svg.append('path').datum({ type: 'Sphere' }).attr('class', 'w-ocean');
+    GL.grat = svg.append('path').datum(d3.geoGraticule10()).attr('class', 'w-graticule');
+    GL.countries = svg.append('g').selectAll('path').data(feats).join('path')
+      .attr('class', f => { const k = norm(f.properties.name); return k === 'Hungary' ? 'w-hu' : map[k] ? 'w-bmc' : 'w-land'; })
+      .on('click', (ev, f) => { const w = map[norm(f.properties.name)]; if (w) selectCountry(w, f); });
+    GL.rim = svg.append('path').datum({ type: 'Sphere' }).attr('class', 'w-rim');
+    GL.pings = [0, 1].map(i => svg.append('circle').attr('class', 'w-ping').attr('r', 30).style('animation-delay', (i * 1.2) + 's'));
+    GL.zoom = d3.zoom().scaleExtent([1, 5]).clickDistance(12)
+      .on('start', () => { GL.prev = null; })
+      .on('zoom', ev => {
+        const t = ev.transform;
+        if (GL.prev && Math.abs(t.k - GL.prev.k) < 1e-6) {          // egy ujj / egér: forgatás
+          const f = 180 / Math.PI / (GL.R * GL.k);
+          GL.rot[0] += (t.x - GL.prev.x) * f;
+          GL.rot[1] = Math.max(-80, Math.min(80, GL.rot[1] - (t.y - GL.prev.y) * f));
+        }
+        GL.k = t.k; GL.prev = t; GL.lastUse = performance.now();
+        renderGlobe();
       });
-    const hp = proj([19.5, 47.2]);
-    for (let i = 0; i < 2; i++) svg.append('circle').attr('class', 'w-ping').attr('cx', hp[0]).attr('cy', hp[1]).attr('r', 30)
-      .style('animation-delay', (i * 1.2) + 's');
+    svg.call(GL.zoom).on('dblclick.zoom', null);
+    renderGlobe();
+    // tétlen lassú forgás – csak amikor a fül látszik
+    let last = performance.now();
+    d3.timer(() => {
+      const now = performance.now(), dt = now - last; last = now;
+      if (GL.anim || now - GL.lastUse < 6000) return;
+      if (!$('.screen[data-screen="global"]').classList.contains('active')) return;
+      GL.rot[0] += dt * .004;
+      renderGlobe();
+    });
+    $('#gohome').addEventListener('click', () => {
+      const f = feats.find(x => x.properties.name === 'Hungary');
+      selectCountry(D.world.find(w => w.key === 'Hungary'), f);
+    });
+  }
+  function renderGlobe() {
+    GL.proj.rotate(GL.rot).scale(GL.R * GL.k);
+    GL.sphere.attr('d', GL.path); GL.grat.attr('d', GL.path); GL.rim.attr('d', GL.path);
+    GL.countries.attr('d', GL.path);
+    const vis = d3.geoDistance(HU_LL, [-GL.rot[0], -GL.rot[1]]) < Math.PI / 2 - .05, p = GL.proj(HU_LL);
+    GL.pings.forEach(c => c.attr('cx', p[0]).attr('cy', p[1]).style('display', vis ? null : 'none'));
+  }
+  function selectCountry(w, f) {
+    GL.sel = w.key;
+    GL.countries.classed('w-sel', x => (D.worldAliases[x.properties.name] || x.properties.name) === w.key && w.key !== 'Hungary');
+    // odafordulás
+    const c = d3.geoCentroid(f), from = GL.rot.slice(), to = [-c[0], Math.max(-60, Math.min(60, -c[1])), 0];
+    to[0] = from[0] + ((((to[0] - from[0]) % 360) + 540) % 360 - 180);   // a rövidebb irányba
+    const ir = d3.interpolate(from, to);
+    GL.anim = true;
+    d3.select('#world-map').transition('rot').duration(1100).ease(d3.easeCubicInOut)
+      .tween('rot', () => t => { GL.rot = ir(t); renderGlobe(); })
+      .on('end interrupt', () => { GL.anim = false; GL.lastUse = performance.now(); });
+    showCountryCard(w);
+  }
+  function showCountryCard(w) {
+    const isHu = w.key === 'Hungary';
+    const photos = (isHu ? D.groupPhotos : D.globalPhotos.filter(p => p.country === w.name).map(p => p.src)) || [];
+    const stats = [
+      w.since && '<div><b>' + w.since + '</b>program indulása</div>',
+      w.companies && '<div><b>' + w.companies + '</b>' + (isHu ? 'díjazott 2026-ban' : 'BMC vállalat') + '</div>'
+    ].filter(Boolean);
+    const card = $('#wcard');
+    card.className = 'panel wcard';
+    card.innerHTML = '<div class="wc-kicker">Best Managed Companies</div><div class="wc-name">' + esc(w.name) + '</div>' +
+      (stats.length ? '<div class="wc-stats">' + stats.join('') + '</div>' : '') +
+      (!stats.length && !photos.length ? '<div class="wc-note">A Deloitte Best Managed Companies program partnerországa.</div>' : '') +
+      (photos.length ? '<div class="wc-photos">' + photos.slice(0, 4).map((p, i) =>
+        '<div data-i="' + i + '"><img src="' + p + '" alt=""></div>').join('') + '</div>' : '');
+    $$('.wc-photos div', card).forEach(e => e.addEventListener('click', () => openGallery(photos, +e.dataset.i, w.name)));
+  }
+  function resetGlobe() {
+    GL.sel = null;
+    if (GL.countries) GL.countries.classed('w-sel', false);
+    const card = $('#wcard');
+    card.className = 'panel wcard empty';
+    card.innerHTML = 'Koppints egy kiemelt országra<br>a földgömbön';
   }
 
   /* ---------- timeline ---------- */
