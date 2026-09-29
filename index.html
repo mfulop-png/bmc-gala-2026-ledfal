@@ -2,6 +2,11 @@
 <html lang="hu">
 <head>
 <meta charset="utf-8">
+<script>
+  /* Webes (egér/billentyűzet) változat: ?mode=web vagy /web – egyébként érintőképernyős kioszk */
+  window.BMC_WEB = /[?&](mode=web|web)(&|=|$)/.test(location.search);
+  document.documentElement.classList.add(window.BMC_WEB ? 'web' : 'kiosk');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Best Managed Companies Gála 2026 — LED fal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -371,6 +376,21 @@ i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border
 
 /* ---------- admin ---------- */
 #adminbtn{position:absolute;top:0;left:0;width:200px;height:150px;z-index:90}
+
+/* ---------- webes változat (?mode=web) ---------- */
+html.web body{cursor:default;touch-action:auto}
+html.web #attract,html.web #adminbtn,html.web #welcome{display:none}
+html.web .tab,html.web .chip,html.web .seg div,html.web .homebtn,html.web .dclose,html.web .wg,
+html.web .dph,html.web .wc-photos div,html.web #lightbox,html.web .fopen{cursor:pointer}
+html.web .tab:hover:not(.active){background:rgba(134,188,37,.06)}
+html.web .chip:hover:not(.on),html.web .seg div:hover:not(.on){border-color:var(--line-g);color:#fff}
+html.web .hu-dot:hover circle.core{fill:#fff}
+html.web .hu-dot:hover circle.halo{opacity:.35}
+html.web .w-bmc:hover{fill:rgba(134,188,37,.6)}
+html.web .wg:hover{background:#20261e;color:#fff}
+html.web .dph:hover img,html.web .wc-photos div:hover img{opacity:.85}
+html.web .dclose:hover,html.web .homebtn:hover{border-color:var(--green)}
+html.web #world-map:active{cursor:grabbing}
 #admin{position:absolute;inset:0;z-index:100;background:rgba(3,4,3,.96);display:none;padding:90px 120px;
   flex-direction:column;gap:36px;cursor:auto}
 #admin.show{display:flex}

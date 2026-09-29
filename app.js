@@ -5,6 +5,11 @@
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const IDLE_MS = 120000;   // 2 perc tétlenség után vissza a kezdőképernyőre
+  const WEB = !!window.BMC_WEB;   // webes változat: egér + billentyűzet, nincs kioszk-viselkedés
+  const T = (touch, web) => WEB ? web : touch;
+  const EMPTY_DETAIL = T('Koppints', 'Kattints') + ' egy pontra a térképen<br>a vállalat adataiért';
+  const MAP_HINT = T('Két ujjal nagyíthatsz · koppints Budapestre', 'Görgővel nagyíthatsz, húzással mozgathatod · kattints Budapestre');
+  const EMPTY_COUNTRY = T('Koppints', 'Kattints') + ' egy kiemelt országra<br>a földgömbön';
 
   /* ---------- stage fit ---------- */
   const stage = $('#stage');
@@ -45,23 +50,43 @@
   }
   function resetIdle() {
     clearTimeout(idleT);
+    if (WEB) return;                 // weben nincs visszaugrás a kezdőképernyőre
     if (current) idleT = setTimeout(toAttract, IDLE_MS);
   }
   ['pointerdown', 'keydown', 'wheel'].forEach(e => document.addEventListener(e, resetIdle, { passive: true }));
   $$('.tab').forEach(t => t.addEventListener('click', () => go(t.dataset.go)));
   $('#attract').addEventListener('pointerdown', () => go('map'));
 
-  /* ---------- oldal-zoom tiltása: csippentés csak a térképet nagyítja ---------- */
-  const noop = e => e.preventDefault();
-  ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, noop, { passive: false }));   // Safari
-  document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
-  document.addEventListener('wheel', e => { if (e.ctrlKey && !e.target.closest('#hu-map')) e.preventDefault(); }, { passive: false });
+  /* ---------- oldal-zoom tiltása: csippentés csak a térképet nagyítja (weben a böngésző zoomja marad) ---------- */
+  if (!WEB) {
+    const noop = e => e.preventDefault();
+    ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, noop, { passive: false }));   // Safari
+    document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+    document.addEventListener('wheel', e => { if (e.ctrlKey && !e.target.closest('#hu-map')) e.preventDefault(); }, { passive: false });
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '0'].indexOf(e.key) >= 0) e.preventDefault();
+    });
+  }
+
+  /* Esc: nagyított fotó → cégprofil → cégadatlap bezárása */
   document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '0'].indexOf(e.key) >= 0) e.preventDefault();
+    if (e.key !== 'Escape') return;
+    if ($('#lightbox').classList.contains('show')) $('#lightbox').classList.remove('show');
+    else if ($('#profile').classList.contains('show')) $('#profile').classList.remove('show');
+    else if (selected) clearDetail();
   });
+
+  /* webes feliratok */
+  if (WEB) {
+    $('#maphint').textContent = MAP_HINT;
+    $('#detail').innerHTML = EMPTY_DETAIL;
+    $('#wcard').innerHTML = EMPTY_COUNTRY;
+    $('.wleft .maphint').textContent = 'Húzd a földgömböt · görgővel nagyíthatsz · kattints egy kiemelt országra';
+  }
 
   /* ---------- attract particles ---------- */
   (function particles() {
+    if (WEB) return;
     const cv = $('#particles'), ctx = cv.getContext('2d');
     cv.width = 3840; cv.height = 2160;
     const pts = Array.from({ length: 90 }, () => ({
@@ -141,7 +166,7 @@
     placeNames();
     if (selected && !match(selected)) clearDetail();
     if (!selected) {
-      $('#detail').innerHTML = n ? 'Koppints egy pontra a térképen<br>a vállalat adataiért'
+      $('#detail').innerHTML = n ? EMPTY_DETAIL
         : 'Nincs a szűrésnek megfelelő vállalat.<br>Próbálj más kombinációt.';
     }
   }
@@ -154,7 +179,7 @@
     selected = null;
     const d = $('#detail');
     d.className = 'panel detail empty';
-    d.innerHTML = 'Koppints egy pontra a térképen<br>a vállalat adataiért';
+    d.innerHTML = EMPTY_DETAIL;
     $('#mapside').classList.remove('open');
     $$('#hu-map .hu-dot').forEach(g => g.classList.remove('sel'));
     placeNames();
@@ -332,7 +357,7 @@
       $$('#zoomseg div').forEach(e => e.classList.toggle('on', e.dataset.z === mode));
       $('#mapwrap').classList.toggle('mode-bp', mode === 'bp');
       $('#maphint').textContent = mode === 'bp' ? 'Budapesti díjazottak kerületenként'
-        : 'Két ujjal nagyíthatsz · koppints Budapestre';
+        : MAP_HINT;
     }
   }
   function setZoom(mode, instant) {
@@ -441,6 +466,7 @@
     Z.dots.append('circle').attr('class', 'halo').attr('r', 27);
     Z.dots.append('circle').attr('class', 'core').attr('r', 15);
     Z.dots.append('circle').attr('r', 40).attr('fill', 'transparent');
+    Z.dots.append('title').text(d => d.c.name);
     Z.dotData = dotData;
     Z.names = svg.append('g').selectAll('text').data(dotData).join('text').attr('class', 'mk-name')
       .attr('dominant-baseline', 'middle').text(d => d.c.name);
@@ -496,6 +522,7 @@
     GL.countries = svg.append('g').selectAll('path').data(feats).join('path')
       .attr('class', f => { const k = norm(f.properties.name); return k === 'Hungary' ? 'w-hu' : map[k] ? 'w-bmc' : 'w-land'; })
       .on('click', (ev, f) => { const w = map[norm(f.properties.name)]; if (w) selectCountry(w, f); });
+    GL.countries.filter(f => map[norm(f.properties.name)]).append('title').text(f => map[norm(f.properties.name)].name);
     GL.rim = svg.append('path').datum({ type: 'Sphere' }).attr('class', 'w-rim');
     GL.pings = [0, 1].map(i => svg.append('circle').attr('class', 'w-ping').attr('r', 30).style('animation-delay', (i * 1.2) + 's'));
     GL.zoom = d3.zoom().scaleExtent([1, 5]).clickDistance(12)
@@ -567,7 +594,7 @@
     if (GL.countries) GL.countries.classed('w-sel', false);
     const card = $('#wcard');
     card.className = 'panel wcard empty';
-    card.innerHTML = 'Koppints egy kiemelt országra<br>a földgömbön';
+    card.innerHTML = EMPTY_COUNTRY;
   }
 
   /* ---------- timeline ---------- */
@@ -639,11 +666,13 @@
   /* ---------- admin / welcome ---------- */
   const admin = $('#admin');
   let pressT = null;
-  $('#adminbtn').addEventListener('pointerdown', () => { pressT = setTimeout(openAdmin, 2000); });
+  if (!WEB) $('#adminbtn').addEventListener('pointerdown', () => { pressT = setTimeout(openAdmin, 2000); });
   ['pointerup', 'pointerleave', 'pointercancel'].forEach(e =>
     $('#adminbtn').addEventListener(e, () => clearTimeout(pressT)));
-  document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'a' && e.ctrlKey) openAdmin(); });
-  if (location.search.indexOf('admin') >= 0) openAdmin();
+  if (!WEB) {
+    document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'a' && e.ctrlKey) openAdmin(); });
+    if (location.search.indexOf('admin') >= 0) openAdmin();
+  }
   function openAdmin() { admin.classList.add('show'); clearTimeout(idleT); }
   $('#admin-close').addEventListener('click', () => { admin.classList.remove('show'); resetIdle(); });
   $('#admin-go').addEventListener('click', () => {
@@ -726,5 +755,5 @@
   }
   $('#welcome').addEventListener('pointerdown', () => { clearTimeout(welT); closeWelcome(); });
 
-  toAttract();
+  if (WEB) go('map'); else toAttract();
 })();
