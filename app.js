@@ -139,6 +139,8 @@
       c.addEventListener('click', () => {
         filters[key] = filters[key] === String(v) ? null : String(v);   // újra koppintva kikapcsol
         syncChips(el, filters[key]); applyFilters();
+        // régióválasztás: vissza a teljes Magyarország-nézetre (pl. budapesti nagyításból), hogy a kiemelt régió látsszon
+        if (key === 'region' && filters.region && Z.view.k > 1.001) setZoom('hu');
       });
       el.appendChild(c);
     });
@@ -163,6 +165,7 @@
       g.classList.toggle('dimmed', !ok);
     });
     $('#fcount').textContent = n;
+    if (Z.regions) Z.regions.classed('on', f => !!filters.region && HU_REGION[f.properties.name] === filters.region);
     placeNames();
     if (selected && !match(selected)) clearDetail();
     if (!selected) {
@@ -207,7 +210,7 @@
       '<div><div class="dname">' + esc(c.name) + '</div>' +
       '<div class="dsub">' + esc(where) + '</div></div></div>' +
       '<div class="dmeta">' +
-        '<div class="dyearsbox"><div class="dyears">' +
+        '<div class="dyearsbox"><div class="dylabel">Best Managed minősítés éve</div><div class="dyears">' +
           D.years.map(y => '<div class="yrbox' + (c.years.indexOf(y) >= 0 ? ' on' : '') + '">' + y + '</div>').join('') + '</div>' +
           '<div class="dwins">Első elismerés: <b>' + c.first + '</b> · ' + ord + ' alkalommal Best Managed (' + c.wins + '×)</div>' +
         '</div>' +
@@ -233,15 +236,21 @@
   function closeProfile() { prof.classList.remove('show'); }
   prof.addEventListener('click', e => { if (e.target === prof) closeProfile(); });
 
-  /* fotó teljes képernyőn – koppintásra bezárul */
+  /* fotó teljes képernyőn – a jobb felső × gombbal vagy a háttérre koppintva zárul */
   const lb = $('#lightbox');
+  let lbOpened = 0;
   function openPhoto(c, i) { openGallery(c.photos, i, c.name); }
   function openGallery(list, i, caption) {
     $('img', lb).src = list[i];
     $('.lbn', lb).textContent = caption + ' · ' + (i + 1) + ' / ' + list.length;
     lb.classList.add('show');
+    lbOpened = performance.now();
   }
-  lb.addEventListener('click', () => lb.classList.remove('show'));
+  lb.addEventListener('click', () => {
+    // a megnyitó koppintás utólagos click-eseménye (érintőképernyőn) ne zárja be rögtön
+    if (performance.now() - lbOpened < 450) return;
+    lb.classList.remove('show');
+  });
   function logoBox(c, cls) {
     return '<div class="' + cls + (c.logoOnDark ? ' ondark' : c.logoDark ? ' dark' : '') + '">' +
       (c.logo ? '<img src="' + c.logo + '" alt="' + esc(c.name) + '">' : '<span>' + esc(c.name) + '</span>') + '</div>';
@@ -282,6 +291,17 @@
     }
     return f;
   }
+
+  /* megye -> statisztikai régió (a szűrő régióinak kiemeléséhez a térképen) */
+  const HU_REGION = {
+    'Budapest': 'Közép-Magyarország', 'Pest': 'Közép-Magyarország',
+    'Fejér': 'Közép-Dunántúl', 'Komárom-Esztergom': 'Közép-Dunántúl', 'Veszprém': 'Közép-Dunántúl',
+    'Győr-Moson-Sopron': 'Nyugat-Dunántúl', 'Vas': 'Nyugat-Dunántúl', 'Zala': 'Nyugat-Dunántúl',
+    'Baranya': 'Dél-Dunántúl', 'Somogy': 'Dél-Dunántúl', 'Tolna': 'Dél-Dunántúl',
+    'Borsod-Abaúj-Zemplén': 'Észak-Magyarország', 'Heves': 'Észak-Magyarország', 'Nógrád': 'Észak-Magyarország',
+    'Hajdú-Bihar': 'Észak-Alföld', 'Jász-Nagykun-Szolnok': 'Észak-Alföld', 'Szabolcs-Szatmár-Bereg': 'Észak-Alföld',
+    'Bács-Kiskun': 'Dél-Alföld', 'Békés': 'Dél-Alföld', 'Csongrád-Csanád': 'Dél-Alföld'
+  };
 
   /* HU / Budapest zoom */
   const Z = { W: 2400, H: 1180, side: [330, 880], view: { k: 1, x: 0, y: 0 }, bp: 0, mode: 'hu', bpView: null, gBase: null, dots: null, labels: null, proj: null };
@@ -388,7 +408,10 @@
     // megyehatárok, Balaton, Tisza (geo/hungary.js – tools/build_geo.py)
     const HG = window.HU_GEO;
     if (HG) {
-      g.append('g').selectAll('path').data(HG.counties.map(rewind)).join('path')
+      HG.counties.forEach(rewind);
+      Z.regions = g.append('g').selectAll('path').data(HG.counties).join('path')
+        .attr('class', 'hu-region').attr('d', path);
+      g.append('g').selectAll('path').data(HG.counties).join('path')
         .attr('class', 'hu-county hu-only').attr('d', path);
       g.append('path').datum(rewind(HG.balaton)).attr('class', 'hu-lake').attr('d', path);
       g.append('path').datum(HG.tisza).attr('class', 'hu-river').attr('d', path);
@@ -533,7 +556,7 @@
         const d = st.drag;
         if (!d || d.id !== e.pointerId) return;
         st.drag = null;
-        if (d.moved < 10 && e.type === 'pointerup') {             // koppintás: kép nagyítása
+        if (d.moved < 24 && e.type === 'pointerup') {             // koppintás: kép nagyítása
           const ph = document.elementFromPoint(e.clientX, e.clientY);
           const el = ph && ph.closest('.ph');
           if (el && A[+el.dataset.i] && A[+el.dataset.i].src) {

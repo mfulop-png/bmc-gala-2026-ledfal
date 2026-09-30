@@ -27,6 +27,7 @@
   --line:rgba(255,255,255,.10); --line-g:rgba(252,197,66,.30);
   --ink:#ffffff; --muted:#a8a296; --dim:#77716a;
   --serif:'mencken-std-head',Georgia,serif;
+  --dgreen:#86bc25; --dgreen-glow:rgba(134,188,37,.28);   /* Deloitte zöld */
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#000;overflow:hidden;font-family:'Open Sans',system-ui,sans-serif;color:var(--ink);
@@ -63,12 +64,12 @@ a:hover{color:#f5dd86}
 .tab:last-child{border-right:none}
 .tab .n{font-size:22px;letter-spacing:.24em;color:var(--dim)}
 .tab .t{font-size:40px;font-weight:600;color:#c9cec3}
-.tab::after{content:'';position:absolute;left:0;right:0;top:-1px;height:5px;background:var(--green);transform:scaleX(0);
+.tab::after{content:'';position:absolute;left:0;right:0;top:-1px;height:5px;background:var(--dgreen);transform:scaleX(0);
   transform-origin:left;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-.tab.active{background:rgba(252,197,66,.09)}
+.tab.active{background:rgba(134,188,37,.12)}
 .tab.active::after{transform:scaleX(1)}
 .tab.active .t{color:#fff}
-.tab.active .n{color:var(--green)}
+.tab.active .n{color:var(--dgreen)}
 
 #bgs{position:absolute;inset:0;z-index:0;pointer-events:none}
 #bgs div{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease}
@@ -81,6 +82,7 @@ a:hover{color:#f5dd86}
 
 h1.big{font-family:var(--serif);font-size:104px;font-weight:400;line-height:1.02;letter-spacing:0}
 h1.big b{font-weight:700}
+.maphead h1.big{white-space:nowrap}
 .gold,h1.big b,.attract-inner h1 b,.wel .msg b,.counter .n,.bigstat .v,.sumbar .v,.tlsplit .n b,.wc-stats b,.wc-name{
   background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 /* a színátmenetes kitöltés csak az elem dobozán belül fest: a nagy számjegyek íve (pl. a 8-as jobb alja)
@@ -186,11 +188,13 @@ h1.big b{font-weight:700}
 .mode-bp .hu-only{opacity:0}
 .hu-only{transition:opacity .6s}
 .hu-dot{cursor:pointer;transition:opacity .3s}
-.hu-dot circle.core{fill:var(--gold-1);stroke:#070605;stroke-width:2}
-.hu-dot circle.halo{fill:var(--gold-1);opacity:.18}
+.hu-dot circle.core{fill:var(--dgreen);stroke:#070605;stroke-width:2}
+.hu-dot circle.halo{fill:var(--dgreen);opacity:.18}
 .hu-dot.sel circle.core{fill:#fff}
 .hu-dot.sel circle.halo{opacity:.35}
 .hu-dot.dimmed{opacity:.12;pointer-events:none}
+.hu-region{fill:rgba(252,197,66,0);stroke:none;pointer-events:none;transition:fill .6s ease}
+.hu-region.on{fill:rgba(252,197,66,.26)}
 .hu-county{fill:none;stroke:rgba(252,197,66,.30);stroke-width:1.2;stroke-linejoin:round;pointer-events:none}
 .hu-lake{fill:rgba(83,86,90,.75);stroke:var(--water);stroke-width:1.5;pointer-events:none}
 .hu-water{font-size:22px;font-style:italic;font-weight:600;fill:#8b8e92;letter-spacing:.18em;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
@@ -230,6 +234,7 @@ h1.big b{font-weight:700}
 .dsub{font-size:30px;color:var(--muted);margin-top:14px}
 .dmeta{display:flex;gap:28px;align-items:stretch;margin-top:30px;flex-wrap:wrap}
 .dyearsbox{display:flex;flex-direction:column;justify-content:center;gap:14px}
+.dylabel{font-size:24px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .dyears{display:flex;gap:12px;flex-wrap:wrap}
 .yrbox{width:112px;height:66px;display:grid;place-items:center;font-size:26px;border:1px solid var(--line);color:var(--dim)}
 .yrbox.on{background:var(--green);color:#1a1204;border-color:var(--green);font-weight:700}
@@ -244,9 +249,10 @@ h1.big b{font-weight:700}
 /* fotó teljes képernyőn */
 #lightbox{position:absolute;inset:0;z-index:70;background:rgba(3,4,3,.94);display:none;align-items:center;justify-content:center;padding:120px}
 #lightbox.show{display:flex;animation:dIn .35s ease}
-#lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 30px 120px rgba(0,0,0,.6)}
+#lightbox img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 30px 120px rgba(0,0,0,.6))}
 #lightbox .lbx{position:absolute;top:60px;right:80px;width:120px;height:120px;border-radius:50%;display:grid;place-items:center;
-  border:1px solid var(--line);background:var(--panel-2);font-size:70px;font-weight:300;color:#fff}
+  border:1px solid var(--line);background:var(--panel-2);font-size:70px;font-weight:300;color:#fff;cursor:pointer;z-index:2}
+#lightbox .lbx:active{background:var(--dgreen);color:#0b1203}
 #lightbox .lbn{position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:28px;color:var(--muted)}
 
 /* ---------- world (Global Journey) ---------- */
@@ -262,7 +268,7 @@ html.web #world-map{cursor:grab}
 .w-ocean{fill:url(#wOcean);stroke:none}
 .w-rim{fill:none;stroke:rgba(252,197,66,.45);stroke-width:2}
 .w-bmc{cursor:pointer}
-.w-sel{fill:var(--green) !important;stroke:#fff !important;stroke-width:1.6 !important}
+.w-sel{fill:var(--dgreen) !important;stroke:#fff !important;stroke-width:1.6 !important}
 .wcard{flex:1;min-height:0;padding:40px 44px;display:flex;flex-direction:column;gap:26px;overflow:hidden;animation:dIn .4s ease}
 .wcard.empty{align-items:center;justify-content:center;text-align:center;color:var(--muted);font-family:var(--serif);font-size:52px;line-height:1.3}
 .wc-kicker{font-size:26px;letter-spacing:.22em;text-transform:uppercase;color:var(--green)}
@@ -275,11 +281,11 @@ html.web #world-map{cursor:grab}
 .wc-photos div{min-height:0;border-radius:6px;overflow:hidden;cursor:pointer;background:var(--panel-2)}
 .wc-photos img{width:100%;height:100%;object-fit:cover;display:block}
 #world-map{flex:1;min-height:0;width:100%}
-.w-land{fill:#1c1812;stroke:rgba(255,255,255,.06);stroke-width:.7}
-.w-bmc{fill:rgba(252,197,66,.30);stroke:var(--green);stroke-width:1}
-.w-hu{fill:var(--gold-1);stroke:#fff;stroke-width:1.4}
+.w-land{fill:rgba(252,197,66,.30);stroke:rgba(252,197,66,.55);stroke-width:.7}
+.w-bmc{fill:rgba(134,188,37,.62);stroke:var(--dgreen);stroke-width:1}
+.w-hu{fill:var(--dgreen);stroke:#fff;stroke-width:1.4}
 .w-graticule{fill:none;stroke:rgba(255,255,255,.05);stroke-width:.6}
-.w-ping{fill:none;stroke:var(--gold-1);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
+.w-ping{fill:none;stroke:var(--dgreen);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
 @keyframes ping{from{transform:scale(.3);opacity:1}to{transform:scale(2.4);opacity:0}}
 .strip{height:250px;overflow:hidden;flex:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .strack{display:flex;gap:20px;width:max-content;height:100%;will-change:transform}
@@ -325,19 +331,21 @@ html.web .strip:active{cursor:grabbing}
 .winners .flabel{margin-bottom:22px}
 .whead{display:flex;justify-content:space-between;align-items:baseline;gap:30px;margin-bottom:24px}
 .whead .flabel{margin:0}
-.wlegend{display:flex;gap:40px;font-size:26px;color:var(--muted);flex-wrap:wrap;justify-content:flex-end}
+.wlegend{display:flex;gap:48px;font-size:34px;color:var(--muted);flex-wrap:wrap;justify-content:flex-end}
 .wlegend span{display:flex;align-items:center;gap:12px}
 .wlegend i{font-style:normal}
-.wlegend .jub b{color:#fff;font-size:30px}
+.wlegend .jub b{color:#fff;font-size:40px}
+.wlegend i.new{font-size:28px;padding:6px 14px}
+.wlegend i.ret{width:8px;height:38px}
 .wlegend .jub{display:none}
 .wlegend.y2026 .jub{display:flex}
-i.new{font-style:normal;font-size:22px;font-weight:800;letter-spacing:.08em;color:#1a1204;background:#fcc542;padding:5px 12px;border-radius:4px;flex:none}
+i.new{font-style:normal;font-size:22px;font-weight:800;letter-spacing:.08em;color:#0b1203;background:var(--dgreen);padding:5px 12px;border-radius:4px;flex:none}
 i.ret{display:inline-block;width:6px;height:28px;background:var(--line-g);border-radius:2px}
 .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;overflow:hidden;align-content:start}
 .wg{font-size:34px;font-weight:600;line-height:1.18;padding:10px 20px;background:var(--panel-2);border-left:4px solid var(--line-g);color:#d3d8cd;
   display:flex;align-items:center;gap:16px;cursor:pointer;min-height:76px}
 .wg .nm{flex:1;min-width:0}
-.wg.new{border-left-color:#fcc542;color:#fff}
+.wg.new{border-left-color:var(--dgreen);color:#fff}
 .wg.jub{border-left-color:#fff}
 .wg .st{color:#fff;font-size:40px}
 .wg:active{background:#2a251c}
@@ -413,11 +421,11 @@ html.web #welcome{display:none}
 html.web #attract{cursor:pointer}
 html.web .tab,html.web .chip,html.web .seg div,html.web .homebtn,html.web .dclose,html.web .wg,
 html.web .dph,html.web .wc-photos div,html.web #lightbox,html.web .fopen{cursor:pointer}
-html.web .tab:hover:not(.active){background:rgba(252,197,66,.06)}
+html.web .tab:hover:not(.active){background:rgba(134,188,37,.07)}
 html.web .chip:hover:not(.on),html.web .seg div:hover:not(.on){border-color:var(--line-g);color:#fff}
 html.web .hu-dot:hover circle.core{fill:#fff}
 html.web .hu-dot:hover circle.halo{opacity:.35}
-html.web .w-bmc:hover{fill:rgba(252,197,66,.6)}
+html.web .w-bmc:hover{fill:rgba(134,188,37,.85)}
 html.web .wg:hover{background:#241f18;color:#fff}
 html.web .dph:hover img,html.web .wc-photos div:hover img{opacity:.85}
 html.web .dclose:hover,html.web .homebtn:hover{border-color:var(--green)}
@@ -456,14 +464,13 @@ html.web #world-map:active{cursor:grabbing}
 
   <div id="screens">
 
-    <!-- 1. BMC térkép -->
+    <!-- 1. Best Managed Companies Magyarország (térkép) -->
     <section class="screen" data-screen="map" id="mapscreen">
       <div class="maplayout">
         <div class="mapwrap" id="mapwrap">
           <div class="maphead">
             <div>
-              <div class="kicker">Best Managed Companies Magyarországon</div>
-              <h1 class="big">BMC <b>térkép</b></h1>
+              <h1 class="big">Best Managed Companies <b>Magyarország</b></h1>
             </div>
             <div class="mapctl">
               <div class="seg" id="zoomseg"><div class="on" data-z="hu">Magyarország</div><div data-z="bp">Budapest</div></div>
@@ -573,7 +580,7 @@ html.web #world-map:active{cursor:grabbing}
 
 
   <div id="nav">
-    <div class="tab" data-go="map"><div class="n">01</div><div class="t">BMC térkép</div></div>
+    <div class="tab" data-go="map"><div class="n">01</div><div class="t">Best Managed Companies Magyarország</div></div>
     <div class="tab" data-go="global"><div class="n">02</div><div class="t">Global Journey</div></div>
     <div class="tab" data-go="timeline"><div class="n">03</div><div class="t">5 év története</div></div>
     <div class="tab" data-go="tonight"><div class="n">04</div><div class="t">A mai este</div></div>
@@ -599,7 +606,7 @@ html.web #world-map:active{cursor:grabbing}
   <div id="profile"><div class="panel pcard" id="pcard"></div></div>
 
   <!-- fotó nagyítva -->
-  <div id="lightbox"><img alt=""><div class="lbx">×</div><div class="lbn"></div></div>
+  <div id="lightbox"><img alt=""><div class="lbx" aria-label="Bezárás">×</div><div class="lbn"></div></div>
 
   <!-- welcome takeover -->
   <div id="welcome">
