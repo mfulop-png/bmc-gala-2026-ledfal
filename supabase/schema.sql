@@ -39,6 +39,9 @@ begin
   return new;
 end $$;
 
+-- csak triggerként fut, API-n (rpc) ne legyen hívható
+revoke execute on function public.guest_welcome() from public, anon, authenticated;
+
 drop trigger if exists guests_welcome on public.guests;
 create trigger guests_welcome after insert or update of checked_in_at on public.guests
   for each row execute function public.guest_welcome();
@@ -47,15 +50,19 @@ create trigger guests_welcome after insert or update of checked_in_at on public.
 alter table public.guests enable row level security;
 alter table public.welcome_events enable row level security;
 
--- vendéglista: csak bejelentkezett hostess
+-- vendéglista: csak a hostess-fiók (config.js → hostessEmail); ha más e-mailt használsz, itt is írd át.
+-- Így akkor sem fér hozzá senki, ha valaki a nyilvános kulccsal saját fiókot regisztrálna.
 drop policy if exists guests_hostess on public.guests;
-create policy guests_hostess on public.guests for all to authenticated using (true) with check (true);
+create policy guests_hostess on public.guests for all to authenticated
+  using ((auth.jwt() ->> 'email') = 'hostess@bmc-gala.hu')
+  with check ((auth.jwt() ->> 'email') = 'hostess@bmc-gala.hu');
 
 -- üdvözlések: a LED fal (bejelentkezés nélkül) olvashatja, a hostess kézzel is indíthat újat
 drop policy if exists welcome_read on public.welcome_events;
 create policy welcome_read on public.welcome_events for select to anon, authenticated using (true);
 drop policy if exists welcome_insert on public.welcome_events;
-create policy welcome_insert on public.welcome_events for insert to authenticated with check (true);
+create policy welcome_insert on public.welcome_events for insert to authenticated
+  with check ((auth.jwt() ->> 'email') = 'hostess@bmc-gala.hu');
 
 grant select, insert, update, delete on public.guests to authenticated;
 grant select on public.welcome_events to anon, authenticated;

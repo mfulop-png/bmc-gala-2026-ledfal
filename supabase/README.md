@@ -8,12 +8,16 @@ Best Managed cégnél logóval, más cégnél csak a cégnévvel.
 hostess tablet ──► Supabase (guests tábla) ──trigger──► welcome_events ──realtime──► LED fal
 ```
 
+> **Élő projekt:** Deloitte szervezet → **BMC Gala 2026** (`axtjmpjivhagvubvjvsp`, Frankfurt).
+> A séma már fut rajta, a `config.js` ki van töltve. Az 1. pontból már csak a **3–4. lépés** van hátra
+> (hostess-felhasználó és a regisztráció kikapcsolása).
+
 ## 1. Supabase projekt
 
 1. Hozz létre egy projektet a supabase.com-on (az ingyenes csomag elég). Régiónak a `eu-central-1` (Frankfurt) javasolt.
 2. **SQL Editor** → illeszd be a [`schema.sql`](schema.sql) teljes tartalmát → **Run**.
 3. **Authentication → Users → Add user → Create new user**
-   - e-mail: `hostess@bmc-gala.hu` (vagy más, de akkor a `config.js`-ben is írd át)
+   - e-mail: `hostess@bmc-gala.hu` (ha mást választasz, a `config.js`-ben és a `schema.sql` szabályaiban is írd át)
    - jelszó: ezt kapják meg a hostessek
    - pipáld be: **Auto Confirm User**
 4. **Authentication → Sign In / Providers → Email:** a „Allow new users to sign up” kapcsolót kapcsold **ki**,
