@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050404">
+<title>BMC Gála 2026 — Érkeztetés</title>
+<link rel="stylesheet" href="https://use.typekit.net/xiz0qpt.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="../config.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.117.2/dist/umd/supabase.js" integrity="sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok" crossorigin="anonymous"></script>
+<script src="../companies.js"></script>
+<script src="../checkin-store.js"></script>
+<style>
+:root{
+  --gold:#fcc542; --gold-1:#f5dd86; --gold-3:#8f5a26;
+  --gold-grad:linear-gradient(180deg,#f5dd86 0%,#d7ad54 58%,#8f5a26 100%);
+  --dgreen:#86bc25; --bg:#050404; --panel:#12100d; --panel-2:#1b1814;
+  --line:rgba(255,255,255,.10); --line-g:rgba(252,197,66,.30);
+  --ink:#fff; --muted:#a8a296; --dim:#77716a; --danger:#e0715a;
+  --serif:'mencken-std-head',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--ink);font:16px/1.4 'Open Sans',system-ui,sans-serif}
+body{min-height:100vh;min-height:100dvh}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+.hidden{display:none !important}
+
+/* belépés */
+#login{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(900px 600px at 20% -10%,rgba(252,197,66,.10),transparent 60%),var(--bg)}
+.lcard{width:100%;max-width:420px;display:flex;flex-direction:column;gap:18px;text-align:center}
+.lcard img{height:72px;margin:0 auto 10px}
+.lcard h1{font-family:var(--serif);font-weight:400;font-size:40px;line-height:1.1}
+.lcard h1 b{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lcard p{color:var(--muted)}
+.field{width:100%;padding:16px 18px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);font-size:18px;outline:none}
+.field:focus{border-color:var(--gold)}
+.btn{padding:15px 22px;border-radius:10px;background:var(--gold);color:#1a1204;font-weight:700;font-size:17px}
+.btn:disabled{opacity:.5}
+.btn.ghost{background:transparent;color:#ddd;border:1px solid var(--line)}
+.err{color:var(--danger);min-height:22px;font-size:15px}
+.demo{font-size:13px;color:var(--gold);border:1px solid var(--line-g);border-radius:999px;padding:6px 12px;align-self:center}
+
+/* fejléc */
+header{position:sticky;top:0;z-index:5;background:rgba(5,4,4,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  padding:12px 16px 14px;padding-top:max(12px,env(safe-area-inset-top))}
+.hrow{display:flex;align-items:center;gap:14px;max-width:960px;margin:0 auto}
+.hrow img{height:40px}
+.htitle{flex:1;min-width:0}
+.htitle h1{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.1}
+.count{font-size:14px;color:var(--muted)}
+.count b{color:var(--dgreen);font-size:16px}
+.menu{position:relative;z-index:3}
+.menu > button{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);font-size:22px;line-height:1}
+.menu .dd{position:absolute;right:0;top:52px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;min-width:220px;
+  padding:6px;display:none;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.menu.open .dd{display:block}
+.dd button{display:block;width:100%;text-align:left;padding:12px 14px;border-radius:8px}
+.dd button:hover,.dd button:active{background:rgba(255,255,255,.06)}
+.tools{max-width:960px;margin:12px auto 0;display:flex;flex-direction:column;gap:10px}
+.search{position:relative}
+.search input{padding-left:46px;font-size:18px}
+.search svg{position:absolute;left:15px;top:50%;width:20px;height:20px;transform:translateY(-50%);fill:var(--dim)}
+.search .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;color:var(--muted);font-size:22px}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;padding:3px;background:var(--panel)}
+.seg button{flex:1;padding:9px 6px;border-radius:8px;font-weight:600;font-size:14px;color:#c9cec3}
+.seg button.on{background:var(--gold);color:#1a1204}
+
+/* lista */
+main{max-width:960px;margin:0 auto;padding:10px 16px 120px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.row .who{flex:1;min-width:0}
+.row .nm{font-size:18px;font-weight:700;line-height:1.25}
+.row .co{font-size:15px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:4px;background:rgba(252,197,66,.14);color:var(--gold);border:1px solid var(--line-g)}
+.tag.man{background:transparent;color:var(--muted);border-color:var(--line)}
+.row .note{font-size:13px;color:var(--dim);margin-top:2px}
+.arr{flex:none;min-width:150px;padding:14px 16px;border-radius:10px;border:2px solid var(--dgreen);color:var(--dgreen);font-weight:700;font-size:16px}
+.arr:active{background:var(--dgreen);color:#0b1203}
+.done{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.done .t{background:var(--dgreen);color:#0b1203;font-weight:700;border-radius:8px;padding:8px 12px;font-size:15px;white-space:nowrap}
+.done .acts{display:flex;gap:6px}
+.done .acts button{font-size:13px;color:var(--muted);padding:6px 8px;border-radius:6px;border:1px solid var(--line)}
+.row.in .nm{color:#d9dccf}
+.empty{text-align:center;color:var(--muted);padding:60px 10px;font-size:17px}
+.empty .btn{margin-top:18px}
+.fab{position:fixed;right:18px;bottom:max(18px,env(safe-area-inset-bottom));z-index:6;padding:16px 22px;border-radius:999px;background:var(--gold);
+  color:#1a1204;font-weight:800;font-size:17px;box-shadow:0 12px 30px rgba(0,0,0,.55)}
+
+/* ablakok */
+.modal{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center}
+@media (min-width:640px){.modal{align-items:center}}
+.sheet{width:100%;max-width:520px;background:var(--panel);border:1px solid var(--line);border-radius:16px 16px 0 0;padding:22px 20px;
+  padding-bottom:max(22px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;max-height:92vh;overflow:auto}
+@media (min-width:640px){.sheet{border-radius:16px}}
+.sheet h2{font-family:var(--serif);font-weight:400;font-size:28px}
+.sheet label{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.chk{display:flex !important;flex-direction:row !important;align-items:center;gap:12px;text-transform:none !important;letter-spacing:0 !important;
+  font-size:16px !important;color:#fff !important}
+.chk input{width:24px;height:24px;accent-color:var(--dgreen)}
+.hint{font-size:14px;color:var(--muted)}
+.hint b{color:#fff}
+.brow{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.brow .btn{flex:1}
+.pv{font-size:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.pv div{padding:8px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px}
+.pv div:last-child{border-bottom:none}
+.pv span{color:var(--muted);text-align:right}
+
+/* értesítés */
+#toast{position:fixed;left:50%;bottom:max(90px,calc(env(safe-area-inset-bottom) + 90px));transform:translateX(-50%);z-index:30;
+  width:calc(100% - 32px);max-width:520px;background:#1d2a0b;border:1px solid var(--dgreen);border-radius:12px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;box-shadow:0 16px 40px rgba(0,0,0,.6);transition:opacity .25s,transform .25s}
+#toast.off{opacity:0;pointer-events:none;transform:translate(-50%,12px)}
+#toast.bad{background:#2a120d;border-color:var(--danger)}
+#toast .tx{flex:1;font-size:15px}
+#toast button{font-weight:700;color:var(--gold);padding:6px 8px}
+</style>
+</head>
+<body>
+
+<!-- belépés -->
+<section id="login" class="hidden">
+  <form class="lcard" id="lform" autocomplete="on">
+    <img src="../assets/brand/bmc.svg" alt="Best Managed Companies Hungary">
+    <h1>Gála 2026<br><b>Érkeztetés</b></h1>
+    <p>Hostess belépés</p>
+    <input class="field" type="password" id="lpw" placeholder="Jelszó" autocomplete="current-password" required>
+    <button class="btn" id="lgo" type="submit">Belépés</button>
+    <div class="err" id="lerr"></div>
+    <div class="demo hidden" id="ldemo">Bemutató mód · jelszó: demo</div>
+  </form>
+</section>
+
+<!-- alkalmazás -->
+<section id="app" class="hidden">
+  <header>
+    <div class="hrow">
+      <img src="../assets/brand/bmc.svg" alt="BMC">
+      <div class="htitle">
+        <h1>Érkeztetés</h1>
+        <div class="count"><b id="cin">0</b> / <span id="call">0</span> vendég megérkezett</div>
+      </div>
+      <div class="menu" id="menu">
+        <button type="button" aria-label="Menü">⋯</button>
+        <div class="dd">
+          <button type="button" id="m-import">Vendéglista importálása (Excel / CSV)</button>
+          <button type="button" id="m-export">Érkezések letöltése (CSV)</button>
+          <button type="button" id="m-logout">Kijelentkezés</button>
+        </div>
+      </div>
+    </div>
+    <div class="tools">
+      <div class="search">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input class="field" id="q" type="search" placeholder="Keresés névre vagy cégre…" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button type="button" class="clr hidden" id="qclr" aria-label="Törlés">×</button>
+      </div>
+      <div class="seg" id="seg">
+        <button type="button" data-f="todo" class="on">Várható <span id="n-todo"></span></button>
+        <button type="button" data-f="in">Megérkezett <span id="n-in"></span></button>
+        <button type="button" data-f="all">Mind <span id="n-all"></span></button>
+      </div>
+      <div class="demo hidden" id="demo">Bemutató mód – az adatok csak ezen a gépen élnek (lásd supabase/README.md)</div>
+    </div>
+  </header>
+  <main id="list"></main>
+  <button class="fab" id="add">+ Új vendég</button>
+</section>
+
+<!-- új vendég -->
+<div class="modal hidden" id="addm">
+  <form class="sheet" id="addf">
+    <h2>Új vendég</h2>
+    <label>Név *<input class="field" id="a-name" required autocomplete="off"></label>
+    <label>Cég<input class="field" id="a-co" list="bmc-cos" autocomplete="off" placeholder="Kezdd el gépelni…"></label>
+    <div class="hint" id="a-match"></div>
+    <label>Megjegyzés<input class="field" id="a-note" autocomplete="off"></label>
+    <label class="chk"><input type="checkbox" id="a-in" checked> Most érkezett meg (üdvözlés a LED falon)</label>
+    <div class="brow"><button type="button" class="btn ghost" data-close>Mégse</button><button class="btn" type="submit">Mentés</button></div>
+  </form>
+  <datalist id="bmc-cos"></datalist>
+</div>
+
+<!-- import -->
+<div class="modal hidden" id="impm">
+  <div class="sheet">
+    <h2>Vendéglista importálása</h2>
+    <div class="hint">Excel (.xlsx) vagy CSV fájl, első sorban fejléccel. Felismert oszlopok: <b>Név</b> (vagy Vezetéknév + Keresztnév), <b>Cég</b>, <b>E-mail</b>, <b>Megjegyzés</b>. A már listán lévő vendégeket (azonos név és cég) kihagyja.</div>
+    <input class="field" type="file" id="i-file" accept=".xlsx,.xls,.csv,text/csv">
+    <div id="i-pv"></div>
+    <div class="brow"><button type="button" class="btn ghost" data-close>Mégse</button><button type="button" class="btn" id="i-go" disabled>Importálás</button></div>
+  </div>
+</div>
+
+<div id="toast" class="off"><div class="tx"></div><button type="button" class="hidden">Visszavonás</button></div>
+
+<script>
+(function () {
+  'use strict';
+  const S = window.BMCCheckin;
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+  const fmtTime = iso => { const d = new Date(iso); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+  const BMC = (window.BMC_DATA && window.BMC_DATA.companies) || [];
+
+  let guests = [], filter = 'todo';
+  if (S.mode === 'demo') { $('#ldemo').classList.remove('hidden'); $('#demo').classList.remove('hidden'); }
+
+  /* ---------- belépés ---------- */
+  $('#lform').addEventListener('submit', async e => {
+    e.preventDefault();
+    $('#lgo').disabled = true; $('#lerr').textContent = '';
+    try { await S.login($('#lpw').value); $('#lpw').value = ''; start(); }
+    catch (err) { $('#lerr').textContent = err.message || 'Sikertelen belépés'; }
+    $('#lgo').disabled = false;
+  });
+  $('#m-logout').addEventListener('click', async () => { await S.logout(); location.reload(); });
+
+  let started = false;
+  async function start() {
+    $('#login').classList.add('hidden'); $('#app').classList.remove('hidden');
+    if (started) return;
+    started = true;
+    await reload();
+    let t = null;
+    S.onGuests(() => { clearTimeout(t); t = setTimeout(reload, 250); });   // több tablet szinkronja
+    // ha a tablet elaludt / hálózat visszajött: frissítés
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) reload(); });
+    window.addEventListener('online', reload);
+  }
+  async function reload() {
+    try { guests = await S.list(); render(); }
+    catch (e) { toast('Nem sikerült betölteni a listát: ' + (e.message || e), true); }
+  }
+
+  /* ---------- lista ---------- */
+  const key = g => S.searchKey(g.name + ' ' + (g.company || '') + ' ' + (g.email || '') + ' ' + (g.note || ''));
+  function render() {
+    const q = S.searchKey($('#q').value.trim());
+    const terms = q.split(/\s+/).filter(Boolean);
+    const nIn = guests.filter(g => g.checked_in_at).length;
+    $('#cin').textContent = nIn; $('#call').textContent = guests.length;
+    $('#n-in').textContent = '(' + nIn + ')'; $('#n-todo').textContent = '(' + (guests.length - nIn) + ')';
+    $('#n-all').textContent = '(' + guests.length + ')';
+    $('#qclr').classList.toggle('hidden', !q);
+    // kereséskor minden vendég között keres (a megérkezetteket is mutatja)
+    let rows = guests.filter(g => terms.every(t => key(g).indexOf(t) >= 0));
+    if (!terms.length) rows = rows.filter(g => filter === 'all' || (filter === 'in' ? !!g.checked_in_at : !g.checked_in_at));
+    rows.sort(filter === 'in' && !terms.length
+      ? (a, b) => b.checked_in_at.localeCompare(a.checked_in_at)
+      : (a, b) => a.name.localeCompare(b.name, 'hu'));
+    const L = $('#list');
+    if (!guests.length) {
+      L.innerHTML = '<div class="empty">Még nincs vendéglista.<br><button class="btn" type="button" id="e-imp">Vendéglista importálása</button></div>';
+      $('#e-imp').addEventListener('click', openImport);
+      return;
+    }
+    if (!rows.length) {
+      L.innerHTML = '<div class="empty">' + (terms.length ? 'Nincs találat: „' + esc($('#q').value.trim()) + '”' +
+        '<br><button class="btn" type="button" id="e-add">+ Felvétel új vendégként</button>'
+        : filter === 'todo' ? 'Mindenki megérkezett 🎉' : 'Még senki nem érkezett meg.') + '</div>';
+      const b = $('#e-add'); if (b) b.addEventListener('click', () => openAdd($('#q').value.trim()));
+      return;
+    }
+    L.innerHTML = rows.slice(0, 300).map(g => {
+      const bmc = g.company_id || (S.matchCompany(g.company) || {}).id;
+      return '<div class="row' + (g.checked_in_at ? ' in' : '') + '" data-id="' + esc(g.id) + '"><div class="who">' +
+        '<div class="nm">' + esc(g.name) + '</div>' +
+        '<div class="co">' + (g.company ? '<span>' + esc(g.company) + '</span>' : '<span>— nincs cég —</span>') +
+        (bmc ? '<span class="tag">BMC</span>' : '') + (g.source === 'manual' ? '<span class="tag man">KÉZI</span>' : '') + '</div>' +
+        (g.note ? '<div class="note">' + esc(g.note) + '</div>' : '') + '</div>' +
+        (g.checked_in_at
+          ? '<div class="done"><div class="t">✓ ' + fmtTime(g.checked_in_at) + '</div><div class="acts">' +
+            (g.company ? '<button type="button" data-a="replay">↻ Üdvözlés</button>' : '') +
+            '<button type="button" data-a="undo">Visszavonás</button></div></div>'
+          : '<button type="button" class="arr" data-a="in">Megérkezett</button>') + '</div>';
+    }).join('') + (rows.length > 300 ? '<div class="empty">+' + (rows.length - 300) + ' további – szűkítsd a keresést</div>' : '');
+  }
+  $('#q').addEventListener('input', render);
+  $('#qclr').addEventListener('click', () => { $('#q').value = ''; render(); $('#q').focus(); });
+  $('#seg').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    filter = b.dataset.f;
+    document.querySelectorAll('#seg button').forEach(x => x.classList.toggle('on', x === b));
+    render();
+  });
+
+  $('#list').addEventListener('click', async e => {
+    const b = e.target.closest('button[data-a]'); if (!b) return;
+    const id = b.closest('.row').dataset.id, g = guests.find(x => x.id === id);
+    if (!g) return;
+    b.disabled = true;
+    try {
+      if (b.dataset.a === 'in') {
+        await S.checkIn(id);
+        g.checked_in_at = new Date().toISOString(); render();
+        toast('✓ ' + g.name + ' megérkezett' + (g.company ? ' – üdvözlés a LED falon' : ''), false, () => undo(g));
+        if ($('#q').value) { $('#q').value = ''; render(); }   // következő vendég kereséséhez
+      } else if (b.dataset.a === 'undo') {
+        await undo(g);
+      } else if (b.dataset.a === 'replay') {
+        await S.replay(g); toast('↻ Üdvözlés újra elküldve: ' + g.company);
+      }
+    } catch (err) { toast('Hiba: ' + (err.message || err), true); reload(); }
+    b.disabled = false;
+  });
+  async function undo(g) {
+    await S.undo(g.id); g.checked_in_at = null; render(); toast(g.name + ': érkezés visszavonva');
+  }
+
+  /* ---------- új vendég ---------- */
+  $('#bmc-cos').innerHTML = BMC.map(c => '<option value="' + esc(c.name) + '">').join('');
+  function openAdd(prefill) {
+    $('#addf').reset(); $('#a-in').checked = true; $('#a-match').textContent = '';
+    if (prefill) $('#a-name').value = prefill;
+    $('#addm').classList.remove('hidden'); setTimeout(() => $('#a-name').focus(), 50);
+  }
+  $('#add').addEventListener('click', () => openAdd(''));
+  $('#a-co').addEventListener('input', () => {
+    const c = S.matchCompany($('#a-co').value);
+    $('#a-match').innerHTML = c ? 'Best Managed cég: <b>' + esc(c.name) + '</b> – logóval jelenik meg' : '';
+  });
+  $('#addf').addEventListener('submit', async e => {
+    e.preventDefault();
+    const co = $('#a-co').value.trim(), c = S.matchCompany(co);
+    const g = { name: $('#a-name').value.trim(), company: co || null, company_id: c ? c.id : null,
+      note: $('#a-note').value.trim() || null, source: 'manual', checked_in_at: $('#a-in').checked ? new Date().toISOString() : null };
+    if (!g.name) return;
+    try {
+      await S.add(g); closeModals(); $('#q').value = ''; await reload();
+      toast('+ ' + g.name + ' felvéve' + (g.checked_in_at ? ' és megérkezett' + (g.company ? ' – üdvözlés a LED falon' : '') : ''));
+    } catch (err) { toast('Hiba: ' + (err.message || err), true); }
+  });
+
+  /* ---------- import ---------- */
+  let parsed = [];
+  function openImport() {
+    $('#menu').classList.remove('open');
+    $('#i-file').value = ''; $('#i-pv').innerHTML = ''; $('#i-go').disabled = true; parsed = [];
+    $('#impm').classList.remove('hidden');
+  }
+  $('#m-import').addEventListener('click', openImport);
+  function loadXLSX() {
+    if (window.XLSX) return Promise.resolve();
+    return new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js';
+      s.integrity = 'sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw';
+      s.crossOrigin = 'anonymous'; s.onload = res; s.onerror = () => rej(new Error('Az Excel-olvasó nem töltődött be'));
+      document.head.appendChild(s);
+    });
+  }
+  const H = {   // fejléc-felismerés (ékezet és kisbetű nélkül)
+    name: /^(nev|teljes nev|vendeg|vendeg neve|resztvevo|name|full name|guest)$/,
+    last: /^(vezeteknev|csaladnev|last name|surname|family name)$/,
+    first: /^(keresztnev|utonev|first name|given name)$/,
+    company: /^(ceg|cegnev|ceg neve|vallalat|vallalat neve|szervezet|company|company name|organisation|organization)$/,
+    email: /^(e ?mail|email cim|e ?mail cim|email address)$/,
+    note: /^(megjegyzes|megj|note|notes|comment|asztal|asztalszam|table)$/
+  };
+  /* CSV: UTF-8 vagy (magyar Excel-export esetén) windows-1250; elválasztó: ; , vagy tab */
+  function parseCSV(buf) {
+    let text;
+    try { text = new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+    catch (e) { text = new TextDecoder('windows-1250').decode(buf); }
+    text = text.replace(/^\ufeff/, '');
+    const first = text.split(/\r?\n/)[0];
+    const cnt = ch => first.split(ch).length;
+    const d = [';', ',', '\t'].sort((a, b) => cnt(b) - cnt(a))[0];
+    const rows = [];
+    let row = [], cur = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (q) {
+        if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
+        else cur += ch;
+      } else if (ch === '"') q = true;
+      else if (ch === d) { row.push(cur); cur = ''; }
+      else if (ch === '\n' || ch === '\r') {
+        if (ch === '\r' && text[i + 1] === '\n') i++;
+        row.push(cur); rows.push(row); row = []; cur = '';
+      } else cur += ch;
+    }
+    if (cur || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+  $('#i-file').addEventListener('change', async () => {
+    const f = $('#i-file').files[0]; if (!f) return;
+    $('#i-pv').innerHTML = '<div class="hint">Beolvasás…</div>';
+    try {
+      let aoa;
+      if (/\.(csv|txt)$/i.test(f.name) || f.type === 'text/csv') aoa = parseCSV(await f.arrayBuffer());
+      else {
+        await loadXLSX();
+        const wb = XLSX.read(await f.arrayBuffer(), { type: 'array' });
+        aoa = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '', raw: false });
+      }
+      const hi = aoa.findIndex(r => r.some(c => String(c).trim()));   // első nem üres sor = fejléc
+      const head = (aoa[hi] || []).map(h => S.searchKey(String(h).trim()).replace(/[._-]/g, ' ').replace(/\s+/g, ' '));
+      const col = k => head.findIndex(h => H[k].test(h));
+      const ci = { name: col('name'), last: col('last'), first: col('first'), company: col('company'), email: col('email'), note: col('note') };
+      if (ci.name < 0 && ci.last < 0) throw new Error('Nem találom a név oszlopot (pl. „Név” vagy „Vezetéknév” + „Keresztnév”).');
+      const cell = (r, i) => i >= 0 ? String(r[i] == null ? '' : r[i]).trim() : '';
+      const have = new Set(guests.map(g => S.norm(g.name) + '|' + S.norm(g.company)));
+      let dup = 0;
+      parsed = [];
+      aoa.slice(hi + 1).forEach(r => {
+        const name = ci.name >= 0 ? cell(r, ci.name) : [cell(r, ci.last), cell(r, ci.first)].filter(Boolean).join(' ');
+        if (!name) return;
+        const company = cell(r, ci.company) || null, k = S.norm(name) + '|' + S.norm(company);
+        if (have.has(k)) { dup++; return; }
+        have.add(k);
+        const c = S.matchCompany(company);
+        parsed.push({ name, company, company_id: c ? c.id : null, email: cell(r, ci.email) || null,
+          note: cell(r, ci.note) || null, source: 'import', checked_in_at: null });
+      });
+      const nb = parsed.filter(p => p.company_id).length;
+      const found = Object.keys(ci).filter(k => ci[k] >= 0).map(k => ({ name: 'Név', last: 'Vezetéknév', first: 'Keresztnév',
+        company: 'Cég', email: 'E-mail', note: 'Megjegyzés' }[k])).join(', ');
+      $('#i-pv').innerHTML = '<div class="hint">Felismert oszlopok: <b>' + found + '</b><br><b>' + parsed.length + '</b> új vendég' +
+        (dup ? ', ' + dup + ' már szerepel (kihagyva)' : '') + ' · ebből <b>' + nb + '</b> Best Managed céghez tartozik</div>' +
+        (parsed.length ? '<div class="pv">' + parsed.slice(0, 5).map(p => '<div><b>' + esc(p.name) + '</b><span>' + esc(p.company || '—') + '</span></div>').join('') +
+          (parsed.length > 5 ? '<div><span>… és még ' + (parsed.length - 5) + '</span></div>' : '') + '</div>' : '');
+      $('#i-go').disabled = !parsed.length;
+    } catch (err) {
+      $('#i-pv').innerHTML = '<div class="err">' + esc(err.message || err) + '</div>'; $('#i-go').disabled = true;
+    }
+  });
+  $('#i-go').addEventListener('click', async () => {
+    $('#i-go').disabled = true;
+    try { await S.addMany(parsed); closeModals(); await reload(); toast(parsed.length + ' vendég importálva'); }
+    catch (err) { toast('Import hiba: ' + (err.message || err), true); $('#i-go').disabled = false; }
+  });
+
+  /* ---------- export ---------- */
+  $('#m-export').addEventListener('click', () => {
+    $('#menu').classList.remove('open');
+    const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const lines = [['Név', 'Cég', 'E-mail', 'Megjegyzés', 'Forrás', 'Érkezett'].map(q).join(';')].concat(
+      guests.slice().sort((a, b) => a.name.localeCompare(b.name, 'hu')).map(g => [g.name, g.company, g.email, g.note,
+        g.source === 'manual' ? 'kézi' : 'import', g.checked_in_at ? new Date(g.checked_in_at).toLocaleString('hu-HU') : ''].map(q).join(';')));
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'bmc-gala-2026-erkezesek.csv'; a.click();
+  });
+
+  /* ---------- közös ---------- */
+  $('#menu > button').addEventListener('click', e => { e.stopPropagation(); $('#menu').classList.toggle('open'); });
+  document.addEventListener('click', e => { if (!e.target.closest('#menu')) $('#menu').classList.remove('open'); });
+  function closeModals() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); }
+  document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => {
+    if (e.target === m || e.target.closest('[data-close]')) closeModals();
+  }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
+
+  let toastT = null;
+  function toast(msg, bad, onUndo) {
+    const t = $('#toast'), b = t.querySelector('button');
+    t.querySelector('.tx').textContent = msg;
+    t.classList.toggle('bad', !!bad);
+    b.classList.toggle('hidden', !onUndo);
+    b.onclick = onUndo ? () => { t.classList.add('off'); onUndo().catch(err => toast('Hiba: ' + err.message, true)); } : null;
+    t.classList.remove('off');
+    clearTimeout(toastT); toastT = setTimeout(() => t.classList.add('off'), onUndo ? 6000 : 3500);
+  }
+
+  S.session().then(ok => ok ? start() : $('#login').classList.remove('hidden'));
+})();
+</script>
+</body>
+</html>

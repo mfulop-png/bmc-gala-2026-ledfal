@@ -819,8 +819,14 @@
       welRaf = requestAnimationFrame(frame);
     })(last);
   }
+  /* Üdvözlések sorban: ha közben újabb érkezik (hostess felület), az aktuális legalább WEL_MIN ideig
+     látszik, utána jön a következő; egyébként WEL_MS után zárul. */
+  const WEL_MS = 15000, WEL_MIN = 8000, welQ = [];
+  let welOn = false, welClosing = false, welStart = 0, welName = '';
   function welcome(c) {
+    if (welClosing) { welQ.unshift(c); return; }      // az előző épp elhalványul: utána jön
     admin.classList.remove('show');
+    welOn = true; welStart = performance.now(); welName = c.name;
     $('#wel-name').textContent = c.name;
     const lg = $('#guest-logo');
     lg.className = 'logo' + (c.logoOnDark ? ' ondark' : c.logoDark ? ' dark' : '');
@@ -831,16 +837,34 @@
     w.classList.add('show');
     sparkleWelcome();
     clearTimeout(welT);
-    welT = setTimeout(closeWelcome, 15000);
+    welT = setTimeout(closeWelcome, welQ.length ? WEL_MIN : WEL_MS);
   }
   function closeWelcome() {
+    if (!welOn) return;
+    welOn = false; welClosing = true;
     $('#welcome').classList.remove('show');
     setTimeout(() => {
       $('#welcome').classList.remove('play');
       cancelAnimationFrame(welRaf);
       welCtx.clearRect(0, 0, 3840, 2160);
+      welClosing = false;
+      if (welQ.length) setTimeout(() => { if (!welOn && !welClosing && welQ.length) welcome(welQ.shift()); }, 250);
     }, 550);
   }
+  function queueWelcome(c) {
+    // ugyanaz a cég ne fusson le többször egymás után (pl. kollégák együtt érkeznek)
+    if ((welOn && welName === c.name) || welQ.some(x => x.name === c.name)) return;
+    if (!welOn && !welClosing) { welcome(c); return; }
+    welQ.push(c);
+    if (welOn) { clearTimeout(welT); welT = setTimeout(closeWelcome, Math.max(0, welStart + WEL_MIN - performance.now())); }
+  }
+  // hostess felület → LED fal (csak a kioszkon; a webes változat nem üdvözöl)
+  const CK = window.BMCCheckin;
+  if (CK && !WEB) CK.onWelcome(ev => {
+    const m = (ev.company_id && byId[ev.company_id]) || byId[(CK.matchCompany(ev.company) || {}).id];
+    queueWelcome(m || { name: ev.company });
+    resetIdle();
+  });
   $('#welcome').addEventListener('pointerdown', () => { clearTimeout(welT); closeWelcome(); });
 
   /* ---------- érintés-jelzések: ha egy ideig senki nem nyúl semmihez, egy koppintó kéz mutatja,
