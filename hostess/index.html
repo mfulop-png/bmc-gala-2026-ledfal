@@ -13,6 +13,7 @@
 <script src="../config.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2.117.2/dist/umd/supabase.js" integrity="sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok" crossorigin="anonymous"></script>
 <script src="../companies.js"></script>
+<script src="../guest-companies.js"></script>
 <script src="../checkin-store.js"></script>
 <style>
 :root{
@@ -100,6 +101,8 @@ main{max-width:960px;margin:0 auto;padding:10px 16px 120px}
 @media (min-width:640px){.sheet{border-radius:16px}}
 .sheet h2{font-family:var(--serif);font-weight:400;font-size:28px}
 .sheet label{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+select.field{appearance:none;-webkit-appearance:none;padding-right:44px;background:var(--panel-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a8a296' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 12px center/26px}
+select.field option{background:#1b1814;color:#fff}
 .chk{display:flex !important;flex-direction:row !important;align-items:center;gap:12px;text-transform:none !important;letter-spacing:0 !important;
   font-size:16px !important;color:#fff !important}
 .chk input{width:24px;height:24px;accent-color:var(--dgreen)}
@@ -178,13 +181,13 @@ main{max-width:960px;margin:0 auto;padding:10px 16px 120px}
   <form class="sheet" id="addf">
     <h2>Új vendég</h2>
     <label>Név *<input class="field" id="a-name" required autocomplete="off"></label>
-    <label>Cég<input class="field" id="a-co" list="bmc-cos" autocomplete="off" placeholder="Kezdd el gépelni…"></label>
+    <label>Cég<select class="field" id="a-sel"></select></label>
+    <label class="hidden" id="a-other">Cég neve<input class="field" id="a-co" autocomplete="off" placeholder="Írd be a cég nevét"></label>
     <div class="hint" id="a-match"></div>
     <label>Megjegyzés<input class="field" id="a-note" autocomplete="off"></label>
     <label class="chk"><input type="checkbox" id="a-in" checked> Most érkezett meg (üdvözlés a LED falon)</label>
     <div class="brow"><button type="button" class="btn ghost" data-close>Mégse</button><button class="btn" type="submit">Mentés</button></div>
   </form>
-  <datalist id="bmc-cos"></datalist>
 </div>
 
 <!-- import -->
@@ -207,7 +210,6 @@ main{max-width:960px;margin:0 auto;padding:10px 16px 120px}
   const $ = s => document.querySelector(s);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
   const fmtTime = iso => { const d = new Date(iso); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
-  const BMC = (window.BMC_DATA && window.BMC_DATA.companies) || [];
 
   let guests = [], filter = 'todo';
   if (S.mode === 'demo') { $('#ldemo').classList.remove('hidden'); $('#demo').classList.remove('hidden'); }
@@ -315,20 +317,31 @@ main{max-width:960px;margin:0 auto;padding:10px 16px 120px}
   }
 
   /* ---------- új vendég ---------- */
-  $('#bmc-cos').innerHTML = BMC.map(c => '<option value="' + esc(c.name) + '">').join('');
+  // legördülő lista: a vendégcégek (guest-companies.js) ábécérendben, a végén „Egyéb cég…” kézi beíráshoz
+  const OTHER = '__other__';
+  $('#a-sel').innerHTML = '<option value="">— nincs cég —</option>' +
+    S.guestCompanies().sort((a, b) => a.name.localeCompare(b.name, 'hu'))
+      .map(c => '<option value="' + esc(c.name) + '">' + esc(c.name) + '</option>').join('') +
+    '<option value="' + OTHER + '">Egyéb cég…</option>';
+  function syncCo() {
+    const other = $('#a-sel').value === OTHER;
+    $('#a-other').classList.toggle('hidden', !other);
+    const co = other ? $('#a-co').value : $('#a-sel').value, c = S.matchCompany(co);
+    $('#a-match').innerHTML = !co.trim() ? ''
+      : c ? 'Üdvözlés a LED falon <b>logóval</b>: ' + esc(S.companyName(co, c.id))
+      : 'Üdvözlés a LED falon logó nélkül: <b>' + esc(S.companyName(co)) + '</b>';
+  }
+  $('#a-sel').addEventListener('change', () => { syncCo(); if ($('#a-sel').value === OTHER) $('#a-co').focus(); });
   function openAdd(prefill) {
-    $('#addf').reset(); $('#a-in').checked = true; $('#a-match').textContent = '';
+    $('#addf').reset(); $('#a-in').checked = true; syncCo();
     if (prefill) $('#a-name').value = prefill;
     $('#addm').classList.remove('hidden'); setTimeout(() => $('#a-name').focus(), 50);
   }
   $('#add').addEventListener('click', () => openAdd(''));
-  $('#a-co').addEventListener('input', () => {
-    const c = S.matchCompany($('#a-co').value);
-    $('#a-match').innerHTML = c ? 'Best Managed cég: <b>' + esc(c.name) + '</b> – logóval jelenik meg' : '';
-  });
+  $('#a-co').addEventListener('input', syncCo);
   $('#addf').addEventListener('submit', async e => {
     e.preventDefault();
-    const co = $('#a-co').value.trim(), c = S.matchCompany(co);
+    const co = ($('#a-sel').value === OTHER ? $('#a-co').value : $('#a-sel').value).trim(), c = S.matchCompany(co);
     const g = { name: $('#a-name').value.trim(), company: co || null, company_id: c ? c.id : null,
       note: $('#a-note').value.trim() || null, source: 'manual', checked_in_at: $('#a-in').checked ? new Date().toISOString() : null };
     if (!g.name) return;

@@ -23,14 +23,25 @@ window.BMCCheckin = (function () {
     });
     return idx;
   }
+  // a vendégcég-lista (guest-companies.js) elsőbbséget kap: pontos névegyezés → az ott megadott BMC-cég (vagy egyik sem)
+  const guestList = () => (window.BMC_GUEST_COMPANIES || []).map(([name, id]) => ({ name, id: id || null, key: norm(name) }));
+  const bmcById = id => ((window.BMC_DATA && window.BMC_DATA.companies) || []).find(c => c.id === id) || null;
   function matchCompany(text) {
     const n = norm(text);
     if (!n) return null;
+    const g = guestList().find(x => x.key === n);
+    if (g) return g.id ? bmcById(g.id) : null;
     const I = index();
     let hit = I.find(([k]) => k === n);
     // részleges egyezés szóhatáron (pl. „Goodwill” ↔ „Goodwill Pharma”), de csak elég hosszú névre
     if (!hit) hit = I.find(([k]) => (k.startsWith(n + ' ') && n.length >= 5) || (n.startsWith(k + ' ') && k.length >= 5));
     return hit ? hit[1] : null;
+  }
+  // a LED falon megjelenő név: a vendégcég-lista szerinti név, ha a cég szerepel benne
+  function companyName(text, id) {
+    const L = guestList(), n = norm(text);
+    const g = (id && L.find(x => x.id === id)) || L.find(x => x.key === n);
+    return g ? g.name : (id && bmcById(id) ? bmcById(id).name : String(text || '').trim());
   }
   const searchKey = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
@@ -137,6 +148,8 @@ window.BMCCheckin = (function () {
 
   const store = LIVE ? supabaseStore() : demoStore();
   store.matchCompany = matchCompany;
+  store.companyName = companyName;
+  store.guestCompanies = () => guestList().map(x => ({ name: x.name, id: x.id }));
   store.searchKey = searchKey;
   store.norm = norm;
   return store;

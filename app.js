@@ -862,7 +862,8 @@
   const CK = window.BMCCheckin;
   if (CK && !WEB) CK.onWelcome(ev => {
     const m = (ev.company_id && byId[ev.company_id]) || byId[(CK.matchCompany(ev.company) || {}).id];
-    queueWelcome(m || { name: ev.company });
+    // név a vendégcég-lista szerint; BMC-cégnél logóval, egyébként logó nélkül
+    queueWelcome(Object.assign({}, m, { name: CK.companyName(ev.company, m && m.id) }));
     resetIdle();
   });
   $('#welcome').addEventListener('pointerdown', () => { clearTimeout(welT); closeWelcome(); });
