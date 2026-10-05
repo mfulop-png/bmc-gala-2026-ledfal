@@ -38,13 +38,35 @@ kikapcsolható a **lebegő/oldalsó eszköztár** és a **széléről behúzhat�
 beállítható a beállítások jelszavas zárolása. A pontos menünév a firmware-verziótól függ –
 keresd a *toolbar / sidebar / floating menu / gesture / lock* kifejezéseket, vagy a Legamaster kézikönyvet.
 
-## 3. Ha a kijelzőben Windows-os OPS-számítógép fut
+## 3. Ha a kijelzőben Windows 11 Home fut (OPS-számítógép)
 
-- Chrome indítása kioszkként:
-  `chrome.exe --kiosk --disable-pinch --overscroll-history-navigation=0 --noerrdialogs --no-first-run "https://…/"`
-- Windows szélről behúzott gesztusok tiltása: csoportházirend
-  *Számítógép konfigurációja → Felügyeleti sablonok → Windows-összetevők → Edge UI → „Allow edge swipe” = Letiltva*.
-- Teljes zároláshoz: Windows *Hozzárendelt hozzáférés (Assigned Access / kioszk mód)* egy dedikált felhasználóval.
+A Home kiadásban nincs csoportházirend-szerkesztő és „Hozzárendelt hozzáférés” (kioszk mód) – ezek
+helyett a `kiosk/` mappa szkriptjei és néhány Gépház-kapcsoló.
+
+**a) Szkript (egyszer, rendszergazdaként):** másold a `kiosk` mappát a gépre, majd
+`setup-windows-home.bat` → jobb klikk → *Futtatás rendszergazdaként*. Ez:
+- letiltja a képernyő széléről behúzott gesztusokat (értesítési központ, widgetek, feladatváltó) –
+  rendszerleíró kulcs: `HKLM\SOFTWARE\Policies\Microsoft\Windows\EdgeUI\AllowEdgeSwipe = 0`;
+- kikapcsolja a képernyő elsötétülését, az alvást és a hibernálást;
+- bejelentkezéskor automatikusan elindítja a LED falat Chrome kioszk módban (`start-ledfal.bat`;
+  ha nincs Chrome, Microsoft Edge-dzsel). **A fájl elején lévő `LEDFAL_URL` legyen a LED fal címe.**
+
+Visszaállítás: `setup-windows-home.bat /undo` (rendszergazdaként).
+
+**b) Kézzel a Gépházban:**
+- *Bluetooth és eszközök → Érintés*: **Három- és négyujjas érintési kézmozdulatok = Ki**
+  (ezek váltanak alkalmazást / mutatják az asztalt).
+- *Idő és nyelv → Gépelés → Érintőbillentyűzet*: az automatikus megjelenítés **Ki**.
+- *Rendszer → Értesítések*: **Ne zavarjanak = Be**, és az értesítések kikapcsolása.
+- *Windows Update*: **frissítések szüneteltetése** a gála utánig (ne induljon újra közben).
+- *Automatikus bejelentkezés* (hogy áramszünet / újraindulás után magától induljon): a Microsoft ingyenes
+  **Sysinternals Autologon** eszközével, vagy *Fiókok → Bejelentkezési lehetőségek*: „Csak Windows Hello
+  bejelentkezés engedélyezése” **Ki**, majd `netplwiz` → „A felhasználóknak meg kell adniuk…” pipa **ki**.
+- Ajánlott egy külön, normál (nem rendszergazda) Windows-felhasználó a kijelzőnek.
+
+**Kilépés a kioszkból (személyzet, billentyűzettel):** Alt+F4, majd a Windows normálisan használható.
+Érintéssel nem lehet kilépni. Ctrl+Alt+Del és a Windows-gomb csak billentyűzettel érhető el –
+a gála alatt ne legyen billentyűzet a kijelzőhöz csatlakoztatva.
 
 ## 4. Személyzet
 
