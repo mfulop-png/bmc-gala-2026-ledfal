@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="../config.js?v=20261005"></script>
+<script src="../config.js?v=20261005b"></script>
 <script src="../vendor/supabase-2.117.2.js"></script>
 <script src="../companies.js"></script>
-<script src="../guest-companies.js?v=20261005"></script>
-<script src="../checkin-store.js?v=20261005"></script>
+<script src="../guest-companies.js?v=20261005b"></script>
+<script src="../checkin-store.js?v=20261005b"></script>
 <style>
 :root{
   --gold:#fcc542; --gold-1:#f5dd86; --gold-3:#8f5a26;
@@ -94,7 +94,7 @@ main{max-width:960px;margin:0 auto;padding:10px 16px 120px}
   color:#1a1204;font-weight:800;font-size:17px;box-shadow:0 12px 30px rgba(0,0,0,.55)}
 
 /* ablakok */
-.modal{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center}
+.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:20;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center}
 @media (min-width:640px){.modal{align-items:center}}
 .sheet{width:100%;max-width:520px;background:var(--panel);border:1px solid var(--line);border-radius:16px 16px 0 0;padding:22px 20px;
   padding-bottom:max(22px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;max-height:92vh;overflow:auto}
@@ -123,6 +123,21 @@ select.field option{background:#1b1814;color:#fff}
 #toast.bad{background:#2a120d;border-color:var(--danger)}
 #toast .tx{flex:1;font-size:15px}
 #toast button{font-weight:700;color:var(--gold);padding:6px 8px}
+/* Régi Safari (iOS 12–14.0) nem ismeri a flexbox gap-et: a térközök margóval, minden böngészőben egyformán */
+.lcard,.hrow,.tools,.row,.row .co,.done,.done .acts,.sheet,.sheet label,.chk,.brow,.pv div,#toast{gap:0}
+.lcard>*+*{margin-top:18px}
+.hrow>*+*{margin-left:14px}
+.tools>*+*{margin-top:10px}
+.row>*+*{margin-left:14px}
+.row .co>*{margin-right:8px}
+.done>*+*{margin-top:6px}
+.done .acts>*+*{margin-left:6px}
+.sheet>*+*{margin-top:14px}
+.sheet label .field{margin-top:6px}
+.chk input{margin-right:12px}
+.brow>*+*{margin-left:10px}
+.pv div>*+*{margin-left:10px}
+#toast>*+*{margin-left:12px}
 </style>
 </head>
 <body>

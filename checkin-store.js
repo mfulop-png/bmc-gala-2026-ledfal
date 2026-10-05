@@ -158,6 +158,78 @@ window.BMCCheckin = (function () {
     };
   }
 
+  /* ---------- Supabase, könyvtár nélkül (régi böngészők, pl. iOS 12 Safari) ----------
+     Ugyanaz a felület sima HTTP-kérésekkel (Auth + PostgREST); a valós idejű szinkront néhány
+     másodpercenkénti lekérdezés helyettesíti. Csak ES2017 nyelvi elemek. */
+  function restStore() {
+    const base = C.supabaseUrl.replace(/\/+$/, ''), KEY = 'bmc-hostess-rest-auth';
+    const cols = 'id,name,company,company_id,email,note,source,checked_in_at,created_at';
+    const safe = f => { try { return f(); } catch (e) { return null; } };
+    let auth = safe(() => JSON.parse(localStorage.getItem(KEY)));
+    const saveAuth = a => { auth = a; safe(() => a ? localStorage.setItem(KEY, JSON.stringify(a)) : localStorage.removeItem(KEY)); };
+    async function call(path, opt) {
+      opt = opt || {};
+      const h = Object.assign({ apikey: C.supabaseAnonKey, 'Content-Type': 'application/json' }, opt.headers || {});
+      if (opt.auth !== false && auth && auth.access_token) h.Authorization = 'Bearer ' + auth.access_token;
+      const r = await fetch(base + path, { method: opt.method || 'GET', headers: h, body: opt.body == null ? undefined : JSON.stringify(opt.body) });
+      const t = await r.text();
+      const d = t ? safe(() => JSON.parse(t)) : null;
+      if (!r.ok) throw new Error((d && (d.msg || d.message || d.error_description || d.error)) || ('HTTP ' + r.status));
+      return d;
+    }
+    function keep(d) { saveAuth({ access_token: d.access_token, refresh_token: d.refresh_token, exp: Date.now() + (d.expires_in || 3600) * 1000 }); }
+    async function fresh() {                                  // lejárat előtt frissített hozzáférési token
+      if (!auth || !auth.refresh_token) return false;
+      if (auth.exp - Date.now() > 60000) return true;
+      try { keep(await call('/auth/v1/token?grant_type=refresh_token', { method: 'POST', auth: false, body: { refresh_token: auth.refresh_token } })); return true; }
+      catch (e) { saveAuth(null); return false; }
+    }
+    async function rest(path, opt) {
+      if (!(await fresh())) throw new Error('Lejárt a belépés – jelentkezz be újra');
+      return call('/rest/v1/' + path, opt);
+    }
+    const poll = (fn, ms) => { fn(); return setInterval(() => { if (!document.hidden) fn(); }, ms); };
+    return {
+      mode: 'supabase', transport: 'rest',
+      session: () => fresh(),
+      async login(password) {
+        try { keep(await call('/auth/v1/token?grant_type=password', { method: 'POST', auth: false, body: { email: C.hostessEmail, password: password } })); }
+        catch (e) { throw new Error('Hibás jelszó'); }
+      },
+      async logout() { safe(() => call('/auth/v1/logout', { method: 'POST' }).catch(() => {})); saveAuth(null); },
+      async list() {
+        const out = [];
+        for (let from = 0; ; from += 1000) {
+          const d = await rest('guests?select=' + cols + '&order=name&limit=1000&offset=' + from);
+          out.push.apply(out, d);
+          if (d.length < 1000) return out;
+        }
+      },
+      onGuests(cb) {                                          // 5 mp-enként, csak ha változott valami
+        let sig = null;
+        poll(() => rest('guests?select=id,checked_in_at,name,company&order=id').then(d => {
+          const s = JSON.stringify(d);
+          if (sig !== null && s !== sig) cb();
+          sig = s;
+        }).catch(() => {}), 5000);
+      },
+      checkIn: id => rest('guests?id=eq.' + encodeURIComponent(id) + '&checked_in_at=is.null', { method: 'PATCH', body: { checked_in_at: new Date().toISOString() } }),
+      undo: id => rest('guests?id=eq.' + encodeURIComponent(id), { method: 'PATCH', body: { checked_in_at: null } }),
+      async add(g) { const d = await rest('guests?select=' + cols, { method: 'POST', body: g, headers: { Prefer: 'return=representation' } }); return d && d[0]; },
+      async addMany(rows) { for (let i = 0; i < rows.length; i += 500) await rest('guests', { method: 'POST', body: rows.slice(i, i + 500) }); },
+      replay: g => rest('welcome_events', { method: 'POST', body: { company: g.company, company_id: g.company_id } }),
+      arrivedCount: () => call('/rest/v1/rpc/arrived_count', { method: 'POST', body: {} }),
+      onWelcome(cb) {                                         // LED fal régi böngészőn: új üdvözlések lekérdezése
+        let last = null;
+        poll(() => call('/rest/v1/welcome_events?select=id,company,company_id&order=id.desc&limit=5').then(d => {
+          if (last === null) { last = d.length ? d[0].id : 0; return; }
+          d.filter(e => e.id > last).reverse().forEach(e => cb(e));
+          if (d.length) last = Math.max(last, d[0].id);
+        }).catch(() => {}), 3000);
+      }
+    };
+  }
+
   /* hiba mód: a felület ezt megjeleníti; a LED fal ilyenkor egyszerűen nem kap üdvözlést */
   function errorStore(msg) {
     const fail = () => Promise.reject(new Error(msg));
@@ -166,9 +238,9 @@ window.BMCCheckin = (function () {
   }
   let store;
   if (!CONFIGURED) store = demoStore();
-  else if (!LIB) store = errorStore('A Supabase kapcsolat nem indult el ezen az eszközön: a böngésző nem tudta betölteni vagy futtatni a ' +
-    'kapcsolódó programkönyvtárat (valószínűleg túl régi a böngésző – Chrome 80+, Safari/iOS 13.4+ szükséges).');
-  else { try { store = supabaseStore(); } catch (e) { store = errorStore('A Supabase kapcsolat nem indult el: ' + (e.message || e)); } }
+  else if (!LIB) store = window.fetch ? restStore()           // régi böngésző: a könyvtár nem fut, de HTTP-n elérjük
+    : errorStore('A Supabase kapcsolat nem indult el ezen az eszközön: a böngésző túl régi (fetch sem támogatott).');
+  else { try { store = supabaseStore(); } catch (e) { store = window.fetch ? restStore() : errorStore('A Supabase kapcsolat nem indult el: ' + (e.message || e)); } }
   store.matchCompany = matchCompany;
   store.companyName = companyName;
   store.partnerLogo = partnerLogo;
