@@ -584,7 +584,7 @@
 
   /* Global Journey */
   /* Global Journey fotósávok: maguktól futnak, de ujjal/egérrel meg is foghatók és húzhatók
-     (elengedve lendülettel csúsznak tovább); egy képre koppintva teljes képernyőn nyílik meg. */
+     (elengedve lendülettel csúsznak tovább); a képek nem nyílnak meg nagyban. */
   (function strips() {
     const A = D.globalPhotos;
     const tile = p => '<div class="ph" data-i="' + A.indexOf(p) + '">' + (p.src ? '<img src="' + p.src + '" alt="" draggable="false">' : '<div class="pe">Fotó érkezik</div>') +
@@ -626,15 +626,7 @@
         const d = st.drag;
         if (!d || d.id !== e.pointerId) return;
         st.drag = null;
-        if (d.moved < 24 && e.type === 'pointerup') {             // koppintás: kép nagyítása
-          const ph = document.elementFromPoint(e.clientX, e.clientY);
-          const el = ph && ph.closest('.ph');
-          if (el && A[+el.dataset.i] && A[+el.dataset.i].src) {
-            const list = A.filter(p => p.src), i = list.indexOf(A[+el.dataset.i]);
-            openGallery(list.map(p => p.src), i, A[+el.dataset.i].country);
-          }
-          st.vel = 0;
-        }
+        if (d.moved < 24 && e.type === 'pointerup') st.vel = 0;   // koppintás: megállítja a lendületet (a képek nem nyílnak meg nagyban)
       };
       st.strip.addEventListener('pointerup', end);
       st.strip.addEventListener('pointercancel', end);
@@ -749,7 +741,6 @@
       (!stats.length && !photos.length ? '<div class="wc-note">A Deloitte Best Managed Companies program partnerországa.</div>' : '') +
       (photos.length ? '<div class="wc-photos">' + photos.slice(0, 4).map((p, i) =>
         '<div data-i="' + i + '"><img src="' + p + '" alt=""></div>').join('') + '</div>' : '');
-    $$('.wc-photos div', card).forEach(e => e.addEventListener('click', () => openGallery(photos, +e.dataset.i, w.name)));
   }
   function resetGlobe() {
     GL.sel = null;
