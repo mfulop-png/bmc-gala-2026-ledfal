@@ -69,7 +69,8 @@ window.BMCCheckin = (function () {
         }
       },
       onGuests(cb) {
-        return sb.channel('guests').on('postgres_changes', { event: '*', schema: 'public', table: 'guests' }, () => cb()).subscribe();
+        return sb.channel('guests-' + Math.random().toString(36).slice(2))
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'guests' }, () => cb()).subscribe();
       },
       async checkIn(id) { ok(await sb.from('guests').update({ checked_in_at: new Date().toISOString() }).eq('id', id).is('checked_in_at', null)); },
       async undo(id) { ok(await sb.from('guests').update({ checked_in_at: null }).eq('id', id)); },
@@ -78,8 +79,10 @@ window.BMCCheckin = (function () {
         for (let i = 0; i < rows.length; i += 500) ok(await sb.from('guests').insert(rows.slice(i, i + 500)));
       },
       async replay(g) { ok(await sb.from('welcome_events').insert({ company: g.company, company_id: g.company_id })); },
+      async arrivedCount() { return ok(await sb.rpc('arrived_count')); },   // csak a szám, bejelentkezés nélkül is
       onWelcome(cb) {
-        return sb.channel('welcome').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'welcome_events' },
+        return sb.channel('welcome-' + Math.random().toString(36).slice(2))   // egyedi név: több feliratkozó is lehet
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'welcome_events' },
           p => cb(p.new)).subscribe();
       }
     };
@@ -142,6 +145,7 @@ window.BMCCheckin = (function () {
         save(g); changed();
       },
       async replay(g) { welcome(g); },
+      async arrivedCount() { return load().filter(g => g.checked_in_at).length; },
       onWelcome(cb) { listeners.welcome.push(cb); }
     };
   }

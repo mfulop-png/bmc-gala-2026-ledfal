@@ -72,7 +72,7 @@ window.BMC = (function () {
 
   const tonight = {
     stats: [
-      { value: null, label: 'vendég a gálán' },
+      { live: 'arrived', label: 'megérkezett vendég' },   // élő: a hostess felület érkeztetéseiből
       { value: String(countYear(2026)), label: 'díjazott vállalat' },
       { value: String(fiveTimes), label: 'ötszörös nyertes' }
     ],

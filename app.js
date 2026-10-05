@@ -741,9 +741,21 @@
 
   /* ---------- tonight ---------- */
   (function tonight() {
-    $('#t-stats').innerHTML = D.tonight.stats.map(s =>
-      '<div><div class="v"' + (s.value ? '' : ' style="color:#d8a13a;font-size:44px"') + '>' +
-      (s.value || 'adat érkezik') + '</div><div class="l">' + s.label + '</div></div>').join('');
+    $('#t-stats').innerHTML = D.tonight.stats.map(s => s.live
+      ? '<div><div class="v" id="t-' + s.live + '">0</div><div class="l">' + s.label + '</div></div>'
+      : '<div><div class="v"' + (s.value ? '' : ' style="color:#d8a13a;font-size:44px"') + '>' +
+        (s.value || 'adat érkezik') + '</div><div class="l">' + s.label + '</div></div>').join('');
+    // megérkezett vendégek száma: induláskor, 10 mp-enként és minden üdvözlésnél frissül
+    const CK = window.BMCCheckin, el = $('#t-arrived');
+    if (!CK || !el) return;
+    let shown = 0;
+    const refresh = () => CK.arrivedCount().then(n => {
+      if (typeof n !== 'number' || n === shown) return;
+      el.textContent = fmt(n);
+      shown = n;
+    }).catch(() => {});
+    refresh(); setInterval(refresh, 10000);
+    CK.onWelcome(() => setTimeout(refresh, 500));
     $('#agenda').innerHTML = D.tonight.agenda.map(a =>
       '<div class="ag"><div class="tm' + (a.time ? '' : ' tbd') + '">' + (a.time || 'időpont<br>érkezik') + '</div>' +
       '<div><div class="tt">' + esc(a.title) + '</div><div class="pl">' + esc(a.place) + '</div></div></div>').join('');

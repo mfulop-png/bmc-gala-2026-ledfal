@@ -68,6 +68,14 @@ grant select, insert, update, delete on public.guests to authenticated;
 grant select on public.welcome_events to anon, authenticated;
 grant insert on public.welcome_events to authenticated;
 
+-- LED fal „A mai este”: megérkezett vendégek száma. Bejelentkezés nélkül hívható, de csak egy számot ad vissza (nevet nem).
+create or replace function public.arrived_count() returns integer
+language sql stable security definer set search_path = public as $$
+  select count(*)::int from public.guests where checked_in_at is not null
+$$;
+revoke execute on function public.arrived_count() from public;
+grant execute on function public.arrived_count() to anon, authenticated;
+
 -- Valós idejű értesítések (több hostess-tablet szinkronja + LED fal)
 alter table public.guests replica identity full;
 do $$ begin
