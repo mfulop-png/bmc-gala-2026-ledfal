@@ -439,6 +439,9 @@
       G.districts.forEach(f => { distPos[f.properties.n] = path.centroid(f); });
     }
     function districtPoint(c) {
+      // pontos cím ismert (geo/addresses.js): oda kerül; egyébként a kerület közepe, azonos kerületen belül széthúzva
+      const A = (window.BMC_ADDR || {})[c.id];
+      if (A && G) return proj([A[1], A[0]]);
       const p = distPos[c.district];
       if (!p) return null;
       const n = D.companies.filter(o => o.district === c.district).length;
