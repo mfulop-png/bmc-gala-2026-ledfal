@@ -757,7 +757,8 @@
     refresh(); setInterval(refresh, 10000);
     CK.onWelcome(() => setTimeout(refresh, 500));
     $('#agenda').innerHTML = D.tonight.agenda.map(a =>
-      '<div class="ag"><div class="tm' + (a.time ? '' : ' tbd') + '">' + (a.time || 'időpont<br>érkezik') + '</div>' +
+      '<div class="ag"><div class="tm' + (a.time ? '' : ' tbd') + '">' +
+      (a.time ? a.time + (a.end ? '<small>– ' + a.end + '</small>' : '') : 'időpont<br>érkezik') + '</div>' +
       '<div><div class="tt">' + esc(a.title) + '</div><div class="pl">' + esc(a.place) + '</div></div></div>').join('');
   })();
 
