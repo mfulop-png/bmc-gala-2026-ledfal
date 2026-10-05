@@ -32,6 +32,9 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#000;overflow:hidden;font-family:'Open Sans',system-ui,sans-serif;color:var(--ink);
   -webkit-user-select:none;user-select:none;touch-action:none;cursor:none}
+/* kioszk: nincs lehúzásra frissítés / oldalra húzásos vissza-navigáció, nincs hosszú nyomás menü képeken-linkeken */
+html.kiosk,html.kiosk body{overscroll-behavior:none;-webkit-touch-callout:none}
+html.kiosk img,html.kiosk svg{-webkit-user-drag:none;-webkit-touch-callout:none}
 a{color:var(--green);text-decoration:none}
 a:hover{color:#f5dd86}
 #fit{position:fixed;inset:0;display:block;background:#000}

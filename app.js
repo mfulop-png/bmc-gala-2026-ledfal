@@ -69,6 +69,36 @@
     });
   }
 
+  /* ---------- kioszk-zár: a kijelzőn ne lehessen böngésző-/rendszerfelületet előhívni ----------
+     Amit egy weboldal megtehet: teljes képernyő, hosszú nyomás menüje, dupla koppintás, kijelölés, kép kihúzása,
+     „vissza” navigáció, böngésző-gyorsbillentyűk. A rendszerszintű (Android széle-húzás, navigációs sáv,
+     lebegő eszköztár) tiltása a kijelző / kioszkböngésző beállítása – lásd KIOSZK.md. */
+  if (!WEB) {
+    const stop = e => { e.preventDefault(); return false; };
+    ['contextmenu', 'selectstart', 'dragstart', 'dblclick', 'auxclick'].forEach(t =>
+      document.addEventListener(t, e => { if (!e.target.closest('input, textarea')) stop(e); }, { capture: true, passive: false }));
+    // böngésző-gyorsbillentyűk (frissítés, új lap/ablak, címsor, nyomtatás, mentés, fejlesztői eszközök, vissza/előre)
+    document.addEventListener('keydown', e => {
+      const k = e.key.toLowerCase(), inField = e.target.closest && e.target.closest('input, textarea');
+      if (k === 'escape' || ((e.ctrlKey || e.metaKey) && k === 'a' && !inField)) return;   // Esc: bezárás, Ctrl+A: admin
+      if (/^f\d{1,2}$/.test(k) ||
+          ((e.ctrlKey || e.metaKey) && /^[a-z0-9]$|^tab$|^pageup$|^pagedown$/.test(k) && !(inField && /^[acvxz]$/.test(k))) ||
+          (e.altKey && /^arrow|^home$|^f4$|^d$/.test(k)) ||
+          (k === 'backspace' && !inField) || k === 'browserback' || k === 'browserforward' || k === 'contextmenu') e.preventDefault();
+    }, true);
+    // „vissza” gomb / széle-húzás vissza: az oldal marad, a kezdőképernyőre ugrik
+    history.pushState({ kiosk: 1 }, '');
+    window.addEventListener('popstate', () => { history.pushState({ kiosk: 1 }, ''); toAttract(); });
+    // teljes képernyő az első (és minden további) érintésre, ha közben kilépett belőle – a böngésző címsora, fülei eltűnnek
+    const fs = () => {
+      const d = document, el = d.documentElement;
+      if (d.fullscreenElement || d.webkitFullscreenElement) return;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (req) try { const r = req.call(el, { navigationUI: 'hide' }); if (r && r.catch) r.catch(() => {}); } catch (err) { /* nem támogatott */ }
+    };
+    document.addEventListener('pointerup', fs, true);
+  }
+
   /* Esc: nagyított fotó → cégprofil → cégadatlap bezárása */
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
