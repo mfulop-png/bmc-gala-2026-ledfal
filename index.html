@@ -205,6 +205,12 @@ h1.big b{font-weight:700}
 .bp-name{font-size:36px;fill:#fff;font-weight:600;pointer-events:none;
   stroke:#0a0806;stroke-width:7px;stroke-linejoin:round;paint-order:stroke}
 .maphint{position:absolute;left:36px;bottom:30px;font-size:26px;color:var(--muted);letter-spacing:.08em;pointer-events:none}
+/* +/− nagyítógombok a térképen és a földgömbön */
+.zbtns{position:absolute;right:30px;bottom:30px;display:flex;flex-direction:column;gap:16px;z-index:3}
+.zbtn{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;font-size:64px;font-weight:300;line-height:1;
+  color:#fff;background:rgba(17,15,13,.86);border:1px solid var(--line-g);cursor:pointer;transition:background .2s}
+.zbtn:active{background:var(--dgreen);color:#0b1203}
+html.web .zbtn:hover{border-color:var(--green)}
 .side{display:flex;flex-direction:column;gap:28px;min-height:0}
 .filters{padding:44px 48px;display:flex;flex-direction:column;gap:40px}
 .detail{flex:1;padding:40px;overflow:hidden;display:flex;flex-direction:column;min-height:0;position:relative}
@@ -477,7 +483,7 @@ html.web #world-map:active{cursor:grabbing}
             </div>
           </div>
           <svg id="hu-map"></svg>
-          <div class="maphint" id="maphint">Két ujjal nagyíthatsz · koppints Budapestre</div>
+          <div class="maphint" id="maphint">Két ujjal vagy a +/− gombbal nagyíthatsz · koppints Budapestre</div>
         </div>
         <div class="side" id="mapside">
           <div class="panel filters" id="filters">
@@ -510,7 +516,7 @@ html.web #world-map:active{cursor:grabbing}
               <div class="homebtn" id="gohome">Magyarország</div>
             </div>
             <svg id="world-map"></svg>
-            <div class="maphint">Forgasd egy ujjal · két ujjal nagyíthatsz · koppints egy kiemelt országra</div>
+            <div class="maphint">Forgasd egy ujjal · két ujjal vagy a +/− gombbal nagyíthatsz · koppints egy kiemelt országra</div>
           </div>
           <div class="side">
             <div class="bigstat">

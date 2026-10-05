@@ -8,7 +8,7 @@
   const WEB = !!window.BMC_WEB;   // webes változat: egér + billentyűzet, nincs kioszk-viselkedés
   const T = (touch, web) => WEB ? web : touch;
   const EMPTY_DETAIL = T('Koppints', 'Kattints') + ' egy pontra a térképen<br>a vállalat adataiért';
-  const MAP_HINT = T('Két ujjal nagyíthatsz · koppints Budapestre', 'Görgővel nagyíthatsz, húzással mozgathatod · kattints Budapestre');
+  const MAP_HINT = T('Két ujjal vagy a +/− gombbal nagyíthatsz · koppints Budapestre', 'Görgővel nagyíthatsz, húzással mozgathatod · kattints Budapestre');
   const EMPTY_COUNTRY = T('Koppints', 'Kattints') + ' egy kiemelt országra<br>a földgömbön';
 
   /* ---------- stage fit ---------- */
@@ -303,6 +303,66 @@
     'Bács-Kiskun': 'Dél-Alföld', 'Békés': 'Dél-Alföld', 'Csongrád-Csanád': 'Dél-Alföld'
   };
 
+  /* Érintés- és egérgesztusok Pointer Events-szel – ez a legmegbízhatóbb az interaktív kijelzőkön
+     (pl. Legamaster EVOLVE3: a d3 egér/touch eseménykezelése ott nem működött).
+     Egy ujj / egér: húzás (pan), két ujj: csippentés (pinch), görgő: nagyítás. A koordináták az SVG
+     viewBox-egységeiben érkeznek. Ha a gesztus közben az ujj elmozdult, az utána jövő click nem választ ki semmit. */
+  function gestures(el, h) {
+    const pts = new Map();
+    let last = null, moved = 0, suppress = false;
+    const ctm = () => el.getScreenCTM();
+    const toSvg = (x, y) => { const p = new DOMPoint(x, y).matrixTransform(ctm().inverse()); return [p.x, p.y]; };
+    function snap() {
+      const a = Array.from(pts.values());
+      const x = a.reduce((s, p) => s + p[0], 0) / a.length, y = a.reduce((s, p) => s + p[1], 0) / a.length;
+      return { n: a.length, x, y, d: a.length > 1 ? Math.hypot(a[0][0] - a[1][0], a[0][1] - a[1][1]) : 0 };
+    }
+    el.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (!pts.size) { moved = 0; suppress = false; if (h.start) h.start(); }
+      pts.set(e.pointerId, [e.clientX, e.clientY]);
+      last = snap();
+    });
+    window.addEventListener('pointermove', e => {
+      if (!pts.has(e.pointerId)) return;
+      pts.set(e.pointerId, [e.clientX, e.clientY]);
+      const s = snap();
+      if (last && s.n === last.n) {
+        const u = 1 / ctm().a;                                   // képernyőpixel -> SVG-egység
+        const dx = (s.x - last.x) * u, dy = (s.y - last.y) * u;
+        moved += Math.hypot(s.x - last.x, s.y - last.y);
+        if (moved > 12) suppress = true;                         // koppintásnak már nem számít
+        if (s.n >= 2 && last.d > 0) { suppress = true; h.pinch(s.d / last.d, toSvg(s.x, s.y), dx, dy); }
+        else if (s.n === 1) h.pan(dx, dy);
+      }
+      last = s;
+    }, { passive: true });
+    const up = e => {
+      if (!pts.delete(e.pointerId)) return;
+      last = pts.size ? snap() : null;
+    };
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+    // húzás/csippentés után a felengedéskor érkező click ne válasszon ki pontot vagy országot
+    el.addEventListener('click', e => { if (suppress) { e.stopPropagation(); e.preventDefault(); suppress = false; } }, true);
+    el.addEventListener('wheel', e => {
+      e.preventDefault();
+      if (h.start) h.start();
+      h.pinch(Math.pow(2, -e.deltaY * (e.deltaMode ? .05 : .002)), toSvg(e.clientX, e.clientY), 0, 0);
+    }, { passive: false });
+  }
+  /* +/− gombok – akkor is lehet nagyítani, ha a kijelző a böngészőnek csak egy ujjat továbbít */
+  function zoomButtons(host, zoomBy) {
+    const box = mk('div', 'zbtns');
+    [['+', 1.6, 'Nagyítás'], ['−', 1 / 1.6, 'Kicsinyítés']].forEach(([t, f, l]) => {
+      const b = mk('div', 'zbtn', t);
+      b.setAttribute('aria-label', l);
+      b.addEventListener('click', e => { e.stopPropagation(); zoomBy(f); });
+      box.appendChild(b);
+    });
+    host.appendChild(box);
+  }
+
   /* HU / Budapest zoom */
   const Z = { W: 2400, H: 1180, side: [330, 880], view: { k: 1, x: 0, y: 0 }, bp: 0, mode: 'hu', bpView: null, gBase: null, dots: null, labels: null, proj: null };
   function renderZoom() {
@@ -498,13 +558,20 @@
       .extent([[0, 0], [W, H]])
       .scaleExtent([1, Z.bpView ? Z.bpView.k * 2.5 : 8])
       .translateExtent([[0, 0], [W, H]])
-      .clickDistance(12)                       // ujjal koppintás kis elmozdulással is koppintás marad
       .on('zoom', ev => {
         const t = ev.transform;
         Z.view = { k: t.k, x: t.x, y: t.y };
         updateBp(); renderZoom();
       });
-    svg.call(Z.zoom).on('dblclick.zoom', null);
+    // a d3 csak a transzformációt számolja; a bevitelt a saját (Pointer Events) gesztuskezelő adja
+    svg.call(Z.zoom).on('.zoom', null);
+    gestures(svg.node(), {
+      start: () => svg.interrupt(),
+      pan: (dx, dy) => Z.zoom.translateBy(svg, dx / Z.view.k, dy / Z.view.k),
+      pinch: (s, p, dx, dy) => { Z.zoom.scaleBy(svg, s, p); Z.zoom.translateBy(svg, dx / Z.view.k, dy / Z.view.k); }
+    });
+    zoomButtons($('#mapwrap'), f => svg.interrupt().transition().duration(450).ease(d3.easeCubicOut)
+      .call(Z.zoom.scaleBy, f, [W / 2, H / 2]));
     Z.names.on('click', (ev, d) => onDot(d));
     Z.dots.on('click', (ev, d) => onDot(d));
     function onDot(d) {
@@ -615,19 +682,24 @@
     GL.countries.filter(f => map[norm(f.properties.name)]).append('title').text(f => map[norm(f.properties.name)].name);
     GL.rim = svg.append('path').datum({ type: 'Sphere' }).attr('class', 'w-rim');
     GL.pings = [0, 1].map(i => svg.append('circle').attr('class', 'w-ping').attr('r', 30).style('animation-delay', (i * 1.2) + 's'));
-    GL.zoom = d3.zoom().scaleExtent([1, 5]).clickDistance(12)
-      .on('start', () => { GL.prev = null; })
-      .on('zoom', ev => {
-        const t = ev.transform;
-        if (GL.prev && Math.abs(t.k - GL.prev.k) < 1e-6) {          // egy ujj / egér: forgatás
-          const f = 180 / Math.PI / (GL.R * GL.k);
-          GL.rot[0] += (t.x - GL.prev.x) * f;
-          GL.rot[1] = Math.max(-80, Math.min(80, GL.rot[1] - (t.y - GL.prev.y) * f));
-        }
-        GL.k = t.k; GL.prev = t; GL.lastUse = performance.now();
-        renderGlobe();
-      });
-    svg.call(GL.zoom).on('dblclick.zoom', null);
+    // egy ujj / egér: forgatás, két ujj / görgő / gombok: nagyítás (Pointer Events – lásd gestures())
+    const rotateBy = (dx, dy) => {
+      const f = 180 / Math.PI / (GL.R * GL.k);
+      GL.rot[0] += dx * f;
+      GL.rot[1] = Math.max(-80, Math.min(80, GL.rot[1] - dy * f));
+    };
+    const scaleGlobe = s => { GL.k = Math.max(1, Math.min(5, GL.k * s)); };
+    gestures(svg.node(), {
+      start: () => { svg.interrupt('rot'); GL.anim = false; GL.lastUse = performance.now(); },
+      pan: (dx, dy) => { rotateBy(dx, dy); GL.lastUse = performance.now(); renderGlobe(); },
+      pinch: (s, p, dx, dy) => { scaleGlobe(s); rotateBy(dx, dy); GL.lastUse = performance.now(); renderGlobe(); }
+    });
+    zoomButtons(svg.node().parentNode, f => {
+      const k0 = GL.k, k1 = Math.max(1, Math.min(5, k0 * f));
+      GL.lastUse = performance.now();
+      svg.interrupt('zoom').transition('zoom').duration(450).ease(d3.easeCubicOut)
+        .tween('zoom', () => t => { GL.k = k0 + (k1 - k0) * t; GL.lastUse = performance.now(); renderGlobe(); });
+    });
     renderGlobe();
     // tétlen lassú forgás – csak amikor a fül látszik
     let last = performance.now();
