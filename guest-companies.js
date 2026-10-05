@@ -31,7 +31,7 @@ window.BMC_GUEST_COMPANIES = [
   ['Sanatmetal Kft.', 'sanatmetal'],
   ['HIDROFILT', 'hidrofilt'],
   ['Prophyl Cégcsoport', 'prophyl'],
-  ['HVG'],
+  ['HVG', null, 'assets/logos/hvg.svg'],
   ['Deloitte', null, 'assets/logos/deloitte.svg'],
   ['MNB', null, 'assets/logos/mnb.svg'],
   ['BGE', null, 'assets/logos/bge.svg'],
