@@ -77,10 +77,10 @@ window.BMC = (function () {
       { value: String(fiveTimes), label: 'ötszörös nyertes' }
     ],
     agenda: [
-      { time: '18:30', end: '19:30', title: 'Vendégfogadás és welcome koktél', place: 'Előtér' },
-      { time: '19:30', end: '19:50', title: 'Ünnepélyes megnyitó', place: 'Nagyterem' },
-      { time: '19:50', end: '20:30', title: 'A Best Managed Companies elismerések átadása', place: 'Nagyterem' },
-      { time: '20:30', end: '23:00', title: 'Esti fogadás és kötetlen beszélgetés', place: 'Előtér · Fotófal' }
+      { time: '18:30', end: '19:30', title: 'Érkezés, regisztráció és welcome drink' },
+      { time: '19:30', end: '19:50', title: 'Ünnepélyes megnyitó' },
+      { time: '19:50', end: '20:30', title: 'A Best Managed Companies elismerések átadása' },
+      { time: '20:30', end: '23:00', title: 'Esti fogadás és kötetlen beszélgetés' }
     ]
   };
 

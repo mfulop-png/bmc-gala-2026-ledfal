@@ -759,7 +759,7 @@
     $('#agenda').innerHTML = D.tonight.agenda.map(a =>
       '<div class="ag"><div class="tm' + (a.time ? '' : ' tbd') + '">' +
       (a.time ? a.time + (a.end ? '<small>– ' + a.end + '</small>' : '') : 'időpont<br>érkezik') + '</div>' +
-      '<div><div class="tt">' + esc(a.title) + '</div><div class="pl">' + esc(a.place) + '</div></div></div>').join('');
+      '<div><div class="tt">' + esc(a.title) + '</div>' + (a.place ? '<div class="pl">' + esc(a.place) + '</div>' : '') + '</div></div>').join('');
   })();
 
   /* ---------- admin / welcome ---------- */
