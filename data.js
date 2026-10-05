@@ -82,8 +82,7 @@ window.BMC = (function () {
       { time: null, title: 'Best Managed Companies díjátadó', place: 'Nagyterem' },
       { time: null, title: 'Vacsora', place: 'Nagyterem' },
       { time: null, title: 'Networking, kötetlen beszélgetés és fotókészítés', place: 'Előtér · Fotófal' }
-    ],
-    goodToKnow: 'A fotófal az előtérben található, a díjátadóról készült képek a gála után elérhetők lesznek a résztvevők számára.'
+    ]
   };
 
   /* Global Journey fotósáv – külföldi gálák képei (BMC Graphics/bmc külföld) */

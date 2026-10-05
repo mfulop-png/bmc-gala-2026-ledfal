@@ -744,7 +744,6 @@
     $('#t-stats').innerHTML = D.tonight.stats.map(s =>
       '<div><div class="v"' + (s.value ? '' : ' style="color:#d8a13a;font-size:44px"') + '>' +
       (s.value || 'adat érkezik') + '</div><div class="l">' + s.label + '</div></div>').join('');
-    $('#gtk').textContent = D.tonight.goodToKnow;
     $('#agenda').innerHTML = D.tonight.agenda.map(a =>
       '<div class="ag"><div class="tm' + (a.time ? '' : ' tbd') + '">' + (a.time || 'időpont<br>érkezik') + '</div>' +
       '<div><div class="tt">' + esc(a.title) + '</div><div class="pl">' + esc(a.place) + '</div></div></div>').join('');
