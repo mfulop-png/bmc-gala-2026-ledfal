@@ -1,10 +1,13 @@
 /* BMC Gála 2026 — vendégérkeztetés adatréteg (hostess felület + LED fal közösen használja)
    Supabase módban: vendéglista a `guests` táblában, üdvözlések a `welcome_events` táblán keresztül (realtime).
-   Bemutató módban (nincs Supabase beállítva): localStorage + BroadcastChannel, csak egy gépen belül. */
+   Bemutató módban (a config.js-ben nincs Supabase beállítva): localStorage + BroadcastChannel, csak egy gépen belül.
+   Ha a config ki van töltve, de a Supabase könyvtár nem fut (pl. túl régi böngésző), HIBA mód – soha nem vált
+   csendben bemutató módra, mert akkor az érkeztetések csak az adott eszközön maradnának. */
 window.BMCCheckin = (function () {
   'use strict';
   const C = window.BMC_CONFIG || {};
-  const LIVE = !!(C.supabaseUrl && C.supabaseAnonKey && window.supabase && window.supabase.createClient);
+  const CONFIGURED = !!(C.supabaseUrl && C.supabaseAnonKey);
+  const LIB = !!(window.supabase && window.supabase.createClient);
 
   /* ---------- cégnév → Best Managed cég (logó miatt) ---------- */
   const SUFFIX = /\b(kft|zrt|nyrt|bt|kkt|rt|ltd|gmbh|cegcsoport|csoport|group|holding|magyarorszag|hungary|hungaria)\b/g;
@@ -155,7 +158,17 @@ window.BMCCheckin = (function () {
     };
   }
 
-  const store = LIVE ? supabaseStore() : demoStore();
+  /* hiba mód: a felület ezt megjeleníti; a LED fal ilyenkor egyszerűen nem kap üdvözlést */
+  function errorStore(msg) {
+    const fail = () => Promise.reject(new Error(msg));
+    return { mode: 'error', error: msg, session: () => Promise.resolve(false), login: fail, logout: () => Promise.resolve(),
+      list: fail, onGuests() {}, checkIn: fail, undo: fail, add: fail, addMany: fail, replay: fail, arrivedCount: fail, onWelcome() {} };
+  }
+  let store;
+  if (!CONFIGURED) store = demoStore();
+  else if (!LIB) store = errorStore('A Supabase kapcsolat nem indult el ezen az eszközön: a böngésző nem tudta betölteni vagy futtatni a ' +
+    'kapcsolódó programkönyvtárat (valószínűleg túl régi a böngésző – Chrome 80+, Safari/iOS 13.4+ szükséges).');
+  else { try { store = supabaseStore(); } catch (e) { store = errorStore('A Supabase kapcsolat nem indult el: ' + (e.message || e)); } }
   store.matchCompany = matchCompany;
   store.companyName = companyName;
   store.partnerLogo = partnerLogo;
