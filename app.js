@@ -873,8 +873,11 @@
   const CK = window.BMCCheckin;
   if (CK && !WEB) CK.onWelcome(ev => {
     const m = (ev.company_id && byId[ev.company_id]) || byId[(CK.matchCompany(ev.company) || {}).id];
-    // név a vendégcég-lista szerint; BMC-cégnél logóval, egyébként logó nélkül
-    queueWelcome(Object.assign({}, m, { name: CK.companyName(ev.company, m && m.id) }));
+    // név a vendégcég-lista szerint; BMC-cégnél a saját logójával, partnernél (Deloitte, MNB…) a partnerlogóval,
+    // egyébként logó nélkül. A partnerlogók sötét háttérre készültek, ezért keret nélkül jelennek meg.
+    const pl = !m && CK.partnerLogo(ev.company);
+    queueWelcome(Object.assign({}, m, pl ? { logo: pl, logoOnDark: true, logoDark: false } : null,
+      { name: CK.companyName(ev.company, m && m.id) }));
     resetIdle();
   });
   $('#welcome').addEventListener('pointerdown', () => { clearTimeout(welT); closeWelcome(); });

@@ -24,7 +24,7 @@ window.BMCCheckin = (function () {
     return idx;
   }
   // a vendégcég-lista (guest-companies.js) elsőbbséget kap: pontos névegyezés → az ott megadott BMC-cég (vagy egyik sem)
-  const guestList = () => (window.BMC_GUEST_COMPANIES || []).map(([name, id]) => ({ name, id: id || null, key: norm(name) }));
+  const guestList = () => (window.BMC_GUEST_COMPANIES || []).map(([name, id, logo]) => ({ name, id: id || null, logo: logo || null, key: norm(name) }));
   const bmcById = id => ((window.BMC_DATA && window.BMC_DATA.companies) || []).find(c => c.id === id) || null;
   function matchCompany(text) {
     const n = norm(text);
@@ -42,6 +42,11 @@ window.BMCCheckin = (function () {
     const L = guestList(), n = norm(text);
     const g = (id && L.find(x => x.id === id)) || L.find(x => x.key === n);
     return g ? g.name : (id && bmcById(id) ? bmcById(id).name : String(text || '').trim());
+  }
+  // nem BMC-s partner logója a vendégcég-listából (pontos névegyezéssel)
+  function partnerLogo(text) {
+    const n = norm(text), g = n && guestList().find(x => x.key === n && !x.id);
+    return g ? g.logo : null;
   }
   const searchKey = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
@@ -153,7 +158,8 @@ window.BMCCheckin = (function () {
   const store = LIVE ? supabaseStore() : demoStore();
   store.matchCompany = matchCompany;
   store.companyName = companyName;
-  store.guestCompanies = () => guestList().map(x => ({ name: x.name, id: x.id }));
+  store.partnerLogo = partnerLogo;
+  store.guestCompanies = () => guestList().map(x => ({ name: x.name, id: x.id, logo: x.logo }));
   store.searchKey = searchKey;
   store.norm = norm;
   return store;

@@ -1,6 +1,7 @@
 /* Vendégcégek az érkeztetéshez – a hostess felület „Új vendég” legördülő listája.
-   [megjelenő név, Best Managed cég azonosítója (companies.js) – ha van, logóval üdvözöl a LED fal].
-   A LED fal ezt a nevet írja ki; azonosító nélkül (nem BMC-cég) logó nélkül, csak a névvel. */
+   [megjelenő név, Best Managed cég azonosítója (companies.js), partnerlogó (nem BMC-cégnek)].
+   A LED fal ezt a nevet írja ki; BMC-cégnél a companies.js logójával, partnernél a megadott logóval
+   (sötét háttérre készült SVG, 780×400), egyébként logó nélkül, csak a névvel. */
 window.BMC_GUEST_COMPANIES = [
   ['Kermann IT Solutions Nyrt.', 'kermann'],
   ['Tolnagro Csoport', 'tolnagro'],
@@ -31,10 +32,10 @@ window.BMC_GUEST_COMPANIES = [
   ['HIDROFILT', 'hidrofilt'],
   ['Prophyl Cégcsoport', 'prophyl'],
   ['HVG'],
-  ['Deloitte'],
-  ['MNB'],
-  ['BGE'],
-  ['MGYOSZ'],
-  ['BÉT'],
-  ['CIB Bank']
+  ['Deloitte', null, 'assets/logos/deloitte.svg'],
+  ['MNB', null, 'assets/logos/mnb.svg'],
+  ['BGE', null, 'assets/logos/bge.svg'],
+  ['MGYOSZ', null, 'assets/logos/mgyosz.svg'],
+  ['BÉT', null, 'assets/logos/bet.svg'],
+  ['CIB Bank', null, 'assets/logos/cib.svg']
 ];

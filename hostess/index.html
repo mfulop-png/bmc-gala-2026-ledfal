@@ -328,7 +328,7 @@ select.field option{background:#1b1814;color:#fff}
     $('#a-other').classList.toggle('hidden', !other);
     const co = other ? $('#a-co').value : $('#a-sel').value, c = S.matchCompany(co);
     $('#a-match').innerHTML = !co.trim() ? ''
-      : c ? 'Üdvözlés a LED falon <b>logóval</b>: ' + esc(S.companyName(co, c.id))
+      : c || S.partnerLogo(co) ? 'Üdvözlés a LED falon <b>logóval</b>: ' + esc(S.companyName(co, c && c.id))
       : 'Üdvözlés a LED falon logó nélkül: <b>' + esc(S.companyName(co)) + '</b>';
   }
   $('#a-sel').addEventListener('change', () => { syncCo(); if ($('#a-sel').value === OTHER) $('#a-co').focus(); });
